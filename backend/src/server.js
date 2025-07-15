@@ -6,6 +6,7 @@ import errorHandler from "./middleware/error.middleware.js";
 import cors from "./middleware/cors.middleware.js";
 
 import authRouter from "./routes/auth.route.js";
+import userRouter from "./routes/users.route.js";
 
 const app = express();
 
@@ -18,6 +19,7 @@ connectDB();
 
 // Routes
 app.use("/api/auth", authRouter);
+app.use("/api/users", userRouter);
 
 // Error handling middleware
 app.use(errorHandler);

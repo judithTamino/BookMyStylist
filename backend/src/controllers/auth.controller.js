@@ -7,10 +7,11 @@ import { loginValidation, userValidation } from "../services/validation.service.
 // @route  POST api/auth/register
 // @access public
 export const registerUser = asyncHandler(async (req, res) => {
-  const error = userValidation(req.body);
-  if (error) {
-    res.status(400);
-    throw new Error(error);
+  const errorMsg = userValidation(req.body);
+  if (errorMsg) {
+    const error = new Error(errorMsg);
+    error.statusCode = 400;
+    throw error;
   }
 
   const { name, email, phone, password } = req.body;
@@ -18,14 +19,15 @@ export const registerUser = asyncHandler(async (req, res) => {
   // Check if user exists
   const userExists = await User.findOne({ email });
   if (userExists) {
-    res.status(400);
-    throw new Error("User already exists");
+    const error = new Error("User already exists");
+    error.statusCode = 400;
+    throw error;
   }
 
   // Create & save user
   const user = new User({ name, email, password, phone });
   user.save();
-  res.status(201).json({ success: true, msg: "User create successfully" });
+  res.status(201).json({ success: true, msg: "User created successfully" });
 });
 
 // @des    Login user
@@ -34,19 +36,21 @@ export const registerUser = asyncHandler(async (req, res) => {
 export const loginUser = asyncHandler(async (req, res) => {
   const error = loginValidation(req.body);
   if (error) {
-    res.status(400);
-    throw new Error(error);
+    const error = new Error(errorMsg);
+    error.statusCode = 400;
+    throw error;
   }
 
   const { email, password } = req.body;
   const user = await User.findOne({ email });
 
   if (user && (await user.matchPassword(password))) {
-    const token = generateToken(user._id);
-    res.status(200).json({success: true, data: token});
+    const token = generateToken(user);
+    res.status(200).json({ success: true, data: token });
   } else {
-    res.status(401);
-    throw new Error("Invalid email or password");
+    const error = new Error("Invalid email or password");
+    error.statusCode = 401;
+    throw error;
   }
 });
 
@@ -57,4 +61,6 @@ export const logoutUser = asyncHandler(async (req, res) => { });
 
 
 // Generate JWT Token 
-const generateToken = id => jwt.sign({ _id: id }, process.env.JWT_SECRET, { expiresIn: "7d" });
+const generateToken = user => {
+  return jwt.sign({ _id: user._id, isAdmin: user.isAdmin  }, process.env.JWT_SECRET, { expiresIn: "7d" })
+};

@@ -1,7 +1,8 @@
-const errorHandler = (err, req, res, next) => {
+const errorHandler = (err, _req, res, next) => {
   try {
     let error = { ...err };
-    console.error(`Error: ${err.message}`);
+    error.message = err.message;
+    console.error(err);
 
     // Mongoose bad ObjectId
     if (err.name === "CastError") {
@@ -24,7 +25,7 @@ const errorHandler = (err, req, res, next) => {
 
     res.status(error.statusCode || 500).json({
       success: false,
-      msg: err.message || "Something went wrong", 
+      msg: error.message || "Something went wrong",
       stack: process.env.ENV === "development" ? err.stack : null
     });
 
