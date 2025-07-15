@@ -5,6 +5,8 @@ import connectDB from "./config/db.js";
 import errorHandler from "./middleware/error.middleware.js";
 import cors from "./middleware/cors.middleware.js";
 
+import authRouter from "./routes/auth.route.js";
+
 const app = express();
 
 // Middleware
@@ -15,6 +17,7 @@ app.use(express.json());
 connectDB();
 
 // Routes
+app.use("/api/auth", authRouter);
 
 // Error handling middleware
 app.use(errorHandler);
