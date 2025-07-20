@@ -7,6 +7,7 @@ import cors from "./middleware/cors.middleware.js";
 
 import authRouter from "./routes/auth.route.js";
 import userRouter from "./routes/users.route.js";
+import serviceRouter from "./routes/services.route.js";
 
 const app = express();
 
@@ -20,6 +21,7 @@ connectDB();
 // Routes
 app.use("/api/auth", authRouter);
 app.use("/api/users", userRouter);
+app.use("/api/services", serviceRouter);
 
 // Error handling middleware
 app.use(errorHandler);

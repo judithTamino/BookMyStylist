@@ -24,10 +24,14 @@ export const registerUser = asyncHandler(async (req, res) => {
     throw error;
   }
 
-  // Create & save user
-  const user = new User({ name, email, password, phone });
-  user.save();
-  res.status(201).json({ success: true, msg: "User created successfully" });
+  // Create Admin
+  let isAdmin = false;
+  if (email === process.env.ADMIN_EMAIL)
+     isAdmin = true;
+
+  // Create new  user
+  const user = await User.create({ name, email, password, phone, isAdmin });
+  res.status(201).json({ success: true, msg: "User created successfully", data: user });
 });
 
 // @des    Login user
@@ -46,7 +50,7 @@ export const loginUser = asyncHandler(async (req, res) => {
 
   if (user && (await user.matchPassword(password))) {
     const token = generateToken(user);
-    res.status(200).json({ success: true, data: token });
+    res.status(200).json({ success: true,msg: "user login successfully", data: token });
   } else {
     const error = new Error("Invalid email or password");
     error.statusCode = 401;

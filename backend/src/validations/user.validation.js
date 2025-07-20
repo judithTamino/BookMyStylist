@@ -1,7 +1,6 @@
 import Joi from "joi";
 
 // Common patterns
-const emailRegex = /^[a-zA-Z0-9._%+-]+@[a-zA-Z0-9.-]+\.[a-zA-Z]{2,}$/;
 const phoneRegex = /^0(([23489]\d{7})|(5[0-9]{8}))$/;
 const passwordRegex = /^(?=.*[a-z])(?=.*[A-Z])(?=.*\d)(?=.*[\W_]).{8,}$/;
 
