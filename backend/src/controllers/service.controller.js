@@ -14,7 +14,10 @@ export const getActiveServices = asyncHandler(async (req, res) => {
 // @des    Get all services
 // @route  GET api/services/all
 // @access private - admin
-export const getAllServices = asyncHandler(async (req, res) => { });
+export const getAllServices = asyncHandler(async (req, res) => {
+  const services = await Service.find().select("-likes");
+  res.status(200).json({ success: true, data: services });
+});
 
 // @des    Create service
 // @route  POST api/services
@@ -43,14 +46,68 @@ export const createService = asyncHandler(async (req, res) => {
 // @des    Update service
 // @route  PUT api/services/:id
 // @access private - admin
-export const updateService = asyncHandler(async (req, res) => { });
+export const updateService = asyncHandler(async (req, res) => {
+  const errorMsg = serviceValidation(req.body);
+
+  if (errorMsg) {
+    const error = new Error(errorMsg);
+    error.statusCode = 400;
+    throw error;
+  }
+
+  // check if service exsits
+  const service = await Service.findById(req.params.id);
+  if (!service) {
+    const error = new Error("Service not found");
+    error.statusCode = 404;
+    throw error;
+  }
+
+  // update service
+  const updatedService = await Service.findByIdAndUpdate(req.params.id, req.body, {
+    new: true,
+    runValidators: true
+  });
+  res.status(201).json({ success: true, msg: "Service updated successfully", data: updatedService });
+});
 
 // @des    Delete service
-// @route  DELETE api/services
+// @route  DELETE api/services/:id
 // @access private - admin
-export const deleteService = asyncHandler(async (req, res) => { });
+export const deleteService = asyncHandler(async (req, res) => {
+  // check if service exsits
+  const service = await Service.findById(req.params.id);
+  if (!service) {
+    const error = new Error("Service not found");
+    error.statusCode = 404;
+    throw error;
+  }
+
+  // check if there are any bookings for this service
+
+  // delete service
+  await Service.findByIdAndDelete(req.params.id);
+  res.status(200).json({ success: true, msg: "Service deleted successfully", data: service });
+});
 
 // @des    Like/unlike service
-// @route  PATCH api/services
+// @route  PATCH api/services/:id
 // @access private
-export const likeService = asyncHandler(async (req, res) => { });
+export const likeService = asyncHandler(async (req, res) => {
+  const userId = req.user._id;
+  
+  // check if service exsits
+  const service = await Service.findById(req.params.id);
+  if (!service) {
+    const error = new Error("Service not found");
+    error.statusCode = 404;
+    throw error;
+  }
+
+  if(service.likes.includes(userId)) {
+    service.likes = service.likes.filter(id => id != userId);
+  } else service.likes.push(userId)
+
+  await service.save();
+    res.status(200).json({ success: true, msg: "Service liked successfully", data: service });
+});
