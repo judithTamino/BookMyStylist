@@ -8,6 +8,7 @@ import cors from "./middleware/cors.middleware.js";
 import authRouter from "./routes/auth.route.js";
 import userRouter from "./routes/users.route.js";
 import serviceRouter from "./routes/services.route.js";
+import appointmentRouter from "./routes/appointments.route.js";
 
 const app = express();
 
@@ -22,6 +23,7 @@ connectDB();
 app.use("/api/auth", authRouter);
 app.use("/api/users", userRouter);
 app.use("/api/services", serviceRouter);
+app.use("/api/appointments", appointmentRouter);
 
 // Error handling middleware
 app.use(errorHandler);
