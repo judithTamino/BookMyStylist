@@ -33,4 +33,5 @@ export const serviceSchema = Joi.object({
     .messages({
       "string.base": "Service active status must be true or false",
     }),
+  
 });
