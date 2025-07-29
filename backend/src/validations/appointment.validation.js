@@ -22,3 +22,12 @@ export const appointmentSchema = Joi.object({
       "string.max": "Appointment notes must be less than 500 characters",
     })
 });
+
+export const appointmentStatusSchema = Joi.object({
+  status: Joi.string().required().valid("pending", "confirmed", "cancelled", "completed")
+    .messages({
+      "string.base": "Appointment status must be string",
+      "string.empty": "Appointment status is required",
+      "string.valid": "Appointment status must be one of [pending, confirmed, cancelled, completed]"
+    })
+});

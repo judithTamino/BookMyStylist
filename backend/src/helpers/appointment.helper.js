@@ -1,11 +1,10 @@
 // calculate the end time based on service duration 
-export const calculateEndTime = (serviceDuration, startTime, date) => {
+export const calculateEndTime = (serviceDuration, startTime) => {
   const [hour, minute] = startTime.split(":").map(Number);
-  const startDate = new Date(date);
-  startDate.setHours(hour, minute);
+  const appointmentDuration = hour * 60 + minute + serviceDuration;
 
-  const endDate = new Date(startDate.getTime() + serviceDuration * 60000);
-  const endTime = endDate.toTimeString().substring(0, 5);
+  const endHours = Math.floor(appointmentDuration / 60);
+  const endMinutes = appointmentDuration % 60;
 
-  return endTime;
+  return `${endHours.toString().padStart(2, "0")} : ${endMinutes.toString().padStart(2, "0")}`;
 }
