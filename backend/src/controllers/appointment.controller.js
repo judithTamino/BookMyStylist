@@ -4,12 +4,12 @@ import Appointment from "../models/Appointment.model.js";
 import Service from "../models/Service.model.js";
 
 import { appointmentStatusValidation, appointmentValidation } from "../services/validation.service.js";
-import { calculateEndTime } from "../helpers/appointment.helper.js";
+import { calculateEndTime, isTimeSoltBetweenWorkingHoures } from "../helpers/appointment.helper.js";
 import { generateTimeSlots } from "../utils/timeSlots.utils.js";
 import { sendEmail } from "../utils/sendEmail.util.js";
 
 
-// @des    Create a new appointment
+// @des    Book new appointment
 // @route  POST api/appointments/:id
 // @access private
 export const bookAppointment = asyncHandler(async (req, res) => {
@@ -33,16 +33,6 @@ export const bookAppointment = asyncHandler(async (req, res) => {
     throw error;
   }
 
-  // // prevent past booking
-  // const selectedDate = new Date(`${date}T${startTime}`);
-  // const currentDate = new Date();
-
-  // if (selectedDate < currentDate) {
-  //   const error = new Error("Cannot book an appointment in the past");
-  //   error.statusCode = 400;
-  //   throw error;
-  // }
-
   // calculate the end time based on service duration 
   const endTime = calculateEndTime(serviceExists.duration, startTime);
 
@@ -50,10 +40,10 @@ export const bookAppointment = asyncHandler(async (req, res) => {
   const appointmentExists = await Appointment.findOne({
     date: new Date(date),
     $or: [{
-      startTime: { $lt: endTime },
-      endTime: { $gt: startTime }
+      startTime: { $lte: endTime },
+      endTime: { $gte: startTime }
     }],
-    status: { $in: ["pending", "confirmed"], $ne: "cancelled" }
+    status: { $in: ["confirmed"], $ne: "cancelled" }
   });
 
   if (appointmentExists) {
@@ -63,11 +53,7 @@ export const bookAppointment = asyncHandler(async (req, res) => {
   }
 
   // check if startTime or endTime is beyond working hours
-  const timeSlots = generateTimeSlots();
-  const lastTimeSlots = timeSlots[timeSlots.length - 1];
-  const firstTimeSlots = timeSlots[0];
-
-  if (endTime > lastTimeSlots || startTime < firstTimeSlots) {
+  if (!isTimeSoltBetweenWorkingHoures(startTime, endTime, new Date(date))) {
     const error = new Error("Appointments can only be booked between 10:00 and 23:00. Please select a time within working hours");
     error.statusCode = 400;
     throw error;
@@ -178,7 +164,7 @@ export const getAvailableTimeSlots = asyncHandler(async (req, res) => {
   const service = await Service.findById(serviceId);
 
   // generate all possible time slots
-  const allSlots = generateTimeSlots();
+  const allSlots = generateTimeSlots(date);
 
   // generate time slots and filter out booked ones
   const availableSlots = allSlots.filter(solt => {
@@ -203,46 +189,48 @@ export const getAvailableTimeSlots = asyncHandler(async (req, res) => {
 // @route  PATCH api/appointments/:id/status
 // @access private - admin
 export const updateAppointmentStatus = asyncHandler(async (req, res) => {
-  const { id } = req.params;
-  const { status } = req.body;
+  // const { id } = req.params;
+  // const { status } = req.body;
 
-  const errorMsg = appointmentStatusValidation(req.body);
-  if (errorMsg) {
-    const error = new Error(errorMsg);
-    error.statusCode = 400;
-    throw error;
-  }
+  // const errorMsg = appointmentStatusValidation(req.body);
+  // if (errorMsg) {
+  //   const error = new Error(errorMsg);
+  //   error.statusCode = 400;
+  //   throw error;
+  // }
 
-  // check if appointment exsits
-  const appointment = await Appointment.findById(id)
-    .populate("user", "name email")
-    .populate("service", "name price");
+  // // check if appointment exsits
+  // const appointment = await Appointment.findById(id)
+  //   .populate("user", "name email")
+  //   .populate("service", "name price");
 
-  if (!appointment) {
-    const error = new Error("Appointment not found");
-    error.statusCode = 404;
-    throw error;
-  }
+  // if (!appointment) {
+  //   const error = new Error("Appointment not found");
+  //   error.statusCode = 404;
+  //   throw error;
+  // }
 
-  // change status and save
-  appointment.status = status;
-  appointment.save();
+  // // change status and save
+  // appointment.status = status;
+  // appointment.save();
 
-  // send email when appointment status is confirmed / cancelled
-  switch (appointment.status) {
-    case "confirmed":
-      sendEmail(appointment);
-      break;
+  // // send email when appointment status is confirmed / cancelled
+  // switch (appointment.status) {
+  //   case "confirmed":
+  //     sendEmail(appointment);
+  //     break;
 
-    case "cancelled":
-      sendEmail(appointment, "cancelled");
-      break;
-  }
+  //   case "cancelled":
+  //     sendEmail(appointment, "cancelled");
+  //     break;
+  // }
 
-  res.status(200).json({ success: true, data: appointment, msg: "status change successfully" });
+  // res.status(200).json({ success: true, data: appointment, msg: "status change successfully" });
 });
 
 // @des    Cancel appointment 
 // @route  PATCH api/appointments/:id/cancel
 // @access private
-export const cancelAppointment = asyncHandler(async (req, res) => { });
+export const cancelAppointment = asyncHandler(async (req, res) => { 
+  
+});

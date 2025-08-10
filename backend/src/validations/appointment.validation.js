@@ -2,13 +2,14 @@ import Joi from "joi";
 
 // accepts times like "10:00", "14:30", ect...
 const timeRegex = /^([01]\d|2[0-3]):([0-5]\d)$/;
+const currentDate = new Date();
 
 export const appointmentSchema = Joi.object({
   date: Joi.date().required().min("now")
     .messages({
       "date.base": "Invalid date format",
       "date.empty": "Appointment date is required",
-      "date.min": "Appointment date must not be in the past"
+      "date.min": `Appointment date can not be before ${currentDate.toDateString()}`
     }),
   startTime: Joi.string().pattern(timeRegex).required()
     .messages({

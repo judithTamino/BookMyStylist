@@ -4,9 +4,9 @@ const appointmentSchema = new mongoose.Schema({
   user: { type: mongoose.Schema.Types.ObjectId, ref: "User", required: true },
   service: { type: mongoose.Schema.Types.ObjectId, ref: "Service", required: true },
   date: { type: Date, required: true },
-  startTime: { type: String, required: true },
-  endTime: { type: String, required: true },
-  status: { type: String, enum: ["pending", "confirmed", "cancelled", "completed"], default: "pending" },
+  startTime: { type: String, required: true, trim: true },
+  endTime: { type: String, required: true, trim: true },
+  status: { type: String, enum: ["confirmed", "cancelled"], default: "confirmed" },
   notes: { type: String }
 }, { timestamps: true });
 

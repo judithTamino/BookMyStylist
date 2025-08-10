@@ -8,7 +8,7 @@ appointmentRouter.post("/:id", protect, bookAppointment);
 appointmentRouter.get("/", protect, getAppointments);
 // appointmentRouter.get("/:id", protect, getUserAppointments);
 appointmentRouter.get("/:date/available", protect, getAvailableTimeSlots);
-appointmentRouter.patch("/:id/status", protect, admin, updateAppointmentStatus);
+// appointmentRouter.patch("/:id/status", protect, admin, updateAppointmentStatus);
 appointmentRouter.patch("/:id/cancel", protect, cancelAppointment);
 
 export default appointmentRouter;
