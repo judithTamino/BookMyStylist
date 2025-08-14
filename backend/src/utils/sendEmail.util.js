@@ -1,30 +1,29 @@
 import { generateEmailTemplate } from "./emailTemplate.util.js";
 import { transporter } from "../config/nodemailer.js";
 
-export const sendEmail = (appointment, type = "confirmed") => {
+export async function sendEmail (appointment, userName, serviceName, servicePrice, userEmail, type = "confirmed") {
   const dateOptione = { weekday: 'long', year: 'numeric', month: 'long', day: 'numeric' };
   
   const mailInfo = {
-    user: appointment.user.name,
+    user: userName,
     date: new Date(appointment.date).toLocaleDateString(dateOptione),
     startTime: appointment.startTime,
     endTime: appointment.endTime,
-    service: appointment.service.name,
+    service: serviceName,
     notes: appointment.notes ?? "no notes",
-    price: appointment.service.price,
+    price: servicePrice,
     type: type
   }
 
   const mailOption = {
     from: process.env.ADMIN_EMAIL,
-    to: appointment.user.email,
-    subject: "Appointment Confirmation",
+    to: userEmail,
+    subject: type === "confirmed" ? "Appointment Confirmation" : "Appointment Cancelled",
     html: generateEmailTemplate(mailInfo)
   }
 
   transporter.sendMail(mailOption, (error, info) => {
     if (error) return false
-
     return true;
   });
 }
