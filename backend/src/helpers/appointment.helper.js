@@ -23,7 +23,4 @@ export const isTimeSoltBetweenWorkingHoures = (startTime, endTime, date) => {
   return true;
 }
 
-// send an email with the appointment details
-const sendAppointmentDetails = () => {
-  
-}
+

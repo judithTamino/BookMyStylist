@@ -1,13 +1,26 @@
 import mongoose from "mongoose";
 import bcrypt from "bcryptjs";
 
+const workingHoursSchema = new mongoose.Schema({
+  day: {
+    type: String,
+    enum: ["Monday", "Tuesday", "Wednesday", "Thursday", "Friday", "Sunday"],
+    required: true
+  },
+  startTime: { type: String, required: true },
+  endTime: { type: String, required: true }, 
+}, { _id: false });
+
 const userSchema = new mongoose.Schema({
   name: { type: String, required: true, lowercase: true },
   email: { type: String, required: true, unique: true },
   password: { type: String, required: true },
   phone: { type: String },
-  isAdmin: { type: Boolean, default: false }
-},{ timestamps: true });
+  isAdmin: { type: Boolean, default: false },
+
+  // only relevent for admin
+  workingHoures: { type: [workingHoursSchema], default: [] }
+}, { timestamps: true });
 
 // Hash password before saving
 userSchema.pre("save", async function (next) {

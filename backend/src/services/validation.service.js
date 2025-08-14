@@ -1,4 +1,4 @@
-import { loginSchema, userSchema } from "../validations/user.validation.js";
+import { loginSchema, userSchema, workingHoursSchema } from "../validations/user.validation.js";
 import { serviceSchema } from "../validations/service.validation.js";
 import { appointmentSchema, appointmentStatusSchema } from "../validations/appointment.validation.js";
 
@@ -11,6 +11,11 @@ export const loginValidation = user => {
   const { error } = loginSchema.validate(user);
   if (error) return error.details.map(detail => detail.message);
 }
+
+export const workingHouresValidation = dayEntry => {
+  const { error } = workingHoursSchema.validate(dayEntry);
+  if (error) return error.details.map(detail => detail.message);
+};
 
 export const serviceValidation = service => {
   const { error } = serviceSchema.validate(service);

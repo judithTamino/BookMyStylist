@@ -1,7 +1,7 @@
 import asyncHandler from "express-async-handler";
-
 import User from "../models/User.model.js";
-import { userValidation } from "../services/validation.service.js";
+import { userValidation, workingHouresValidation } from "../services/validation.service.js";
+import { validStartTime } from "../helpers/user.helper.js";
 
 
 // @des    Get all users
@@ -61,7 +61,7 @@ export const updateUserProfile = asyncHandler(async (req, res) => {
   user.phone = req.body.phone || user.phone;
 
   const updatedUser = await user.save();
-  res.status(201).json({ success: true, data: updatedUser });
+  res.status(201).json({ success: true, data: updatedUser, msg: "User details updated successfully" });
 });
 
 // @des    Delete user
@@ -78,7 +78,88 @@ export const deleteUser = asyncHandler(async (req, res) => {
     throw error;
   }
 
-  const deletedUser = await User.findByIdAndDelete(id);
-  res.status(200).json({ success: true, data: "User deleted successfully" });
+  res.status(200).json({ success: true, msg: "User deleted successfully" });
+});
+
+// @des    Insert working hours
+// @route  POST api/users/working-hours
+// @access private - admin
+export const insertWorkingHours = asyncHandler(async (req, res) => {
+  const userInfo = req.user;
+  const { workingHours } = req.body;
+  const user = await User.findById(userInfo._id);
+
+  if (!Array.isArray(workingHours) || workingHours.length === 0) {
+    const error = new Error("workingHours must be a non-empty array");
+    error.statusCode = 400;
+    throw error;
+  }
+
+  // Validation
+  workingHours.forEach(dayEntry => {
+    const errorMsg = workingHouresValidation(dayEntry);
+    if (errorMsg) {
+      const error = new Error(errorMsg);
+      error.statusCode = 400;
+      throw error;
+    }
+
+    // check if start time is before end time
+    if (validStartTime(dayEntry)) {
+      const error = new Error(`For ${dayEntry.day}, start time must be before end time`);
+      error.statusCode = 400;
+      throw error;
+    }
+
+    if (!user.workingHoures.find((d) => d.day === dayEntry.day)) {
+      user.workingHoures.push(dayEntry);
+    }
+  });
+
+  await user.save();
+  res.status(201).json({
+    success: true,
+    data: user.workingHoures,
+    msg: "Working hours inserted successfully"
+  });
+});
+
+// @des    Update working hours
+// @route  PUT api/users/working-hours
+// @access private - admin
+export const updateWorkingHours = asyncHandler(async (req, res) => {
+  const userInfo = req.user;
+  const { workingHours } = req.body;
+  
+  if (!Array.isArray(workingHours) || workingHours.length === 0) {
+    const error = new Error("workingHours must be a non-empty array");
+    error.statusCode = 400;
+    throw error;
+  }
+
+  for (const dayEntry of workingHours) {
+    const errorMsg = workingHouresValidation(dayEntry);
+    if (errorMsg) {
+      const error = new Error(errorMsg);
+      error.statusCode = 400;
+      throw error;
+    }
+
+    // check if start time is before end time
+    if (validStartTime(dayEntry)) {
+      const error = new Error(`For ${dayEntry.day}, start time must be before end time`);
+      error.statusCode = 400;
+      throw error;
+    }
+  }
+
+  // update working hours
+  userInfo.workingHoures = workingHours;
+  await userInfo.save();
+  res.status(201).json({
+    success: true,
+    data: workingHoures,
+    msg: "Working hours updated successfully"
+  });
 });
 
