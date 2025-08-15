@@ -105,7 +105,7 @@ export const insertWorkingHours = asyncHandler(async (req, res) => {
     }
 
     // check if start time is before end time
-    if (validStartTime(dayEntry)) {
+    if (!validStartTime(dayEntry)) {
       const error = new Error(`For ${dayEntry.day}, start time must be before end time`);
       error.statusCode = 400;
       throw error;
@@ -146,7 +146,7 @@ export const updateWorkingHours = asyncHandler(async (req, res) => {
     }
 
     // check if start time is before end time
-    if (validStartTime(dayEntry)) {
+    if (!validStartTime(dayEntry)) {
       const error = new Error(`For ${dayEntry.day}, start time must be before end time`);
       error.statusCode = 400;
       throw error;

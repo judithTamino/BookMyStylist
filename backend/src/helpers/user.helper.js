@@ -4,6 +4,6 @@ export const validStartTime = (dayEntry) => {
   const [startHour, startMinute] = startTime.split(":").map(Number);
   const [endHour, endMinute] = endTime.split(":").map(Number);
 
-  if (startHour * 60 + startMinute <= endHour * 60 + endMinute) return false
+  if (startHour * 60 + startMinute >= endHour * 60 + endMinute) return false
   return true;
 }
