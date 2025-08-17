@@ -17,7 +17,7 @@ export const bookAppointment = asyncHandler(async (req, res) => {
   const serviceId = req.params.id;
   const { date, startTime, notes } = req.body;
 
-  // validate input
+  // validate request body
   const errorMsg = appointmentValidation(req.body);
   if (errorMsg) {
     const error = new Error(errorMsg);
@@ -25,25 +25,32 @@ export const bookAppointment = asyncHandler(async (req, res) => {
     throw error;
   }
 
-  // check if service exsits and is active
+  // check if service exists and is active
   const service = await Service.findById(serviceId);
   if (!service || !service.active) {
     const error = new Error("Service not available");
-    error.statusCode = 400;
+    error.statusCode = 404;
     throw error;
   }
 
   // calculate the end time based on service duration 
   const endTime = calculateEndTime(service.duration, startTime);
 
-  // check if the time slot is available
+  // check working hours
+  if (! await isTimeSoltBetweenWorkingHoures(startTime, endTime, new Date(date))) {
+    const error = new Error("The selected appointment time is outside the hairdresser's working hours. \nPlease choose a time within the available schedule.");
+    error.statusCode = 400;
+    throw error;
+  }
+
+  // check if the time slot is booked
   const appointmentExists = await Appointment.findOne({
     date: new Date(date),
-    $or: [{
-      startTime: { $lte: endTime },
-      endTime: { $gte: startTime }
-    }],
-    status: { $in: ["confirmed"], $ne: "cancelled" }
+    $or: [
+      { startTime: { $lte: endTime }, endTime: { $gte: startTime } }
+    ]
+    ,
+    status: { $in: ["confirmed"] }
   });
 
   if (appointmentExists) {
@@ -52,14 +59,16 @@ export const bookAppointment = asyncHandler(async (req, res) => {
     throw error;
   }
 
-  // check if startTime or endTime is beyond working hours
-  if (!isTimeSoltBetweenWorkingHoures(startTime, endTime, new Date(date))) {
-    const error = new Error("Appointments can only be booked between 10:00 and 23:00. Please select a time within working hours");
+  // booking must be within this week until Friday or next week if today is Saturday
+  const today = new Date();
+  const bookAppointmentInAdvance = new Date(today.setDate(today.getDate() + 14));
+
+  if(new Date(date) > bookAppointmentInAdvance) {
+     const error = new Error("Appointments must be booked at least 2 weeks in advance.");
     error.statusCode = 400;
     throw error;
   }
 
-  // create appointment 
   const appointment = await Appointment.create({
     user: userInfo._id,
     service: serviceId,
@@ -69,7 +78,6 @@ export const bookAppointment = asyncHandler(async (req, res) => {
     notes
   });
 
-  // send email and msg with appointment details
   await sendEmail(appointment, userInfo.name, service.name, service.price, userInfo.email);
 
   // add appointment to admin google calendar
@@ -83,6 +91,7 @@ export const bookAppointment = asyncHandler(async (req, res) => {
 export const getAppointments = asyncHandler(async (req, res) => {
   const userInfo = req.user;
   const { status } = req.query;
+  
   let filterByStatus = {};
   let appointments;
 
@@ -105,8 +114,7 @@ export const getAppointments = asyncHandler(async (req, res) => {
 
     if (appointmentDate.toDateString() <= currentDate.toDateString() && appointment.status === "confirmed") {
       const currentTime = currentDate.getHours() * 60 + currentDate.getMinutes();
-      const [hour, minute] = appointment.startTime.split(":").map(Number);
-      const startTimeInMinutes = hour * 60 + minute;
+      const startTimeInMinutes = convertToMinutes(appointment.startTime);
 
       if (startTimeInMinutes < currentTime) {
         appointment.status = "completed";
@@ -157,6 +165,34 @@ export const getAppointments = asyncHandler(async (req, res) => {
 
 });
 
+// @des    Get appointment details
+// @route  GET api/appointments/:id
+// @access private
+export const getAppointmentDetails = asyncHandler(async (req, res) => {
+  const { id } = req.params;
+  const userInfo = req.user;
+
+  // check if appoitment exsits
+  const appointment = await Appointment.findById(id)
+    .populate("user", "name email")
+    .populate("service", "name duration price");
+
+  if (!appointment) {
+    const error = new Error("Appointment not found");
+    error.statusCode = 404;
+    throw error;
+  }
+
+  // check if user auth to see appointment details
+  if (userInfo._id.toString() !== appointment.user._id.toString() && !userInfo.isAdmin) {
+    const error = new Error("You are not authorized to see this user`s appointment details.");
+    error.statusCode = 403;
+    throw error;
+  }
+
+  res.status(200).json({ success: true, data: appointment });
+});
+
 // @des    Get available time slots for a date
 // @route  GET api/appointments/:date/available
 // @access private
@@ -180,7 +216,12 @@ export const getAvailableTimeSlots = asyncHandler(async (req, res) => {
   const service = await Service.findById(serviceId);
 
   // generate all possible time slots
-  const allSlots = generateTimeSlots(date);
+  const allSlots = await generateTimeSlots(date);
+  if (allSlots.length === 0) {
+    const error = new Error("No time slots available in this date");
+    error.statusCode = 400;
+    throw error;
+  }
 
   // generate time slots and filter out booked ones
   const availableSlots = allSlots.filter(solt => {
@@ -198,6 +239,7 @@ export const getAvailableTimeSlots = asyncHandler(async (req, res) => {
     });
     return !isBooked;
   });
+
   res.status(200).json({ success: true, data: availableSlots });
 });
 
@@ -211,8 +253,8 @@ export const cancelAppointment = asyncHandler(async (req, res) => {
   // check if appointment exsits
   const appointment = await Appointment.findById(appointmentId);
   if (!appointment) {
-    const error = new Error("Appointment not available");
-    error.statusCode = 400;
+    const error = new Error("Appointment not found");
+    error.statusCode = 404;
     throw error;
   }
 
@@ -242,7 +284,7 @@ export const cancelAppointment = asyncHandler(async (req, res) => {
   const service = await Service.findById(appointment.service);
   sendEmail(appointment, userInfo.name, service.name, service.price, userInfo.email, "cancelled");
 
-  res.status(200).json({success: true, msg: "appointment cancelled successfully"})
+  res.status(200).json({ success: true, msg: "appointment cancelled successfully" })
 
   // remove appointment from admin google calendar
 });

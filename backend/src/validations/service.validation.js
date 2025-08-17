@@ -33,5 +33,9 @@ export const serviceSchema = Joi.object({
     .messages({
       "string.base": "Service active status must be true or false",
     }),
-  
+  category: Joi.string().valid("haircuts & styling", "hair coloring", "hair treatments", "texture service", "extensions & add-ons, bridal & events").required()
+    .messages({
+      "string.base": "Service category must be a string",
+      "string.empty": "Service category is required",
+    })
 });

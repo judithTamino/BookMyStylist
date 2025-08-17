@@ -1,13 +1,19 @@
 import asyncHandler from "express-async-handler";
 import Service from "../models/Service.model.js";
 import { serviceValidation } from "../services/validation.service.js";
+import Appointment from "../models/Appointment.model.js";
 
 
 // @des    Get all active services
 // @route  GET api/services
 // @access public
 export const getActiveServices = asyncHandler(async (req, res) => {
-  const services = await Service.find({ active: true }).select("-likes");
+  let filterByCategory = {};
+  const { category } = req.query;
+
+  if (category) filterByCategory.category = category;
+
+  const services = await Service.find({ active: true, ...filterByCategory }).select("-likes");
   res.status(200).json({ success: true, data: services });
 });
 
@@ -15,8 +21,28 @@ export const getActiveServices = asyncHandler(async (req, res) => {
 // @route  GET api/services/all
 // @access private - admin
 export const getAllServices = asyncHandler(async (req, res) => {
-  const services = await Service.find().select("-likes");
+  let filterByCategory = {};
+  const { category } = req.query;
+
+  if (category) filterByCategory.category = category;
+
+  const services = await Service.find(filterByCategory).select("-likes");
   res.status(200).json({ success: true, data: services });
+});
+
+// @des    Get service details
+// @route  GET api/services/:id
+// @access private - admin
+export const getServiceDetail = asyncHandler(async (req, res) => {
+    // check if service exsits
+  const service = await Service.findById(req.params.id);
+  if (!service) {
+    const error = new Error("Service not found");
+    error.statusCode = 404;
+    throw error;
+  }
+
+  res.status(200).json({ success: true, data: service });
 });
 
 // @des    Create service
@@ -84,6 +110,17 @@ export const deleteService = asyncHandler(async (req, res) => {
   }
 
   // check if there are any bookings for this service
+  const appointmentExists = await Appointment.findOne({
+    service: req.params.id,
+    date: { $gte: new Date() },
+    status: { $in: ["confirmed"] }
+  });
+
+  if (appointmentExists) {
+    const error = new Error("Cannot delete service with existing bookings");
+    error.statusCode = 400;
+    throw error;
+  }
 
   // delete service
   await Service.findByIdAndDelete(req.params.id);
@@ -95,7 +132,7 @@ export const deleteService = asyncHandler(async (req, res) => {
 // @access private
 export const likeService = asyncHandler(async (req, res) => {
   const userId = req.user._id;
-  
+
   // check if service exsits
   const service = await Service.findById(req.params.id);
   if (!service) {
@@ -104,10 +141,10 @@ export const likeService = asyncHandler(async (req, res) => {
     throw error;
   }
 
-  if(service.likes.includes(userId)) {
+  if (service.likes.includes(userId)) {
     service.likes = service.likes.filter(id => id != userId);
   } else service.likes.push(userId)
 
   await service.save();
-    res.status(200).json({ success: true, msg: "Service liked successfully", data: service });
+  res.status(200).json({ success: true, msg: "Service liked successfully", data: service });
 });

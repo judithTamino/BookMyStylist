@@ -19,7 +19,7 @@ export const registerUser = asyncHandler(async (req, res) => {
   // Check if user exists
   const userExists = await User.findOne({ email });
   if (userExists) {
-    const error = new Error("User already exists");
+    const error = new Error("User with this email already exists");
     error.statusCode = 400;
     throw error;
   }
@@ -50,7 +50,7 @@ export const loginUser = asyncHandler(async (req, res) => {
 
   if (user && (await user.matchPassword(password))) {
     const token = generateToken(user);
-    res.status(200).json({ success: true,msg: "user login successfully", data: token });
+    res.status(200).json({ success: true, msg: "user login successfully", data: token });
   } else {
     const error = new Error("Invalid email or password");
     error.statusCode = 401;
@@ -58,13 +58,7 @@ export const loginUser = asyncHandler(async (req, res) => {
   }
 });
 
-// @des    Logout user
-// @route  POST api/auth/logout
-// @access public
-export const logoutUser = asyncHandler(async (req, res) => { });
-
-
-// Generate JWT Token 
+// generate JWT Token 
 const generateToken = user => {
   return jwt.sign({ _id: user._id, isAdmin: user.isAdmin  }, process.env.JWT_SECRET, { expiresIn: "7d" })
 };
