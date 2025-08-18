@@ -4,7 +4,7 @@ import Appointment from "../models/Appointment.model.js";
 import Service from "../models/Service.model.js";
 
 import { appointmentValidation } from "../services/validation.service.js";
-import { calculateEndTime, isTimeSoltBetweenWorkingHoures } from "../helpers/appointment.helper.js";
+import { calculateEndTime, convertToMinutes, isTimeSoltBetweenWorkingHoures } from "../helpers/appointment.helper.js";
 import { generateTimeSlots } from "../utils/timeSlots.utils.js";
 import { sendEmail } from "../utils/sendEmail.util.js";
 
@@ -280,7 +280,7 @@ export const cancelAppointment = asyncHandler(async (req, res) => {
   appointment.status = "cancelled";
   appointment.save();
 
-  // send email & msg about appointment cancellation
+  // send email about appointment cancellation
   const service = await Service.findById(appointment.service);
   sendEmail(appointment, userInfo.name, service.name, service.price, userInfo.email, "cancelled");
 
