@@ -27,7 +27,11 @@ export const getUserProfile = asyncHandler(async (req, res) => {
   }
 
   const user = await User.findById(id).select("-password");
-  findUser(user);
+  if (!user) {
+    const error = new Error("User not found");
+    error.statusCode = 404;
+    throw error;
+  }
 
   res.status(200).json({ success: true, data: user });
 });
@@ -130,7 +134,7 @@ export const insertWorkingHours = asyncHandler(async (req, res) => {
 export const updateWorkingHours = asyncHandler(async (req, res) => {
   const userInfo = req.user;
   const { workingHours } = req.body;
-  
+
   if (!Array.isArray(workingHours) || workingHours.length === 0) {
     const error = new Error("workingHours must be a non-empty array");
     error.statusCode = 400;
@@ -153,12 +157,19 @@ export const updateWorkingHours = asyncHandler(async (req, res) => {
     }
   }
 
-  // update working hours
-  userInfo.workingHoures = workingHours;
-  await userInfo.save();
+  // update the updated working hours
+  const user = await User.findById(userInfo._id);
+  for (let i = 0; i < user.workingHoures.length; i++) {
+    for (let j = 0; j < workingHours.length; j++) {
+      if (user.workingHoures[i].day === workingHours[j].day)
+        user.workingHoures[i] = workingHours[j];
+    }
+  }
+
+  await user.save();
   res.status(201).json({
     success: true,
-    data: workingHoures,
+    data: user.workingHoures,
     msg: "Working hours updated successfully"
   });
 });
