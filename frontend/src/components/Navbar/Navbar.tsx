@@ -40,7 +40,7 @@ const Navbar: FunctionComponent<NavbarProps> = () => {
             <i className='ri-sun-line' />
           )}
         </button>
-        {!token ? (
+        {token ? (
           <div className='flex items-center gap-2 group relative cursor-pointer'>
             <img
               src='/profile-img.png'

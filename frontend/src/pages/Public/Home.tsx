@@ -1,9 +1,14 @@
-import type { FunctionComponent } from "react";
+import type { FunctionComponent } from 'react';
+import Hero from '../../components/Hero';
 
 interface HomeProps {}
- 
+
 const Home: FunctionComponent<HomeProps> = () => {
-  return ( <>HOME PAGE</> );
-}
- 
+  return (
+    <>
+      <Hero />
+    </>
+  );
+};
+
 export default Home;
