@@ -1,5 +1,12 @@
+/*=============== TAILWIND CSS ===============*/
+@import "tailwindcss";
 /*=============== REMIXICON ===============*/
 @import 'remixicon/fonts/remixicon.css';
 
-/*=============== TAILWIND CSS ===============*/
-@import "tailwindcss";
+
+@custom-variant dark (&:where(.dark, .dark *));
+
+html.dark {
+  color: rgba(255, 255, 255, 0.87);
+  background-color: #242424;
+}
