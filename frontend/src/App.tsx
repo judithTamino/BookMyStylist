@@ -7,8 +7,8 @@ function App() {
   return (
     <ThemeProvider>
       <AuthProvider>
+        <Navbar />
         <div className='mx-4 sm:mx-[10%]'>
-          <Navbar />
           <AppRoute />
         </div>
       </AuthProvider>

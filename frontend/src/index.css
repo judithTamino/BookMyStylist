@@ -6,7 +6,12 @@
 
 @custom-variant dark (&:where(.dark, .dark *));
 
+html {
+  color: hsl(0, 0%, 15%, .87);
+  background-color: hsl(0, 11%, 98%);
+}
+
 html.dark {
-  color: rgba(255, 255, 255, 0.87);
-  background-color: #242424;
+  color: hsl(0, 11%, 98%, .87);
+  background-color: hsl(0, 0%, 15%);
 }
