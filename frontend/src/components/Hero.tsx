@@ -1,12 +1,40 @@
 import type { FunctionComponent } from 'react';
-// import { heroImages } from '../assets/assets';
+import Button from './Button/Button';
+import { useNavigate } from 'react-router-dom';
 
 interface HeroProps {}
 
 const Hero: FunctionComponent<HeroProps> = () => {
+  const navigate = useNavigate();
+
   return (
-    <section className='bg-purple-200 dark:bg-purple-900 h-full rounded-lg px-6 md:px-10 lg:px-20'>
-      {/* <div className='flex flex-col md:flex-row items-center max-md:text-center justify-between mt-16 py-16 px-6 sm:px-10 md:px-24 max-w-7xl mx-auto w-full'>
+ <></>
+  );
+};
+
+// <section className='flex flex-col md:flex-row flex-wrap rounded-lg px-6 md:px-10 lg:px-20'>
+{
+  /* <div className='md:w-1/2 flex flex-col items-start justify-center gap-4 py-10 m-auto md:py-[10vw] md:mb-[-30px]'>
+        <h1 className='text-slate-900 dark:text-slate-100 font-black text-3xl sm:text-4xl md:text-5xl max-w-2xl leading-tight mb-4'>
+          Your Personal Hairdresser,
+          <span className='text-indigo-600'> Just a Click Away</span>
+        </h1>
+
+        <Button onClick={() => navigate('book-appointmant')} label='Book Now' />
+      </div> */
+}
+
+{
+  /* <div className='md:w-1/2 relative'>
+        <img
+          src='/hero.jpg'
+          alt=''
+          className='w-full md:absolute bottom-0 h-auto rounded-lg'
+        />
+      </div> */
+}
+{
+  /* <div className='flex flex-col md:flex-row items-center max-md:text-center justify-between mt-16 py-16 px-6 sm:px-10 md:px-24 max-w-7xl mx-auto w-full'>
         <div className='flex flex-col items-center md:items-start'>
           <h1 className='text-gray-900 dark:text-neutral-200 font-semibold text-3xl sm:text-4xl md:text-5xl max-w-2xl leading-tight'>
             Your Personal Hairdresser,
@@ -24,9 +52,11 @@ const Hero: FunctionComponent<HeroProps> = () => {
               Book Now
             </button>
           </div>
-        </div> */}
+        </div> */
+}
 
-        {/* <div
+{
+  /* <div
           aria-label='Photos of clients'
           className='mt-12 grid grid-cols-2 gap-6 pb-6'
         >
@@ -39,10 +69,11 @@ const Hero: FunctionComponent<HeroProps> = () => {
               width='120'
             />
           ))}
-        </div> */}
-      {/* </div> */}
-    </section>
-  );
-};
+        </div> */
+}
+{
+  /* </div> */
+}
+// </section>
 
 export default Hero;

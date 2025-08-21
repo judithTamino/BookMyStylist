@@ -5,15 +5,16 @@ import AppRoute from './routes/AppRoute';
 
 function App() {
   return (
-    <ThemeProvider>
-      <AuthProvider>
-        <Navbar />
-        <AppRoute />
-        {/* <div className='mx-4 sm:mx-[10%]'>
-          
-        </div> */}
-      </AuthProvider>
-    </ThemeProvider>
+    <div className='relative'>
+      <ThemeProvider>
+        <AuthProvider>
+          <Navbar />
+          <div className="mx-4 sm:mx-[10%]">
+          <AppRoute />
+          </div>
+        </AuthProvider>
+      </ThemeProvider>
+    </div>
   );
 }
 
