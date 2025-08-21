@@ -1,5 +1,6 @@
 import type { FunctionComponent } from 'react';
-import { NavLink } from 'react-router-dom';
+import { NavLink, useNavigate } from 'react-router-dom';
+import Button from '../Button/Button';
 
 interface MobileNavbarProps {
   open: boolean;
@@ -10,25 +11,24 @@ const MobileNavbar: FunctionComponent<MobileNavbarProps> = ({
   open,
   navLinks,
 }) => {
+  const navigate = useNavigate();
+
   return (
     <div
       className={`${
         open ? 'flex' : 'hidden'
-      } absolute top-[60px] left-0 w-full dark:bg-neutral-800 shadow-xs py-4 flex-col items-start gap-2 px-5 text-sm md:hidden z-40`}
+      } absolute top-[60px] left-0 w-full dark:bg-slate-950 shadow-xs py-4 flex-col items-start gap-6 px-5 text-sm md:hidden z-40`}
     >
       {navLinks.map(({ name, path }) => (
         <NavLink
           to={path}
-          className='py-1 dark:text-stone-50 border-b-4 border-double border-stone-50 dark:border-neutral-800 hover:border-pink-200 dark:hover:border-t-pink-300'
+          className='text-slate-900 dark:text-slate-100 hover:text-indigo-600'
         >
           {name}
-          <hr className='border-none outline-none h-0.5 bg-purple-500 w-3/5 m-auto hidden' />
         </NavLink>
       ))}
 
-      <button className='bg-pink-200 text-neutral-800 px-8 py-3 mt-20 rounded-full font-normal md:block cursor-pointer'>
-        Create Account
-      </button>
+      <Button onClick={() => navigate('/register')} label='sign up' />
     </div>
   );
 };

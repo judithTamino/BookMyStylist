@@ -8,9 +8,10 @@ function App() {
     <ThemeProvider>
       <AuthProvider>
         <Navbar />
-        <div className='mx-4 sm:mx-[10%]'>
-          <AppRoute />
-        </div>
+        <AppRoute />
+        {/* <div className='mx-4 sm:mx-[10%]'>
+          
+        </div> */}
       </AuthProvider>
     </ThemeProvider>
   );
