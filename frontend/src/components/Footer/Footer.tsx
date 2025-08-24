@@ -5,7 +5,7 @@ interface FooterProps {}
 
 const Footer: FunctionComponent<FooterProps> = () => {
   return (
-    <footer className='px-6 md:px-16 lg:px-24 xl:px-32 pt-8 w-full text-slate-50 mt-52 bg-amber-500'>
+    <footer className='px-6 md:px-16 lg:px-24 xl:px-32 pt-8 w-full text-slate-50 mt-4 bg-amber-500'>
       <div className='flex flex-col md:flex-row justify-between w-full gap-10 border-b border-slate-50/40 pb-6'>
         <div className='md:max-w-96'>
           <NavLink

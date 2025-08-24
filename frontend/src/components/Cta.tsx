@@ -32,7 +32,7 @@ const Cta: FunctionComponent<CtaProps> = () => {
         </div>
       </div>
 
-      <div className='w-full hidden md:inline-block'>
+      <div className='w-full hidden lg:inline-block'>
         <img className='h-full' src='/cta.jpg' alt='leftSideImage' />
       </div>
     </section>

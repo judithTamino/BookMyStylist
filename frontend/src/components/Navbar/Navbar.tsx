@@ -52,7 +52,7 @@ const Navbar: FunctionComponent<NavbarProps> = () => {
   );
 
   return (
-    <header className='fixed top-0 right-0 left-0 z-50 bg-white dark:bg-slate-950'>
+    <header className='fixed top-0 right-0 left-0 z-50 bg-white dark:bg-slate-950 mb-4'>
       <nav className='h-[70px] flex items-center justify-between px-6 md:px-16 lg:px-24 xl:px-32 py-4 text-slate-900 dark:text-slate-100 transition-all'>
         <NavLink
           to='/'

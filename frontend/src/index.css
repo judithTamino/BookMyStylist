@@ -11,16 +11,22 @@
 @custom-variant dark (&:where(.dark, .dark *));
 
 @theme {
-  --font-playfair:"Playfair Display", serif;
+  --font-playfair: "Playfair Display", serif;
 }
 
-html {
-  color: #0f172b;
-  background-color: #fff;
-  font-family: "Open Sans", sans-serif;
+@layer {
+  html {
+    color: #0f172b;
+    background-color: #fff;
+    font-family: "Open Sans", sans-serif;
+  }
+
+  html.dark {
+    color: #f1f5f9;
+    background-color: #020618;
+  }
 }
 
-html.dark {
-  color: #f1f5f9;
-  background-color: #020618;
+.input-box {
+  @apply w-full flex justify-between gap-3 text-sm text-black bg-slate-100/50 rounded px-4 py-3 mb-4 mt-3 border border-slate-200 outline-none;
 }

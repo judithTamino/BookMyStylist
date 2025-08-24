@@ -19,11 +19,11 @@ const MobileNavbar: FunctionComponent<MobileNavbarProps> = ({
         open ? 'flex' : 'hidden'
       } absolute top-[60px] left-0 w-full bg-white dark:bg-slate-950 shadow-xs py-4 flex-col items-start gap-6 px-5 text-sm md:hidden z-40`}
     >
-      {/* absolute top-[60px] left-0 w-full bg-white shadow-md py-4 flex-col items-start gap-2 px-5 text-sm md:hidden */}
-      {navLinks.map(({ name, path }) => (
+      {navLinks.map(({ name, path }, index) => (
         <NavLink
           to={path}
           className='text-slate-900 dark:text-slate-100 hover:text-indigo-600'
+          key={index}
         >
           {name}
         </NavLink>
