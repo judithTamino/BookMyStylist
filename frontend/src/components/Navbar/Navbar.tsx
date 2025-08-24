@@ -24,16 +24,21 @@ const Navbar: FunctionComponent<NavbarProps> = () => {
   const { token } = useAuth();
   const { theme, changeTheme } = useTheme();
   const [open, setOpen] = useState<boolean>(false);
+  const [openProfile, setOpenProfile] = useState<boolean>(false);
   const navigate = useNavigate();
 
-  const toggleMenu = () => {
-    setOpen((prev) => !prev);
-  };
+  const toggleMenu = () => setOpen((prev) => !prev);
+  const toggleProfile = () => setOpenProfile((prev) => !prev);
 
   const LoggedUser = () => (
     <div className='flex items-center gap-2 group relative cursor-pointer'>
-      <img src='/profile-img.png' alt='profile' className='w-8 rounded-full' />
-      <ProfileDropdown />
+      <img
+        src='/profile-img.png'
+        alt='profile image'
+        onClick={toggleProfile}
+        className='w-8 rounded-full'
+      />
+      <ProfileDropdown open={openProfile} toggleProfile={toggleProfile} />
     </div>
   );
 
@@ -47,21 +52,11 @@ const Navbar: FunctionComponent<NavbarProps> = () => {
   );
 
   return (
-    <div className='text-sm w-full cursor-pointer'>
-      <div
-        onClick={() => navigate('/book-appointment')}
-        className='text-center font-medium py-2 bg-amber-500 text-indigo-600 dark:text-indigo-500'
-      >
-        <p>
-          book your hair appointment{' '}
-          <span className='underline underline-offset-2'>now</span>
-        </p>
-      </div>
-
-      <nav className='relative h-[70px] flex items-center justify-between px-6 md:px-16 lg:px-24 xl:px-32 py-4 text-slate-900 transition-all'>
+    <header className='fixed top-0 right-0 left-0 z-50 bg-white dark:bg-slate-950'>
+      <nav className='h-[70px] flex items-center justify-between px-6 md:px-16 lg:px-24 xl:px-32 py-4 text-slate-900 dark:text-slate-100 transition-all'>
         <NavLink
           to='/'
-          className='px-2 bg-amber-500 text-xl font-logo text-white'
+          className='font-playfair text-2xl text-stone-200 dark:text-slate-700'
         >
           SALON
         </NavLink>
@@ -79,12 +74,16 @@ const Navbar: FunctionComponent<NavbarProps> = () => {
               <Button onClick={() => navigate('/register')} label='sign up' />
             </div>
           )}
-          <button onClick={toggleMenu} className='sm:hidden cursor-pointer text-indigo-600 dark:text-indigo-500'>
+
+          <button
+            onClick={toggleMenu}
+            className='sm:hidden cursor-pointer text-slate-400 dark:text-slate-700'
+          >
             <i className='ri-menu-3-line text-xl' />
           </button>
         </div>
       </nav>
-    </div>
+    </header>
   );
 };
 

@@ -2,7 +2,10 @@ import type { FunctionComponent } from 'react';
 import { useAuth } from '../../context/AuthContext';
 import { NavLink } from 'react-router-dom';
 
-interface ProfileDropdownProps {}
+interface ProfileDropdownProps {
+  open: boolean;
+  toggleProfile: () => void;
+}
 
 const navLinks = [
   { name: 'My Profile', path: '/my-profile' },
@@ -10,23 +13,28 @@ const navLinks = [
   { name: 'Favorites', path: '/favorites' },
 ];
 
-const ProfileDropdown: FunctionComponent<ProfileDropdownProps> = () => {
+const ProfileDropdown: FunctionComponent<ProfileDropdownProps> = ({ open, toggleProfile }) => {
   const { logout } = useAuth();
 
   return (
-    <div className='absolute top-0 right-0 pt-14 text-base font-medium text-gray-600 z-20 hidden group-hover:block'>
-      <div className='min-w-48 bg-gray-50 dark:bg-stone-900 rounded flex flex-col gap-4 p-4'>
+    <div
+      className={`absolute top-0 right-0 mt-14 text-base font-medium text-slate-700 z-20 ${
+        open ? 'block' : 'hidden'
+      }`}
+    >
+      <div className='min-w-48 bg-slate-50 dark:bg-slate-900 rounded flex flex-col gap-4 p-4'>
         {navLinks.map(({ name, path }) => (
           <NavLink
             to={path}
             key={name}
+            onClick={toggleProfile}
             className='hover:text-black dark:text-white dark:hover:text-neutral-100'
           >
             {name}
           </NavLink>
         ))}
 
-        <p className="text-red-500" onClick={logout}>
+        <p className='text-red-500' onClick={logout}>
           Logout
         </p>
       </div>
