@@ -1,3 +1,4 @@
+import { Toaster } from 'react-hot-toast';
 import { AuthProvider } from './context/AuthContext';
 import { ThemeProvider } from './context/ThemeContext';
 import AppRoute from './routes/AppRoute';
@@ -7,7 +8,8 @@ function App() {
     <div className='relative'>
       <ThemeProvider>
         <AuthProvider>
-            <AppRoute />
+          <Toaster />
+          <AppRoute />
         </AuthProvider>
       </ThemeProvider>
     </div>

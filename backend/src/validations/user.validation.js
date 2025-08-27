@@ -3,8 +3,7 @@ import Joi from "joi";
 // Common patterns
 const phoneRegex = /^0(([23489]\d{7})|(5[0-9]{8}))$/;
 const passwordRegex = /^(?=.*[a-z])(?=.*[A-Z])(?=.*\d)(?=.*[\W_]).{8,}$/;
-// accepts times like "10:00", "14:30", ect...
-const timeRegex = /^([01]\d|2[0-3]):([0-5]\d)$/;
+const timeRegex = /^([01]\d|2[0-3]):([0-5]\d)$/; // accepts times like "10:00", "14:30", ect...
 
 export const userSchema = Joi.object({
   name: Joi.string().min(2).max(50).required()

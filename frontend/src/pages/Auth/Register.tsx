@@ -5,6 +5,9 @@ import type { IUser } from '../../interface/IUser';
 import { Formik, Form } from 'formik';
 import { userSchema } from '../../schemas/userSchema';
 import Input from '../../components/Input/Input';
+import { Link } from 'react-router-dom';
+import { register } from '../../services/authService';
+import toast from 'react-hot-toast';
 
 interface RegisterProps {}
 
@@ -16,7 +19,13 @@ const Register: FunctionComponent<RegisterProps> = () => {
     phone: '',
   };
 
-  const handleRegister = async (values: IUser) => {};
+  const handleRegister = async (values: IUser) => {
+    register(values)
+      .then((res) => {
+        toast.success(`Signup successfuly`);
+      })
+      .catch((error) => toast.error(error));
+  };
 
   return (
     <MainLayout>
@@ -34,7 +43,7 @@ const Register: FunctionComponent<RegisterProps> = () => {
             validationSchema={userSchema}
             onSubmit={handleRegister}
           >
-            {({ dirty, isValid, resetForm }) => (
+            {({ dirty, isValid }) => (
               <Form>
                 <div className='grid grid-cols-1 md:grid-cols-2 gap-4'>
                   <Input
@@ -43,14 +52,14 @@ const Register: FunctionComponent<RegisterProps> = () => {
                     type='text'
                     name='name'
                   />
-    <Input
+                  <Input
                     label='Email'
                     placeholder='john@example.com'
                     type='text'
                     name='email'
                   />
 
-                      <Input
+                  <Input
                     label='Phone'
                     placeholder='053 526 5696'
                     type='text'
@@ -64,6 +73,24 @@ const Register: FunctionComponent<RegisterProps> = () => {
                     name='password'
                   />
                 </div>
+
+                <button
+                  type='submit'
+                  disabled={!dirty || !isValid}
+                  className='btn-primary btn-disabled mt-4 w-full'
+                >
+                  SIGN UP
+                </button>
+
+                <p className='text-[13px] text-slate-900 dark:text-slate-100 mt-4'>
+                  Already have an account?
+                  <Link
+                    className='font-medium text-amber-500 underline'
+                    to='/login'
+                  >
+                    Login
+                  </Link>
+                </p>
               </Form>
             )}
           </Formik>

@@ -14,7 +14,6 @@ const Input: FunctionComponent<InputProps> = ({ label, type, ...props }) => {
 
   const toggleShowPassword = () => {
     setShowPassword(!showPassword);
-    console.log(showPassword);
   };
 
   return (
@@ -26,7 +25,7 @@ const Input: FunctionComponent<InputProps> = ({ label, type, ...props }) => {
         {label}
       </label>
 
-      <div className='w-full flex justify-between gap-3 text-sm text-slate-900 dark:text-slate-100 bg-slate-100/50 dark:bg-slate-500/50 rounded px-4 py-3 mb-4 mt-3 border border-slate-200 dark:border-slate-500 outline-none'>
+      <div className='input-box'>
         <input
           type={
             type === 'password' ? (showPassword ? 'text' : 'password') : type
@@ -51,6 +50,9 @@ const Input: FunctionComponent<InputProps> = ({ label, type, ...props }) => {
           </>
         )}
       </div>
+      {meta.touched && meta.error ? (
+        <p className='text-red-500 text-xs pb-2.5'>{meta.error}</p>
+      ) : null}
     </div>
   );
 };
