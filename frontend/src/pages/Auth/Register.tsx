@@ -1,30 +1,48 @@
 import type { FunctionComponent } from 'react';
 import AuthLayout from '../../layout/AuthLayout';
 import MainLayout from '../../layout/MainLayout';
-import type { IUser } from '../../interface/IUser';
+import type { IUser } from '../../interface/user.interface';
 import { Formik, Form } from 'formik';
-import { userSchema } from '../../schemas/userSchema';
+import { userSchema } from '../../schemas/user.schema';
 import Input from '../../components/Input/Input';
-import { Link } from 'react-router-dom';
-import { register } from '../../services/authService';
-import toast from 'react-hot-toast';
+import { Link, useNavigate } from 'react-router-dom';
+import { register } from '../../services/auth.service';
+import { successMsg, errorMsg } from '../../services/toastify.service';
 
-interface RegisterProps {}
+const initialValues: IUser = {
+  name: '',
+  email: '',
+  password: '',
+  phone: '',
+};
 
-const Register: FunctionComponent<RegisterProps> = () => {
-  const initialValues = {
-    name: '',
-    email: '',
-    password: '',
-    phone: '',
-  };
+const fields = [
+  { label: 'Name', name: 'name', type: 'text', placeholder: 'john doe' },
+  {
+    label: 'Email',
+    name: 'email',
+    type: 'text',
+    placeholder: 'john@example.com',
+  },
+  { label: 'Phone', name: 'phone', type: 'text', placeholder: '053 526 5696' },
+  {
+    label: 'Password',
+    name: 'password',
+    type: 'password',
+    placeholder: '@Johndoe',
+  },
+];
 
-  const handleRegister = async (values: IUser) => {
+const Register: FunctionComponent = () => {
+  const navigate = useNavigate();
+
+  const handleRegister = (values: IUser) => {
     register(values)
       .then((res) => {
-        toast.success(`Signup successfuly`);
+        successMsg(res.data.msg);
+        navigate('/login');
       })
-      .catch((error) => toast.error(error));
+      .catch((error) => errorMsg(error.response.data.msg));
   };
 
   return (
@@ -46,32 +64,9 @@ const Register: FunctionComponent<RegisterProps> = () => {
             {({ dirty, isValid }) => (
               <Form>
                 <div className='grid grid-cols-1 md:grid-cols-2 gap-4'>
-                  <Input
-                    label='Name'
-                    placeholder='john doe'
-                    type='text'
-                    name='name'
-                  />
-                  <Input
-                    label='Email'
-                    placeholder='john@example.com'
-                    type='text'
-                    name='email'
-                  />
-
-                  <Input
-                    label='Phone'
-                    placeholder='053 526 5696'
-                    type='text'
-                    name='phone'
-                  />
-
-                  <Input
-                    label='Password'
-                    placeholder='********'
-                    type='password'
-                    name='password'
-                  />
+                  {fields.map((field, index) => (
+                    <Input key={index} {...field} />
+                  ))}
                 </div>
 
                 <button
@@ -83,7 +78,7 @@ const Register: FunctionComponent<RegisterProps> = () => {
                 </button>
 
                 <p className='text-[13px] text-slate-900 dark:text-slate-100 mt-4'>
-                  Already have an account?
+                  Already have an account?{' '}
                   <Link
                     className='font-medium text-amber-500 underline'
                     to='/login'

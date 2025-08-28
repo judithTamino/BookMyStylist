@@ -1,5 +1,5 @@
 import type { FunctionComponent } from 'react';
-import { useAuth } from '../../context/AuthContext';
+import { useAuth } from '../../context/auth.context';
 import { NavLink } from 'react-router-dom';
 
 interface ProfileDropdownProps {
@@ -13,8 +13,16 @@ const navLinks = [
   { name: 'Favorites', path: '/favorites' },
 ];
 
-const ProfileDropdown: FunctionComponent<ProfileDropdownProps> = ({ open, toggleProfile }) => {
+const ProfileDropdown: FunctionComponent<ProfileDropdownProps> = ({
+  open,
+  toggleProfile,
+}) => {
   const { logout } = useAuth();
+
+  const handleLogout = () => {
+    logout();
+    sessionStorage.removeItem('token');
+  };
 
   return (
     <div
@@ -34,7 +42,7 @@ const ProfileDropdown: FunctionComponent<ProfileDropdownProps> = ({ open, toggle
           </NavLink>
         ))}
 
-        <p className='text-red-500' onClick={logout}>
+        <p className='text-red-500' onClick={() => handleLogout()}>
           Logout
         </p>
       </div>

@@ -1,14 +1,15 @@
-import { Toaster } from 'react-hot-toast';
-import { AuthProvider } from './context/AuthContext';
+import { ToastContainer } from 'react-toastify';
+import { AuthProvider, useAuth } from './context/auth.context';
 import { ThemeProvider } from './context/ThemeContext';
 import AppRoute from './routes/AppRoute';
+
 
 function App() {
   return (
     <div className='relative'>
       <ThemeProvider>
         <AuthProvider>
-          <Toaster />
+          <ToastContainer />
           <AppRoute />
         </AuthProvider>
       </ThemeProvider>

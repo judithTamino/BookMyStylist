@@ -1,8 +1,8 @@
-import { useState, type FunctionComponent } from 'react';
+import { useEffect, useState, type FunctionComponent } from 'react';
 import { NavLink, useNavigate } from 'react-router-dom';
 
 // context
-import { useAuth } from '../../context/AuthContext';
+import { useAuth } from '../../context/auth.context';
 import { useTheme } from '../../context/ThemeContext';
 
 // components
@@ -21,7 +21,7 @@ const navLinks = [
 ];
 
 const Navbar: FunctionComponent<NavbarProps> = () => {
-  const { token } = useAuth();
+  const { token, login } = useAuth();
   const { theme, changeTheme } = useTheme();
   const [open, setOpen] = useState<boolean>(false);
   const [openProfile, setOpenProfile] = useState<boolean>(false);
@@ -29,6 +29,11 @@ const Navbar: FunctionComponent<NavbarProps> = () => {
 
   const toggleMenu = () => setOpen((prev) => !prev);
   const toggleProfile = () => setOpenProfile((prev) => !prev);
+
+  useEffect(() => {
+    const sessionToken = sessionStorage.getItem('token');
+    if (sessionToken) login(sessionToken);
+  }, []);
 
   const LoggedUser = () => (
     <div className='flex items-center gap-2 group relative cursor-pointer'>

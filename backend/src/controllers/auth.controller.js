@@ -38,8 +38,9 @@ export const registerUser = asyncHandler(async (req, res) => {
 // @route  POST api/auth/login
 // @access public
 export const loginUser = asyncHandler(async (req, res) => {
-  const error = loginValidation(req.body);
-  if (error) {
+  console.log(req.body);
+  const errorMsg = loginValidation(req.body);
+  if (errorMsg) {
     const error = new Error(errorMsg);
     error.statusCode = 400;
     throw error;

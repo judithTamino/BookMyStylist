@@ -1,18 +1,17 @@
 import { createContext, useContext, useState, type ReactNode } from 'react';
-import type { IToken } from '../interface/Auth';
 
 interface IAuth {
-  token: IToken | null;
-  login: (token: IToken) => void;
+  token: string | null;
+  login: (token: string) => void;
   logout: () => void;
 }
 
 const AuthContext = createContext<IAuth | undefined>(undefined);
 
 export const AuthProvider = ({ children }: { children: ReactNode }) => {
-  const [token, setToken] = useState<IToken | null>(null);
+  const [token, setToken] = useState<string | null>(null);
 
-  const login = (token: IToken) => setToken(token);
+  const login = (token: string) => setToken(token);
   const logout = () => setToken(null);
 
   const value: IAuth = { token, login, logout };

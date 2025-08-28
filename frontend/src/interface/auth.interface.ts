@@ -4,3 +4,8 @@ export interface IToken {
   iat: Date;
   exp: Date;
 }
+
+export interface ILogin {
+  email: string;
+  password: string;
+}
