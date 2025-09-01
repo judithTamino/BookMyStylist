@@ -8,7 +8,7 @@ interface SearchProps {
 const Search: FunctionComponent<SearchProps> = ({ setSearch }) => {
   return (
     <>
-      <div className='input-box'>
+      <div className='input-box max-w-150'>
         <div className='flex w-full gap-3'>
           <i className='ri-search-line' />
           <input
