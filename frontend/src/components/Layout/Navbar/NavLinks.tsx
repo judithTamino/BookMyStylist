@@ -1,11 +1,10 @@
 import type { FunctionComponent } from 'react';
 import { NavLink } from 'react-router-dom';
+import { links } from '../../../assets/assets';
 
-interface NavLinksProps {
-  links: Record<string, string>[];
-}
+interface NavLinksProps {}
 
-const NavLinks: FunctionComponent<NavLinksProps> = ({ links }) => {
+const NavLinks: FunctionComponent<NavLinksProps> = () => {
   return (
     <>
       {links.map((link) => (
@@ -15,8 +14,8 @@ const NavLinks: FunctionComponent<NavLinksProps> = ({ links }) => {
           className={({ isActive }) =>
             `p-1 ${
               isActive
-                ? 'text-indigo-600 dark:text-indigo-500 font-semibold'
-                : 'text-slate-900 dark:text-slate-100 hover:text-indigo-600'
+                ? 'text-rose-600 font-bold'
+                : 'text-slate-900 dark:text-slate-100 hover:text-rose-700 dark:hover:text-rose-500'
             }`
           }
         >

@@ -13,7 +13,7 @@ const Home: FunctionComponent = () => {
       <About />
       <OurServices />
       <BookingSteps />
-      <Cta />
+      {/* <Cta /> */}
     </MainLayout>
   );
 };

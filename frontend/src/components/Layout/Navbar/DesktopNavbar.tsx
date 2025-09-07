@@ -1,14 +1,12 @@
 import type { FunctionComponent } from 'react';
 import NavLinks from './NavLinks';
 
-interface DesktopNavbarProps {
-  navLinks: Record<string, string>[];
-}
+interface DesktopNavbarProps {}
 
-const DesktopNavbar: FunctionComponent<DesktopNavbarProps> = ({ navLinks }) => {
+const DesktopNavbar: FunctionComponent<DesktopNavbarProps> = () => {
   return (
     <ul className='hidden md:flex items-center space-x-8 md:pl-28'>
-      <NavLinks links={navLinks} />
+      <NavLinks />
     </ul>
   );
 };

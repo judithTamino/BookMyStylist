@@ -1,21 +1,30 @@
-export const features = [
-  {
-    icon: 'ri-user-smile-line',
-    title: 'Fast & Easy Booking',
-    des: 'Schedule your appointment in just a few taps.',
-  },
-  {
-    icon: 'ri-calendar-2-line',
-    title: 'Flexible Scheduling',
-    des: 'Pick a time that fits your busy lifestyle.',
-  },
-  {
-    icon: 'ri-money-dollar-circle-line',
-    title: 'Transparent Pricing',
-    des: 'No surprises. See prices before you book.',
-  },
+export const bookingSteps = [
+  'Choose a service',
+  'Pick a time',
+  'Confirm your appointment',
 ];
 
-export const bookingSteps = ['Choose a service', 'Pick a time', 'Confirm your appointment'];
+export const links = [
+  { name: 'HOME', path: '/' },
+  { name: 'ABOUT', path: '/about' },
+  { name: 'SERVICES', path: '/services' },
+];
 
-
+export const specialties = [
+  {
+    title: 'Precision Cuts',
+    desc: 'Tailored cuts that fit your personality and lifestyle.',
+  },
+  {
+    title: 'Creative Color',
+    desc: 'Highlights, balayage, and bold colors that pop.',
+  },
+  {
+    title: 'Bridal & Event Styling',
+    desc: 'Elegant looks for weddings, parties, and events.',
+  },
+  {
+    title: 'Hair Treatments',
+    desc: 'Restorative treatments for shine and strength.',
+  },
+];

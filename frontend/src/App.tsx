@@ -1,10 +1,12 @@
-import AppRoute from "./routes/AppRoute";
-
+import { ThemeProvider } from './context/ThemeContext';
+import AppRoute from './routes/AppRoute';
 
 function App() {
   return (
     <div className='relative max-w-7xl mx-auto px-6'>
-      <AppRoute />
+      <ThemeProvider>
+        <AppRoute />
+      </ThemeProvider>
       {/* <ThemeProvider>
         <AuthProvider>
           <ToastContainer />

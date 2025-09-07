@@ -19,7 +19,7 @@ const Dropdown: FunctionComponent<DropdownProps> = ({categories, selectedCategor
       <button
         type='button'
         onClick={() => setIsOpen(!isOpen)}
-        className='input-box text-left bg-transparent outline-none text-slate-900 border-none'
+        className='input-box text-left bg-transparent outline-none text-slate-900 border-none capitalize'
       >
         <span>{selectedCategory}</span>
         <svg
@@ -29,7 +29,7 @@ const Dropdown: FunctionComponent<DropdownProps> = ({categories, selectedCategor
           xmlns='http://www.w3.org/2000/svg'
           fill='none'
           viewBox='0 0 24 24'
-          stroke='#6B7280'
+          stroke='#FF2056'
         >
           <path
             strokeLinecap='round'
@@ -45,7 +45,7 @@ const Dropdown: FunctionComponent<DropdownProps> = ({categories, selectedCategor
           {categories.map((category: string) => (
             <li
               key={category}
-              className='py-2 hover:text-indigo-600 dark:hover:text-indigo-500 cursor-pointer'
+              className='py-2 hover:text-rose-600 dark:hover:text-rose-500 cursor-pointer capitalize'
               onClick={() => handleSelect(category)}
             >
               {category}

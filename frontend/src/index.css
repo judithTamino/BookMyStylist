@@ -28,7 +28,7 @@
 }
 
 .input-box {
-  @apply w-full flex justify-between gap-3 text-sm text-black bg-slate-100/50 rounded px-4 py-3 mb-4 mt-3 border border-slate-200 outline-none dark:bg-slate-500/50 dark:text-slate-100;
+  @apply w-full flex justify-between gap-3 text-sm text-slate-900 bg-slate-50 rounded px-4 py-3 mb-4 mt-3 border border-slate-200 outline-none dark:bg-slate-900 dark:text-slate-100;
 }
 
 .btn {

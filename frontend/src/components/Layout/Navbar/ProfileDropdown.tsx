@@ -1,5 +1,4 @@
 import type { FunctionComponent } from 'react';
-import { useAuth } from '../../context/auth.context';
 import { NavLink } from 'react-router-dom';
 
 interface ProfileDropdownProps {
@@ -10,39 +9,39 @@ interface ProfileDropdownProps {
 const navLinks = [
   { name: 'My Profile', path: '/my-profile' },
   { name: 'My Appointments', path: '/my-appointments' },
-  { name: 'Favorites', path: '/favorites' },
+  { name: 'Favorites', path: '/my-favorites' },
 ];
 
 const ProfileDropdown: FunctionComponent<ProfileDropdownProps> = ({
   open,
   toggleProfile,
 }) => {
-  const { logout } = useAuth();
+  // const { logout } = useAuth();
 
   const handleLogout = () => {
-    logout();
-    sessionStorage.removeItem('token');
+    // logout();
+    // sessionStorage.removeItem('token');
   };
+
+  const isProfileOpen = open ? 'block' : 'hidden';
 
   return (
     <div
-      className={`absolute top-0 right-0 mt-14 text-base font-medium text-slate-700 z-20 ${
-        open ? 'block' : 'hidden'
-      }`}
+      className={`absolute top-0 right-0 mt-14 text-base font-medium text-slate-700 z-20 ${isProfileOpen}`}
     >
-      <div className='min-w-48 bg-slate-50 dark:bg-slate-900 rounded flex flex-col gap-4 p-4'>
+      <div className='min-w-48 bg-slate-50 dark:bg-slate-900 rounded-2xl flex flex-col gap-4 p-4'>
         {navLinks.map(({ name, path }) => (
           <NavLink
             to={path}
             key={name}
             onClick={toggleProfile}
-            className='hover:text-black dark:text-white dark:hover:text-neutral-100'
+            className='hover:text-rose-600 dark:text-slate-100'
           >
             {name}
           </NavLink>
         ))}
 
-        <p className='text-red-500' onClick={() => handleLogout()}>
+        <p className='text-rose-600' onClick={() => handleLogout()}>
           Logout
         </p>
       </div>

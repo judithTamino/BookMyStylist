@@ -7,7 +7,7 @@ const Hero: FunctionComponent = () => {
   const navigate = useNavigate();
 
   return (
-    <section className='py-16 md:py-24'>
+    <section className='py-30 md:py-40'>
       <div className='grid gap-2 md:grid-cols-2 lg:grid-cols-[max-content_1fr] bg-rose-600 rounded-2xl p-2'>
         <img
           className='w-full md:max-w-md max-h-[700px] rounded-2xl'

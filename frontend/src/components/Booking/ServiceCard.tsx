@@ -2,7 +2,7 @@ import { useState, type FunctionComponent } from 'react';
 
 import type { IService } from '../../interface/service.interface';
 import ServiceDescriptionPopup from './ServiceDescriptionPopup';
-import Button from '../UI/Button/Button';
+import PrimaryButton from '../UI/Button/PrimaryButton';
 
 interface ServiceCardProps {
   service: IService;
@@ -16,11 +16,11 @@ const ServiceCard: FunctionComponent<ServiceCardProps> = ({ service }) => {
       key={service._id}
       className='relative flex flex-row items-center gap-4'
     >
-      <div className='bg-slate-50 dark:bg-slate-900 p-2 rounded w-16'>
+      <div className='bg-rose-600/10 dark:bg-rose-600/30 p-2 rounded-2xl self-start'>
         <img
           src={`/${service.category}.png`}
           alt={`${service.category} image`}
-          className='w-full'
+          className='w-10 '
         />
       </div>
 
@@ -33,7 +33,7 @@ const ServiceCard: FunctionComponent<ServiceCardProps> = ({ service }) => {
         <div className='mt-1.5'>
           <span
             onClick={() => setShowPopup(true)}
-            className='text-indigo-600 dark:text-indigo-500 underline cursor-pointer'
+            className='text-rose-600 underline cursor-pointer'
           >
             more info
           </span>
@@ -49,7 +49,7 @@ const ServiceCard: FunctionComponent<ServiceCardProps> = ({ service }) => {
       </div>
 
       <div className='absolute right-0 bottom-0'>
-        <Button onClick={() => {}} label='Book' />
+        <PrimaryButton onClick={() => {}} label='Book' />
       </div>
     </div>
   );

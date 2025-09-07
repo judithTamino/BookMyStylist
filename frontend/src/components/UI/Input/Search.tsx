@@ -10,7 +10,7 @@ const Search: FunctionComponent<SearchProps> = ({ setSearch }) => {
     <>
       <div className='input-box max-w-150'>
         <div className='flex w-full gap-3'>
-          <i className='ri-search-line' />
+          <i className='ri-search-line text-rose-600' />
           <input
             type='search'
             placeholder='search by service name'
