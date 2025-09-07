@@ -1,5 +1,5 @@
 import type { FunctionComponent } from 'react';
-import Button from './Button/Button';
+import Button from './UI/Button/Button';
 import { useNavigate } from 'react-router-dom';
 
 interface OurServicesProps {}

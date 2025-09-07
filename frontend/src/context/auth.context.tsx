@@ -1,4 +1,10 @@
-import { createContext, useContext, useState, type ReactNode } from 'react';
+import {
+  createContext,
+  useContext,
+  useEffect,
+  useState,
+  type ReactNode,
+} from 'react';
 
 interface IAuth {
   token: string | null;
@@ -11,8 +17,20 @@ const AuthContext = createContext<IAuth | undefined>(undefined);
 export const AuthProvider = ({ children }: { children: ReactNode }) => {
   const [token, setToken] = useState<string | null>(null);
 
-  const login = (token: string) => setToken(token);
-  const logout = () => setToken(null);
+  useEffect(() => {
+    const savedToken = sessionStorage.getItem('token');
+    if (savedToken) setToken(savedToken);
+  }, []);
+
+  const login = (userToken: string) => {
+    sessionStorage.setItem('token', userToken);
+    setToken(userToken);
+  };
+
+  const logout = () => {
+    sessionStorage.removeItem('token');
+    setToken(null);
+  };
 
   const value: IAuth = { token, login, logout };
 

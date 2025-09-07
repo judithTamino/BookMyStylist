@@ -10,7 +10,7 @@ import type { ILogin } from '../../interface/auth.interface';
 import { loginUser } from '../../services/auth.service';
 import { successMsg, errorMsg } from '../../services/toastify.service';
 
-import Input from '../../components/Input/Input';
+import Input from '../../components/UI/Input/Input';
 import { useAuth } from '../../context/auth.context';
 
 const initialValues = {

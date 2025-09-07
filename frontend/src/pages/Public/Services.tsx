@@ -1,28 +1,27 @@
 import { useEffect, useMemo, useState, type FunctionComponent } from 'react';
-import { useNavigate } from 'react-router-dom';
 
 import MainLayout from '../../layout/MainLayout';
-import Search from '../../components/Input/Search';
+import Search from '../../components/UI/Input/Search';
 
 import { getActiveServices } from '../../services/services.service';
 import type { IService } from '../../interface/service.interface';
 import ServiceCard from '../../components/Service/ServiceCard';
-import Dropdown from '../../components/Input/Dropdown';
+import Dropdown from '../../components/UI/Input/Dropdown';
+import { errorMsg } from '../../services/toastify.service';
 
-interface ServicesProps {}
-
-const Services: FunctionComponent<ServicesProps> = () => {
+const Services = () => {
   const [search, setSearch] = useState<string>('');
   const [services, setServices] = useState<IService[]>([]);
   const [selectedCategory, setSelectedCategory] = useState<string>('all');
-  // const [filterByCategory, setFilterByCategory] = useState<IService[]>([]);
 
-  const categories = ['all', ...new Set(services.map((c: any) => c.category))];
+  const categories = useMemo(
+    () => [
+      'all',
+      ...new Set(services.map((service: IService) => service.category)),
+    ],
+    [services]
+  );
 
-  // search service by name
-  // let filterServices = filterByCategory.length === 0 ? services.filter((service) =>
-  //   service.name.toLocaleLowerCase().includes(search.toLocaleLowerCase())
-  // ) : filterByCategory;
   const filterServices = useMemo(() => {
     return services.filter((service) => {
       const filterByCategory =
@@ -33,7 +32,7 @@ const Services: FunctionComponent<ServicesProps> = () => {
         .toLocaleLowerCase()
         .includes(search.toLocaleLowerCase());
 
-        return filterByCategory && filterByName;
+      return filterByCategory && filterByName;
     });
   }, [services, search, selectedCategory]);
 
@@ -42,7 +41,7 @@ const Services: FunctionComponent<ServicesProps> = () => {
       .then((res) => {
         setServices(res.data.data);
       })
-      .catch((error) => console.log(error));
+      .catch((error) => errorMsg(error.response.data.msg));
   }, []);
 
   return (
@@ -71,9 +70,9 @@ const Services: FunctionComponent<ServicesProps> = () => {
           </section>
 
           {filterServices.length > 0 ? (
-            <section className='max-w-6xl py-10 mx-auto grid xl:grid-cols-2 gap-8'>
-              {filterServices.map((service, index) => (
-                <ServiceCard service={service} key={index} />
+            <section className='max-w-6xl py-10 mx-auto grid lg:grid-cols-2 gap-x-18 gap-y-12 lg:gap-y-14'>
+              {filterServices.map((service) => (
+                <ServiceCard service={service} key={service._id} />
               ))}
             </section>
           ) : (

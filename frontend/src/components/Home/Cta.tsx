@@ -1,6 +1,6 @@
 import type { FunctionComponent } from 'react';
 import { useNavigate } from 'react-router-dom';
-import Button from './Button/Button';
+import Button from './UI/Button/Button';
 
 interface CtaProps {}
 

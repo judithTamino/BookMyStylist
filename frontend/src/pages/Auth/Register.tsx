@@ -4,7 +4,7 @@ import MainLayout from '../../layout/MainLayout';
 import type { IUser } from '../../interface/user.interface';
 import { Formik, Form } from 'formik';
 import { userSchema } from '../../schemas/user.schema';
-import Input from '../../components/Input/Input';
+import Input from '../../components/UI/Input/Input';
 import { Link, useNavigate } from 'react-router-dom';
 import { register } from '../../services/auth.service';
 import { successMsg, errorMsg } from '../../services/toastify.service';

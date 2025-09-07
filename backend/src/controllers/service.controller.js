@@ -8,12 +8,7 @@ import Appointment from "../models/Appointment.model.js";
 // @route  GET api/services
 // @access public
 export const getActiveServices = asyncHandler(async (req, res) => {
-  let filterByCategory = {};
-  const { category } = req.query;
-
-  if (category) filterByCategory.category = category;
-
-  const services = await Service.find({ active: true, ...filterByCategory }).select("-likes");
+  const services = await Service.find({ active: true }).select("-likes");
   res.status(200).json({ success: true, data: services });
 });
 
@@ -21,12 +16,7 @@ export const getActiveServices = asyncHandler(async (req, res) => {
 // @route  GET api/services/all
 // @access private - admin
 export const getAllServices = asyncHandler(async (req, res) => {
-  let filterByCategory = {};
-  const { category } = req.query;
-
-  if (category) filterByCategory.category = category;
-
-  const services = await Service.find(filterByCategory).select("-likes");
+  const services = await Service.find().select("-likes");
   res.status(200).json({ success: true, data: services });
 });
 

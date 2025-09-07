@@ -1,7 +1,4 @@
 import { useState, type FunctionComponent } from 'react';
-import { getActiveServices } from '../../services/services.service';
-import type { IService } from '../../interface/service.interface';
-import { errorMsg } from '../../services/toastify.service';
 
 interface DropdownProps {
   categories: string[];
