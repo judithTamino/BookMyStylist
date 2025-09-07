@@ -1,12 +1,10 @@
-// import { ToastContainer } from 'react-toastify';
-// import { AuthProvider, useAuth } from './context/auth.context';
-// import { ThemeProvider } from './context/ThemeContext';
-// import AppRoute from './routes/AppRoute';
+import AppRoute from "./routes/AppRoute";
 
 
 function App() {
   return (
-    <div className='relative'>
+    <div className='relative max-w-7xl mx-auto px-6'>
+      <AppRoute />
       {/* <ThemeProvider>
         <AuthProvider>
           <ToastContainer />

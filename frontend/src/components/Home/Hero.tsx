@@ -1,28 +1,38 @@
 import type { FunctionComponent } from 'react';
+import { useNavigate } from 'react-router-dom';
+import PrimaryButton from '../UI/Button/PrimaryButton';
+import SecondaryButton from '../UI/Button/SecondaryButton';
 
-interface HeroProps {}
+const Hero: FunctionComponent = () => {
+  const navigate = useNavigate();
 
-const Hero: FunctionComponent<HeroProps> = () => {
   return (
-    <section className='flex flex-col items-center md:flex-row md:px-16 lg:px-24 xl:px-32 text-sm pb-16 mt-20 mb-4'>
-      <div className='flex flex-col lg:flex-row items-center justify-between gap-20 w-full mt-24'>
-        <div className='max-md:px-4 lg:w-1/2'>
-          <h1 className='text-5xl md:text-[54px] md:leading-[4.7rem] font-semibold max-w-lg bg-gradient-to-r from-slate-900 to-slate-600 bg-clip-text text-transparent font-playfair dark:from-slate-100'>
-            Your Personal Hairdresser, Just a Click Away
-          </h1>
-          <p className='text-sm/7 max-w-md mt-3 text-slate-700 dark:text-slate-400'>
-            Looking for a fresh new look or just a quick trim? <br />
-            With SALON, you can easily browse services, choose your favorite
-            stylist, and book appointments anytime — all in one place.
-          </p>
-        </div>
+    <section className='py-16 md:py-24'>
+      <div className='grid gap-2 md:grid-cols-2 lg:grid-cols-[max-content_1fr] bg-rose-600 rounded-2xl p-2'>
+        <img
+          className='w-full md:max-w-md max-h-[700px] rounded-2xl'
+          src='/hero.jpg'
+          alt='home page image'
+        />
 
-        <div className='relative'>
-          <img
-            className='max-w-md w-full max-h-[560px] rounded-[40px] max-md:px-3 md:mr-10'
-            src='/hero.jpg'
-            alt=''
-          />
+        <div className='flex flex-col justify-center items-center bg-rose-50 w-full rounded-2xl p-6 lg:p-10 xl:p-16 text-center'>
+          <h1 className='text-4xl md:text-7xl/20 font-bold font-playfair mb-5 text-rose-600'>
+            Your Style, Your Confidence.
+          </h1>
+
+          <p className='text-lg text-slate-900 max-w-md mask-auto mb-6'>
+            Hi, I`m Judith, your personal hairstylist.
+            <br />
+            Book your appointment today and step out looking your absolute best.
+          </p>
+
+          <div className='flex flex-col md:flex-row gap-2 mt-8'>
+            <PrimaryButton
+              label='Book Appointment'
+              onClick={() => navigate('/services')}
+            />
+            <SecondaryButton label='Login' onClick={() => navigate('/login')} />
+          </div>
         </div>
       </div>
     </section>

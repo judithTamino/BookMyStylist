@@ -1,5 +1,5 @@
 /*=============== GOOGLE FONTS ===============*/
-@import url('https://fonts.googleapis.com/css2?family=Open+Sans:ital,wght@0,300..800;1,300..800&family=Playfair+Display:wght@400..900&display=swap');
+@import url('https://fonts.googleapis.com/css2?family=Nunito:ital,wght@0,200..1000;1,200..1000&family=Playfair+Display:wght@400..900&display=swap');
 
 /*=============== TAILWIND CSS ===============*/
 @import "tailwindcss";
@@ -18,7 +18,7 @@
   html {
     color: #0f172b;
     background-color: #fff;
-    font-family: "Open Sans", sans-serif;
+    font-family: "Nunito", sans-serif;
   }
 
   html.dark {
@@ -31,8 +31,12 @@
   @apply w-full flex justify-between gap-3 text-sm text-black bg-slate-100/50 rounded px-4 py-3 mb-4 mt-3 border border-slate-200 outline-none dark:bg-slate-500/50 dark:text-slate-100;
 }
 
-.btn-primary {
-  @apply bg-amber-500 text-white px-5 py-2 rounded-full text-sm font-medium hover:shadow-md hover:shadow-amber-500/50 transition cursor-pointer;
+.btn {
+  @apply px-6 py-3 text-sm rounded-xl font-semibold cursor-pointer
+}
+
+.section-title {
+  @apply text-2xl md:text-4xl font-bold mb-4 font-playfair
 }
 
 .btn-disabled:disabled {

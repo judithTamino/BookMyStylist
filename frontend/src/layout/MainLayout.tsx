@@ -1,6 +1,6 @@
 import type { FunctionComponent, ReactNode } from 'react';
-import Navbar from '../components/Navbar/Navbar';
-import Footer from '../components/Layout/Footer/Footer';
+// import Navbar from '../components/Navbar/Navbar';
+// import Footer from '../components/Layout/Footer/Footer';
 
 interface MainLayoutProps {
   children: ReactNode;
@@ -9,9 +9,11 @@ interface MainLayoutProps {
 const MainLayout: FunctionComponent<MainLayoutProps> = ({ children }) => {
   return (
     <>
-      <Navbar />
-      <div className='mx-4 sm:mx-[10%]'>{children}</div>
-      <Footer />
+      {/* <Navbar /> */}
+      <div className='text-slate-900 dark:text-slate-100 text-base leading-relaxed'>
+        {children}
+      </div>
+      {/* <Footer /> */}
     </>
   );
 };

@@ -16,4 +16,6 @@ export const features = [
   },
 ];
 
+export const bookingSteps = ['Choose a service', 'Pick a time', 'Confirm your appointment'];
+
 

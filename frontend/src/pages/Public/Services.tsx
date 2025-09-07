@@ -3,50 +3,51 @@ import { useEffect, useMemo, useState, type FunctionComponent } from 'react';
 import MainLayout from '../../layout/MainLayout';
 import Search from '../../components/UI/Input/Search';
 
-import { getActiveServices } from '../../services/services.service';
-import type { IService } from '../../interface/service.interface';
-import ServiceCard from '../../components/Service/ServiceCard';
-import Dropdown from '../../components/UI/Input/Dropdown';
-import { errorMsg } from '../../services/toastify.service';
+// import { getActiveServices } from '../../services/services.service';
+// import type { IService } from '../../interface/service.interface';
+// import ServiceCard from '../../components/Service/ServiceCard';
+// import Dropdown from '../../components/UI/Input/Dropdown';
+// import { errorMsg } from '../../services/toastify.service';
 
 const Services = () => {
-  const [search, setSearch] = useState<string>('');
-  const [services, setServices] = useState<IService[]>([]);
-  const [selectedCategory, setSelectedCategory] = useState<string>('all');
+  // const [search, setSearch] = useState<string>('');
+  // const [services, setServices] = useState<IService[]>([]);
+  // const [selectedCategory, setSelectedCategory] = useState<string>('all');
 
-  const categories = useMemo(
-    () => [
-      'all',
-      ...new Set(services.map((service: IService) => service.category)),
-    ],
-    [services]
-  );
+  // const categories = useMemo(
+  //   () => [
+  //     'all',
+  //     ...new Set(services.map((service: IService) => service.category)),
+  //   ],
+  //   [services]
+  // );
 
-  const filterServices = useMemo(() => {
-    return services.filter((service) => {
-      const filterByCategory =
-        selectedCategory === 'all' ||
-        service.category.toLowerCase() === selectedCategory.toLowerCase();
+  // const filterServices = useMemo(() => {
+  //   return services.filter((service) => {
+  //     const filterByCategory =
+  //       selectedCategory === 'all' ||
+  //       service.category.toLowerCase() === selectedCategory.toLowerCase();
 
-      const filterByName = service.name
-        .toLocaleLowerCase()
-        .includes(search.toLocaleLowerCase());
+  //     const filterByName = service.name
+  //       .toLocaleLowerCase()
+  //       .includes(search.toLocaleLowerCase());
 
-      return filterByCategory && filterByName;
-    });
-  }, [services, search, selectedCategory]);
+  //     return filterByCategory && filterByName;
+  //   });
+  // }, [services, search, selectedCategory]);
 
-  useEffect(() => {
-    getActiveServices()
-      .then((res) => {
-        setServices(res.data.data);
-      })
-      .catch((error) => errorMsg(error.response.data.msg));
-  }, []);
+  // useEffect(() => {
+  //   getActiveServices()
+  //     .then((res) => {
+  //       setServices(res.data.data);
+  //     })
+  //     .catch((error) => errorMsg(error.response.data.msg));
+  // }, []);
 
   return (
     <MainLayout>
-      <article className='pt-20 pb-6'>
+      Services Page
+      {/* <article className='pt-20 pb-6'>
         <div className='max-w-5xl mx-6'>
           <section className='mb-8'>
             <h3 className='text-xl uppercase font-semibold text-slate-900 dark:text-slate-100'>
@@ -81,7 +82,7 @@ const Services = () => {
             </div>
           )}
         </div>
-      </article>
+      </article> */}
     </MainLayout>
   );
 };

@@ -1,21 +1,20 @@
 import type { FunctionComponent } from 'react';
-// import Hero from '../../components/Hero';
-// import OurServices from '../../components/OurServices';
-// import Feature from '../../components/Feature';
-// import Cta from '../../components/Cta';
-// import MainLayout from '../../layout/MainLayout';
+import MainLayout from '../../layout/MainLayout';
+import Hero from '../../components/Home/Hero';
+import About from '../../components/Home/About';
+import OurServices from '../../components/Home/OurServices';
+import BookingSteps from '../../components/Home/BookingSteps';
+import Cta from '../../components/Home/Cta';
 
-interface HomeProps {}
-
-const Home: FunctionComponent<HomeProps> = () => {
+const Home: FunctionComponent = () => {
   return (
-    <>Home</>
-    // <MainLayout>
-    //   <Hero />
-    //   <Feature />
-    //   <OurServices />
-    //   <Cta />
-    // </MainLayout>
+    <MainLayout>
+      <Hero />
+      <About />
+      <OurServices />
+      <BookingSteps />
+      <Cta />
+    </MainLayout>
   );
 };
 
