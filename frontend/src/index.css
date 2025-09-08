@@ -40,5 +40,5 @@
 }
 
 .btn-disabled:disabled {
-  @apply pointer-events-none bg-amber-500/10
+  @apply pointer-events-none bg-rose-600/10
 }

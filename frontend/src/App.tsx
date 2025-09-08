@@ -1,18 +1,17 @@
-import { ThemeProvider } from './context/ThemeContext';
+import { ToastContainer } from 'react-toastify';
+import { ThemeProvider } from './context/theme.context';
 import AppRoute from './routes/AppRoute';
+import { AuthProvider } from './context/auth.context';
 
 function App() {
   return (
     <div className='relative max-w-7xl mx-auto px-6'>
-      <ThemeProvider>
-        <AppRoute />
-      </ThemeProvider>
-      {/* <ThemeProvider>
-        <AuthProvider>
+      <AuthProvider>
+        <ThemeProvider>
           <ToastContainer />
           <AppRoute />
-        </AuthProvider>
-      </ThemeProvider> */}
+        </ThemeProvider>
+      </AuthProvider>
     </div>
   );
 }

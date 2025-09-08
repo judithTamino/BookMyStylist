@@ -1,5 +1,7 @@
 import type { FunctionComponent } from 'react';
-import { NavLink } from 'react-router-dom';
+import { NavLink, useNavigate } from 'react-router-dom';
+import { useAuth } from '../../../context/auth.context';
+import { successMsg } from '../../../services/toastify.service';
 
 interface ProfileDropdownProps {
   open: boolean;
@@ -16,11 +18,13 @@ const ProfileDropdown: FunctionComponent<ProfileDropdownProps> = ({
   open,
   toggleProfile,
 }) => {
-  // const { logout } = useAuth();
+  const { logout } = useAuth();
+  const navigate = useNavigate();
 
   const handleLogout = () => {
-    // logout();
-    // sessionStorage.removeItem('token');
+     logout();
+     successMsg('User logged-out successfully');
+     navigate('/');
   };
 
   const isProfileOpen = open ? 'block' : 'hidden';

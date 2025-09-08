@@ -12,6 +12,8 @@ import { successMsg, errorMsg } from '../../services/toastify.service';
 
 import Input from '../../components/UI/Input/Input';
 import { useAuth } from '../../context/auth.context';
+import decodeToken from '../../services/token.service';
+import { getAuthRedirect } from '../../utils/auth.utils';
 
 const initialValues = {
   email: '',
@@ -40,24 +42,28 @@ const Login: FunctionComponent = () => {
   const handleLogin = (values: ILogin) => {
     loginUser(values)
       .then((res) => {
-        successMsg(res.data.msg);
-
-        // save user token
-        const token = res.data.data;
-        sessionStorage.setItem('token', token);
+        const msg:string = res.data.msg;
+        const token : string = res.data.data;
+       
+        successMsg(msg);
         login(token);
 
-        navigate('/');
+         const decodedToken = decodeToken(token);
+         const redirectPath = getAuthRedirect(decodedToken);
+
+         navigate(redirectPath, {replace: true});
       })
-      .catch((error) => errorMsg(error.response.data.msg));
+      .catch((error) => {
+        errorMsg(error.response.data.msg);
+      });
   };
 
   return (
     <MainLayout>
       <AuthLayout>
-        <article className='lg:w-[100%] h-auto md:h-full mt-10 md:mt-0 flex flex-col justify-center'>
-          <h3 className='text-xl font-semibold text-black'>Welcome Back</h3>
-          <p className='text-xs text-slate-700 mt-[5px] mb-6'>
+        <section className='lg:w-[100%] h-auto md:h-full mt-10 md:mt-0 flex flex-col justify-center'>
+          <h3 className='section-title'>Welcome Back</h3>
+          <p className='text-sm text-slate-700 dark:text-slate-400 mb-6'>
             Please sign in to book appointment.
           </p>
 
@@ -77,15 +83,15 @@ const Login: FunctionComponent = () => {
                 <button
                   type='submit'
                   disabled={!dirty || !isValid}
-                  className='btn-primary btn-disabled mt-4 w-full'
+                  className='btn text-slate-100 bg-rose-600 hover:bg-rose-700 dark:hover:bg-rose-500 btn-disabled mt-4 w-full'
                 >
                   Login
                 </button>
 
                 <p className='text-[13px] text-slate-900 dark:text-slate-100 mt-4'>
-                  Already have an account?{' '}
+                  Already have an account?{'  '}
                   <Link
-                    className='font-medium text-amber-500 underline'
+                    className='font-medium text-rose-600 underline'
                     to='/register'
                   >
                     Signup
@@ -94,7 +100,7 @@ const Login: FunctionComponent = () => {
               </Form>
             )}
           </Formik>
-        </article>
+        </section>
       </AuthLayout>
     </MainLayout>
   );

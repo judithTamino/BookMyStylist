@@ -1,7 +1,7 @@
 import { useState, type FC } from 'react';
-import { NavLink, useNavigate } from 'react-router-dom';
+import { NavLink, redirect, useNavigate } from 'react-router-dom';
 
-import { useTheme } from '../../../context/ThemeContext';
+import { useTheme } from '../../../context/theme.context';
 import type { ILoggedUserProps } from '../../../interface/auth.interface';
 
 import DesktopNavbar from './DesktopNavbar';
@@ -9,6 +9,9 @@ import MobileNavbar from './MobileNavbar';
 import ButtonIcon from '../../UI/Button/ButtonIcon';
 import ProfileDropdown from './ProfileDropdown';
 import PrimaryButton from '../../UI/Button/PrimaryButton';
+import { useAuth } from '../../../context/auth.context';
+import { isAdmin } from '../../../utils/auth.utils';
+import SecondaryButton from '../../UI/Button/SecondaryButton';
 
 const LoggedUser: FC<ILoggedUserProps> = ({ toggleProfile, openProfile }) => (
   <div className='flex items-center justify-center gap-2 group relative cursor-pointer w-8 h-8 rounded-full bg-rose-600/10 dark:bg-rose-600/50'>
@@ -18,8 +21,9 @@ const LoggedUser: FC<ILoggedUserProps> = ({ toggleProfile, openProfile }) => (
 );
 
 const Navbar = () => {
-  const token: boolean = true;
+  const { token } = useAuth();
   const { theme, changeTheme } = useTheme();
+
   const navigate = useNavigate();
 
   const [isMobileOpen, setIsMobileOpen] = useState<boolean>(false);
@@ -49,10 +53,19 @@ const Navbar = () => {
           </ButtonIcon>
 
           {token ? (
-            <LoggedUser
-              openProfile={isProfileOpen}
-              toggleProfile={toggleProfile}
-            />
+            <>
+              {isAdmin(token) ? (
+                <SecondaryButton
+                  label='Admin'
+                  onClick={() => navigate('/admin/dashboard')}
+                />
+              ) : (
+                <LoggedUser
+                  openProfile={isProfileOpen}
+                  toggleProfile={toggleProfile}
+                />
+              )}
+            </>
           ) : (
             <div className='hidden md:flex'>
               <PrimaryButton label='Login' onClick={() => navigate('/login')} />

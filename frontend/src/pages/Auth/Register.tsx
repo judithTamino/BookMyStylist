@@ -42,7 +42,9 @@ const Register: FunctionComponent = () => {
         successMsg(res.data.msg);
         navigate('/login');
       })
-      .catch((error) => errorMsg(error.response.data.msg));
+      .catch((error) => {
+        errorMsg(error.response.data.msg);
+      });
   };
 
   return (
@@ -72,15 +74,15 @@ const Register: FunctionComponent = () => {
                 <button
                   type='submit'
                   disabled={!dirty || !isValid}
-                  className='btn-primary btn-disabled mt-4 w-full'
+                  className='btn text-slate-100 bg-rose-600 hover:bg-rose-700 dark:hover:bg-rose-500 btn-disabled mt-4 w-full'
                 >
-                  SIGN UP
+                  Signup
                 </button>
 
                 <p className='text-[13px] text-slate-900 dark:text-slate-100 mt-4'>
                   Already have an account?{' '}
                   <Link
-                    className='font-medium text-amber-500 underline'
+                    className='font-medium text-rose-600 underline'
                     to='/login'
                   >
                     Login

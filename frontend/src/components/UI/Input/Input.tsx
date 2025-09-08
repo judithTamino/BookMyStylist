@@ -12,9 +12,10 @@ const Input: FunctionComponent<InputProps> = ({ label, type, ...props }) => {
   const [showPassword, setShowPassword] = useState<boolean>(false);
   const [field, meta] = useField(props);
 
-  const toggleShowPassword = () => {
-    setShowPassword(!showPassword);
-  };
+  const passwordIcon = showPassword ? 'ri-eye-line' : 'ri-eye-close-line';
+
+  const toggleShowPassword = () => setShowPassword(!showPassword);
+  
 
   return (
     <div>
@@ -35,19 +36,10 @@ const Input: FunctionComponent<InputProps> = ({ label, type, ...props }) => {
           className='w-full bg-transparent outline-none'
         />
         {type === 'password' && (
-          <>
-            {showPassword ? (
-              <i
-                onClick={() => toggleShowPassword()}
-                className='ri-eye-line text-amber-500 cursor-pointer'
-              />
-            ) : (
-              <i
-                onClick={() => toggleShowPassword()}
-                className='ri-eye-close-line text-amber-500 cursor-pointer'
-              />
-            )}
-          </>
+          <i
+            onClick={() => toggleShowPassword()}
+            className={`${passwordIcon} text-rose-600 cursor-pointer`}
+          />
         )}
       </div>
       {meta.touched && meta.error ? (

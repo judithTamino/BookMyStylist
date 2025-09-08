@@ -8,9 +8,9 @@ const Hero: FunctionComponent = () => {
 
   return (
     <section className='py-30 md:py-40'>
-      <div className='grid gap-2 md:grid-cols-2 lg:grid-cols-[max-content_1fr] bg-rose-600 rounded-2xl p-2'>
+      <div className='grid gap-2 lg:grid-cols-[max-content_1fr] bg-rose-600 rounded-2xl p-2'>
         <img
-          className='w-full md:max-w-md max-h-[700px] rounded-2xl'
+          className='w-full lg:max-w-md max-h-[700px] rounded-2xl'
           src='/hero.jpg'
           alt='home page image'
         />

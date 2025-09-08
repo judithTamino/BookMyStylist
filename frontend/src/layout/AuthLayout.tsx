@@ -6,13 +6,13 @@ interface AuthLayoutProps {
 
 const AuthLayout: FunctionComponent<AuthLayoutProps> = ({ children }) => {
   return (
-    <div className='flex h-[450px] w-full my-32'>
-      <div className='w-full flex flex-col items-center justify-center px-12 pt-8 pb-12'>
-        {children}
+    <div className='py-30 md:py-40'>
+      <div className='grid gap-2 md:grid-cols-2 lg:grid-cols-2'>
+        <div className='flex flex-col justify-center w-full p-6 lg:p-10 xl:p-16'>
+          {children}
+        </div>
+        <div className="w-full h-[500px] hidden md:inline-block bg-rose-600 bg-[url('/auth.jpg')] bg-cover bg-top overflow-hidden p-4 rounded-2xl" />
       </div>
-
-      <div className="w-full hidden md:inline-block bg-amber-50 dark:bg-amber-900 bg-[url('/auth.jpg')] bg-cover bg-top overflow-hidden p-4 rounded-2xl"/>
-
     </div>
   );
 };

@@ -1,8 +1,7 @@
-export interface IToken {
-  _id: string;
+import type { JwtPayload } from "jwt-decode";
+
+export interface IToken extends JwtPayload {
   isAdmin: boolean;
-  iat: Date;
-  exp: Date;
 }
 
 export interface ILogin {
