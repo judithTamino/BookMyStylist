@@ -2,7 +2,7 @@ import { useState, type FunctionComponent } from 'react';
 
 import type { IService } from '../../interface/service.interface';
 import ServiceDescriptionPopup from './ServiceDescriptionPopup';
-import PrimaryButton from '../UI/Button/PrimaryButton';
+import Button from '../UI/Button/Button';
 
 interface ServiceCardProps {
   service: IService;
@@ -49,7 +49,7 @@ const ServiceCard: FunctionComponent<ServiceCardProps> = ({ service }) => {
       </div>
 
       <div className='absolute right-0 bottom-0'>
-        <PrimaryButton onClick={() => {}} label='Book' />
+        <Button size='sm'>Book Now</Button>
       </div>
     </div>
   );

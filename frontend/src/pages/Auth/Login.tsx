@@ -47,11 +47,8 @@ const Login: FunctionComponent = () => {
        
         successMsg(msg);
         login(token);
+        navigate('/');
 
-         const decodedToken = decodeToken(token);
-         const redirectPath = getAuthRedirect(decodedToken);
-
-         navigate(redirectPath, {replace: true});
       })
       .catch((error) => {
         errorMsg(error.response.data.msg);

@@ -1,7 +1,7 @@
 import type { FunctionComponent } from 'react';
 import { useNavigate } from 'react-router-dom';
-import PrimaryButton from '../UI/Button/PrimaryButton';
 import { bookingSteps } from '../../assets/assets';
+import Button from '../UI/Button/Button';
 
 const BookingSteps: FunctionComponent = () => {
   const navigate = useNavigate();
@@ -26,8 +26,11 @@ const BookingSteps: FunctionComponent = () => {
         ))}
       </ol>
 
-      <div className="mt-10">
-        <PrimaryButton label='Book Now' onClick={() => navigate('/services')} />
+      <div className='mt-10'>
+        <Button onClick={() => navigate('/services')}>
+          Book Now
+          <i className='ri-arrow-right-s-line' />
+        </Button>
       </div>
     </section>
   );

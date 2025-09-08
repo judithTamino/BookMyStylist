@@ -1,6 +1,6 @@
 import type { FunctionComponent } from 'react';
-import PrimaryButton from '../UI/Button/PrimaryButton';
 import { useNavigate } from 'react-router-dom';
+import Button from '../UI/Button/Button';
 
 interface MyStoryProps {}
 
@@ -22,7 +22,7 @@ const MyStory: FunctionComponent<MyStoryProps> = () => {
       <p className="mb-8">
         Sign-up now to book an appointment. 
       </p>
-      <PrimaryButton label='Signup' onClick={() => navigate('/register')} />
+      <Button onClick={() => navigate('/register')}>Signup</Button>
     </section>
   );
 };

@@ -1,6 +1,6 @@
 import type { FunctionComponent } from 'react';
 import { useNavigate } from 'react-router-dom';
-import PrimaryButton from '../UI/Button/PrimaryButton';
+import Button from '../UI/Button/Button';
 
 interface CtaProps {}
 
@@ -15,13 +15,13 @@ const Cta: FunctionComponent<CtaProps> = () => {
             Your Beauty, Your Way
           </h1>
           <p className='text-lg text-slate-400 mb-8'>
-             With SALON, looking and feeling your best has never been simpler.
+            With SALON, looking and feeling your best has never been simpler.
           </p>
         </div>
-          <PrimaryButton
-            onClick={() => navigate('/services')}
-            label='Book Now'
-          />
+        <Button onClick={() => navigate('/services')}>
+          Book Now
+          <i className='ri-arrow-right-s-line' />
+        </Button>
       </div>
     </section>
   );

@@ -15,10 +15,10 @@ const PrivateRoute: FunctionComponent<PrivateRouteProps> = ({ roles }) => {
 
   const isAdmin = decode.isAdmin;
   if (roles.includes('admin') && !isAdmin)
-    return <Navigate to='/my-appointments' replace />;
+    return <Navigate to='/' replace />;
 
-  if (roles.includes('user') && isAdmin)
-    return <Navigate to='/admin/dashboard' replace />;
+  // if (roles.includes('user') && isAdmin)
+  //   return <Navigate to='/admin/dashboard' replace />;
 
   return <Outlet />;
 };

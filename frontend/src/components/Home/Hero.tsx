@@ -1,7 +1,6 @@
 import type { FunctionComponent } from 'react';
 import { useNavigate } from 'react-router-dom';
-import PrimaryButton from '../UI/Button/PrimaryButton';
-import SecondaryButton from '../UI/Button/SecondaryButton';
+import Button from '../UI/Button/Button';
 
 const Hero: FunctionComponent = () => {
   const navigate = useNavigate();
@@ -27,11 +26,14 @@ const Hero: FunctionComponent = () => {
           </p>
 
           <div className='flex flex-col md:flex-row gap-2 mt-8'>
-            <PrimaryButton
-              label='Book Appointment'
-              onClick={() => navigate('/services')}
-            />
-            <SecondaryButton label='Login' onClick={() => navigate('/login')} />
+            <Button onClick={() => navigate('/services')}>
+              Book Now
+              <i className='ri-arrow-right-s-line' />
+            </Button>
+
+            <Button variant='secondary' onClick={() => navigate('/login')}>
+              Login
+            </Button>
           </div>
         </div>
       </div>

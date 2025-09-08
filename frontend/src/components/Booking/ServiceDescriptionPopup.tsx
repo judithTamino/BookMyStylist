@@ -1,6 +1,6 @@
 import type React from 'react';
 import type { FunctionComponent, ReactNode } from 'react';
-import ButtonIcon from '../UI/Button/ButtonIcon';
+import Button from '../UI/Button/Button';
 
 interface ServiceDescriptionPopupProps {
   showPopup: boolean;
@@ -16,12 +16,12 @@ const ServiceDescriptionPopup: FunctionComponent<
   const handleClosePopup = () => closePopup(false);
 
   return (
-    <div className='absolute left-0 right-0 top-0 bg-slate-50 dark:bg-slate-900 w-full rounded-md shadow p-4 z-20'>
-      <ButtonIcon onClick={handleClosePopup}>
+    <div className='absolute left-0 top-0 bg-slate-50 dark:bg-slate-900 w-full rounded shadow z-20'>
+      <Button variant='text' onClick={handleClosePopup}>
         <i className='ri-close-large-line cursor-pointer' />
-      </ButtonIcon>
-
-      <div className='mt-2'>{children}</div>
+      </Button>
+    
+      <div className='p-4'>{children}</div>
     </div>
   );
 };

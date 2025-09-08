@@ -1,17 +1,15 @@
 import { useState, type FC } from 'react';
-import { NavLink, redirect, useNavigate } from 'react-router-dom';
+import { NavLink, useNavigate } from 'react-router-dom';
 
 import { useTheme } from '../../../context/theme.context';
 import type { ILoggedUserProps } from '../../../interface/auth.interface';
 
 import DesktopNavbar from './DesktopNavbar';
 import MobileNavbar from './MobileNavbar';
-import ButtonIcon from '../../UI/Button/ButtonIcon';
 import ProfileDropdown from './ProfileDropdown';
-import PrimaryButton from '../../UI/Button/PrimaryButton';
 import { useAuth } from '../../../context/auth.context';
 import { isAdmin } from '../../../utils/auth.utils';
-import SecondaryButton from '../../UI/Button/SecondaryButton';
+import Button from '../../UI/Button/Button';
 
 const LoggedUser: FC<ILoggedUserProps> = ({ toggleProfile, openProfile }) => (
   <div className='flex items-center justify-center gap-2 group relative cursor-pointer w-8 h-8 rounded-full bg-rose-600/10 dark:bg-rose-600/50'>
@@ -48,17 +46,21 @@ const Navbar = () => {
         <MobileNavbar open={isMobileOpen} />
 
         <div className='flex items-center gap-4'>
-          <ButtonIcon onClick={changeTheme}>
+          <Button variant='text' size='lg' onClick={changeTheme}>
             <i className={themeIcon} />
-          </ButtonIcon>
+          </Button>
 
           {token ? (
             <>
               {isAdmin(token) ? (
-                <SecondaryButton
-                  label='Admin'
+                <Button
+                  variant='secondary'
+                  size='sm'
                   onClick={() => navigate('/admin/dashboard')}
-                />
+                >
+                  <i className='ri-admin-line' />
+                  Admin
+                </Button>
               ) : (
                 <LoggedUser
                   openProfile={isProfileOpen}
@@ -67,18 +69,22 @@ const Navbar = () => {
               )}
             </>
           ) : (
-            <div className='hidden md:flex'>
-              <PrimaryButton label='Login' onClick={() => navigate('/login')} />
+            <div className='flex'>
+              <Button
+                size='sm'
+                onClick={() => navigate('/login')}
+              >
+                <i className='ri-login-box-line' />
+                Login
+              </Button>
             </div>
           )}
 
-          <button
-            onClick={toggleMenu}
-            className='md:hidden cursor-pointer text-rose-600'
-            aria-label='Toggle mobile menu'
-          >
-            <i className='ri-menu-3-line text-xl' />
-          </button>
+          <div className='lg:hidden'>
+            <Button variant='text' size='lg' onClick={toggleMenu}>
+              <i className='ri-menu-3-line text-xl' />
+            </Button>
+          </div>
         </div>
       </nav>
     </header>
