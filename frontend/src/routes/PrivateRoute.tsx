@@ -8,19 +8,18 @@ interface PrivateRouteProps {
 }
 
 const PrivateRoute: FunctionComponent<PrivateRouteProps> = ({ roles }) => {
-  const { token } = useAuth();
+  const { token, loading } = useAuth();
   const decode = token ? decodeToken(token) : null;
 
-  if (!decode) return <Navigate to='/login' />;
+  if(loading) return 
+
+  if (!decode) return <Navigate to='/'/>;
 
   const isAdmin = decode.isAdmin;
   if (roles.includes('admin') && !isAdmin)
     return <Navigate to='/' replace />;
 
-  // if (roles.includes('user') && isAdmin)
-  //   return <Navigate to='/admin/dashboard' replace />;
-
-  return <Outlet />;
+  return token && roles ? <Outlet /> : <Navigate to='/login'/>;
 };
 
 export default PrivateRoute;

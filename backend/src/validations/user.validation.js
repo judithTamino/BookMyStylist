@@ -29,6 +29,29 @@ export const userSchema = Joi.object({
     }),
 });
 
+export const updateUserSchema = Joi.object({
+  name: Joi.string().min(2).max(50).required()
+    .messages({
+      "string.empty": "Name is required",
+      "string.min": "Name must be at least 2 characters",
+      "string.max": "Name must be less than 50 characters",
+    }),
+  email: Joi.string().email().required()
+    .messages({
+      "string.empty": "Email is required",
+      "string.email": "Please provide a valid email",
+    }),
+  phone: Joi.string().pattern(phoneRegex).allow("")
+    .messages({
+      "string.empty": "Phone is required",
+      "string.pattern.base": "Please provide a valid phone number",
+    }),
+  password: Joi.string().pattern(passwordRegex).allow("")
+    .messages({
+      "string.pattern.base": "Please provide a valid password",
+    }),
+})
+
 export const loginSchema = Joi.object({
   email: Joi.string().email().required()
     .messages({

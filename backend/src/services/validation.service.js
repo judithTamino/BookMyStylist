@@ -1,4 +1,4 @@
-import { loginSchema, userSchema, workingHoursSchema } from "../validations/user.validation.js";
+import { loginSchema, updateUserSchema, userSchema, workingHoursSchema } from "../validations/user.validation.js";
 import { serviceSchema } from "../validations/service.validation.js";
 import { appointmentSchema } from "../validations/appointment.validation.js";
 
@@ -9,6 +9,11 @@ export const userValidation = user => {
 
 export const loginValidation = user => {
   const { error } = loginSchema.validate(user);
+  if (error) return error.details.map(detail => detail.message);
+}
+
+export const updateUserValidation = user => {
+  const {error} = updateUserSchema.validate(user);
   if (error) return error.details.map(detail => detail.message);
 }
 

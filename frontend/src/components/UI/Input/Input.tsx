@@ -1,50 +1,89 @@
-import { useState, type FunctionComponent } from 'react';
-import { useField } from 'formik';
+import { useState, type InputHTMLAttributes, type ReactNode } from 'react';
 
-interface InputProps {
-  label: string;
-  placeholder: string;
-  type: string;
-  name: string;
+interface InputProps extends InputHTMLAttributes<HTMLInputElement> {
+  label?: string;
+  leftIcon?: ReactNode;
+  rightIcon?: ReactNode;
+  variant?: 'outlined' | 'underline';
+  sizes?: 'sm' | 'md' | 'lg';
+  error?: string;
+  helperTxt?: string;
 }
 
-const Input: FunctionComponent<InputProps> = ({ label, type, ...props }) => {
+const Input = ({
+  label,
+  type,
+  leftIcon,
+  rightIcon,
+  sizes = 'md',
+  variant = 'outlined',
+  helperTxt,
+  error,
+  ...props
+}: InputProps) => {
   const [showPassword, setShowPassword] = useState<boolean>(false);
-  const [field, meta] = useField(props);
 
+  const hasError = !!error;
   const passwordIcon = showPassword ? 'ri-eye-line' : 'ri-eye-close-line';
 
-  const toggleShowPassword = () => setShowPassword(!showPassword);
-  
+  const inputSize = {
+    sm: 'text-sm py-1.5',
+    md: 'text-base py-2',
+    lg: 'text-lg py-3',
+  };
+
+  const inputVariant = {
+    underline: 'border-b rounded-none',
+    outlined: 'rounded border',
+  };
+
+  const borderColor = hasError
+    ? 'border-red-500'
+    : 'border-slate-300 dark:border-slate-600';
 
   return (
-    <div>
-      <label
-        htmlFor={props.name}
-        className='text-[13px] text-slate-700 dark:text-slate-400'
-      >
-        {label}
-      </label>
+    <div className='flex flex-col gap-1 w-full'>
+      {label && (
+        <label
+          htmlFor={props.name}
+          className='text-sm font-medium text-slate-700 dark:text-slate-400'
+        >
+          {label}
+        </label>
+      )}
 
-      <div className='input-box'>
+      <div
+        className={`flex items-center px-3 bg-slate-50 dark:bg-slate-900 transition ${inputSize[sizes]} ${borderColor} ${inputVariant[variant]}`}
+      >
+        {leftIcon && <span className='mr-2 text-rose-600'>{leftIcon}</span>}
+
         <input
+          {...props}
           type={
             type === 'password' ? (showPassword ? 'text' : 'password') : type
           }
-          {...field}
-          {...props}
-          className='w-full bg-transparent outline-none'
+          className='flex-1 bg-transparent outline-none text-slate-900 dark:text-slate-100'
         />
-        {type === 'password' && (
+
+        {type === 'password' ? (
           <i
-            onClick={() => toggleShowPassword()}
-            className={`${passwordIcon} text-rose-600 cursor-pointer`}
+            onClick={() => setShowPassword((prev) => !prev)}
+            className={`${passwordIcon} cursor-pointer text-rose-600 hover:text-rose-700 dark:hover:text-rose-500`}
           />
+        ) : (
+          rightIcon && <span className='ml-2 text-rose-600'>{rightIcon}</span>
         )}
       </div>
-      {meta.touched && meta.error ? (
-        <p className='text-red-500 text-xs pb-2.5'>{meta.error}</p>
-      ) : null}
+
+      {hasError ? (
+        <p className='text-xs text-red-500'>{error}</p>
+      ) : (
+        helperTxt && (
+          <p className='text-xs text-slate-700 dark:text-slate-400'>
+            {helperTxt}
+          </p>
+        )
+      )}
     </div>
   );
 };

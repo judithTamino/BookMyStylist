@@ -4,7 +4,7 @@ import { NavLink } from 'react-router-dom';
 const Footer: FunctionComponent = () => {
   return (
     <footer className='pt-16 pb-2 md:pt-24'>
-      <div className='px-4 md:px-16 lg:px-24 xl:px-32 pt-8 w-full text-slate-100 mt-4 bg-rose-600 rounded-2xl grid md:grid-cols-2'>
+      <div className='px-4 md:px-16 lg:px-24 xl:px-32 pt-8 w-full text-slate-100 mt-4 bg-rose-600 rounded-2xl grid lg:grid-cols-2'>
         <div className='flex flex-col justify-between w-full pb-6'>
           <NavLink to='/' className='font-playfair text-4xl text-white'>
             SALON

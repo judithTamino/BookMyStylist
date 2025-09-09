@@ -14,7 +14,7 @@ const Login = lazy(() => import('../pages/Auth/Login'));
 
 const Appointments = lazy(() => import('../pages/User/Appointments'));
 const Favorites = lazy(() => import('../pages/User/Favorites'));
-const Profile = lazy(() => import('../pages/User/Profile'));
+const Profile = lazy(() => import('../pages/User/Profile/Profile'));
 
 const AdminDashboard = lazy(() => import('../pages/Admin/AdminDashboard'));
 const ManageServices = lazy(() => import('../pages/Admin/ManageServices'));
@@ -29,14 +29,12 @@ const AppRoute: FunctionComponent<AppRouteProps> = () => {
         <Route path='/services' element={<Services />} />
         <Route path='/register' element={<Register />} />
         <Route path='/login' element={<Login />} />
-
         // USER ROUTES
         <Route element={<PrivateRoute roles={['user']} />}>
           <Route path='/my-appointments' element={<Appointments />} />
           <Route path='/my-favorites' element={<Favorites />} />
           <Route path='/my-profile' element={<Profile />} />
         </Route>
-
         // ADMIN ROUTES
         <Route element={<PrivateRoute roles={['admin']} />}>
           <Route path='/admin/dashboard' element={<AdminDashboard />} />

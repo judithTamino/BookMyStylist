@@ -28,3 +28,46 @@ export const specialties = [
     desc: 'Restorative treatments for shine and strength.',
   },
 ];
+
+export const loginFields = [
+  {
+    label: 'Email',
+    name: 'email',
+    type: 'text',
+    placeholder: 'john@example.com',
+  },
+  {
+    label: 'Password',
+    name: 'password',
+    type: 'password',
+    placeholder: '@Johndoe',
+  },
+];
+
+export const signupFields = [
+  { label: 'Name', name: 'name', type: 'text', placeholder: 'john doe' },
+  {
+    label: 'Email',
+    name: 'email',
+    type: 'text',
+    placeholder: 'john@example.com',
+  },
+  { label: 'Phone', name: 'phone', type: 'text', placeholder: '053 526 5696' },
+  {
+    label: 'Password',
+    name: 'password',
+    type: 'password',
+    placeholder: '@Johndoe',
+  },
+];
+
+export const editFields = [
+  { label: 'Name', name: 'name', type: 'text', placeholder: 'john doe' },
+  {
+    label: 'Email',
+    name: 'email',
+    type: 'text',
+    placeholder: 'john@example.com',
+  },
+  { label: 'Phone', name: 'phone', type: 'text', placeholder: '053 526 5696' },
+];

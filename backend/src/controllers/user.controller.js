@@ -1,6 +1,6 @@
 import asyncHandler from "express-async-handler";
 import User from "../models/User.model.js";
-import { userValidation, workingHouresValidation } from "../services/validation.service.js";
+import { updateUserValidation, userValidation, workingHouresValidation } from "../services/validation.service.js";
 import { validStartTime } from "../helpers/user.helper.js";
 
 
@@ -52,7 +52,7 @@ export const updateUserProfile = asyncHandler(async (req, res) => {
   }
 
   // Validation
-  const errorMsg = userValidation(req.body);
+  const errorMsg = updateUserValidation(req.body);
   if (errorMsg) {
     const error = new Error(errorMsg);
     error.statusCode = 400;
@@ -61,11 +61,17 @@ export const updateUserProfile = asyncHandler(async (req, res) => {
 
   user.name = req.body.name || user.name;
   user.email = req.body.email || user.email;
-  user.password = req.body.password || user.password;
   user.phone = req.body.phone || user.phone;
 
+  if(req.body.password && req.body.password.trim() !== "")
+    user.password = req.body.password; 
+
+  console.log(user);
+
   const updatedUser = await user.save();
-  res.status(201).json({ success: true, data: updatedUser, msg: "User details updated successfully" });
+  const {password, ...userWithoutPassword} = updatedUser.toObject();
+
+  res.status(201).json({ success: true, data: userWithoutPassword, msg: "User details updated successfully" });
 });
 
 // @des    Delete user

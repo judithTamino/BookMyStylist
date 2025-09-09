@@ -10,30 +10,14 @@ import type { ILogin } from '../../interface/auth.interface';
 import { loginUser } from '../../services/auth.service';
 import { successMsg, errorMsg } from '../../services/toastify.service';
 
-import Input from '../../components/UI/Input/Input';
 import { useAuth } from '../../context/auth.context';
-import decodeToken from '../../services/token.service';
-import { getAuthRedirect } from '../../utils/auth.utils';
+import FormikInput from '../../components/UI/Input/Formik/FormikInput';
+import { loginFields } from '../../assets/assets';
 
 const initialValues = {
   email: '',
   password: '',
 };
-
-const fields = [
-  {
-    label: 'Email',
-    name: 'email',
-    type: 'text',
-    placeholder: 'john@example.com',
-  },
-  {
-    label: 'Password',
-    name: 'password',
-    type: 'password',
-    placeholder: '@Johndoe',
-  },
-];
 
 const Login: FunctionComponent = () => {
   const { login } = useAuth();
@@ -71,9 +55,9 @@ const Login: FunctionComponent = () => {
           >
             {({ dirty, isValid }) => (
               <Form>
-                <div className='grid grid-cols-1 md:grid-cols-2 gap-4'>
-                  {fields.map((field, index) => (
-                    <Input key={index} {...field} />
+                <div className='grid grid-cols-1 lg:grid-cols-2 gap-4'>
+                  {loginFields.map((field, index) => (
+                    <FormikInput key={index} {...field} />
                   ))}
                 </div>
 
@@ -86,7 +70,7 @@ const Login: FunctionComponent = () => {
                 </button>
 
                 <p className='text-[13px] text-slate-900 dark:text-slate-100 mt-4'>
-                  Already have an account?{'  '}
+                  Don`t have an account?{'  '}
                   <Link
                     className='font-medium text-rose-600 underline'
                     to='/register'

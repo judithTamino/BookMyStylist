@@ -23,3 +23,23 @@ export const userSchema = Yup.object({
     )
     .required('Password is required.'),
 });
+
+export const editUserSchema = Yup.object({
+  name: Yup.string()
+    .min(2, 'Name must be at least 2 characters long.')
+    .max(50, 'Name must be less than 50 characters long.')
+    .required('Name is required.'),
+  email: Yup.string()
+    .email('Email must be a standard email address.')
+    .required('Email is required.'),
+  phone: Yup.string().matches(
+    phoneRegex,
+    'Phone must be standard Israeli phone number.'
+  ),
+  password: Yup.string()
+    .min(8, 'Password must be at least 8 characters long.')
+    .matches(
+      passwordRegex,
+      'Password must contain an uppercase letter, a lowercase letter, a number and one of the following characters !@#$%^&*-.'
+    ),
+});

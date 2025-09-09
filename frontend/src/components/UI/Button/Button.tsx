@@ -1,6 +1,6 @@
-import type { FunctionComponent, ReactNode } from 'react';
+import type { ButtonHTMLAttributes, FunctionComponent, ReactNode } from 'react';
 
-interface ButtonProps {
+interface ButtonProps extends ButtonHTMLAttributes<HTMLButtonElement> {
   children: ReactNode;
   onClick?: () => void;
   variant?: 'primary' | 'secondary' | 'text';
@@ -14,6 +14,7 @@ const Button: FunctionComponent<ButtonProps> = ({
   variant = 'primary',
   size = 'md',
   disabled,
+  ...props
 }) => {
   const btnSize = { sm: 'px-3 py-1 text-sm', md: 'px-4 py-2 text-base', lg: 'px-6 py-3 text-lg' };
   const btnVariant = {
@@ -28,6 +29,7 @@ const Button: FunctionComponent<ButtonProps> = ({
     <button
       onClick={onClick}
       disabled={disabled}
+      {...props}
       className={`inline-flex items-center justify-center gap-2 rounded font-medium transition-colors focus:outline-none cursor-pointer ${btnSize[size]} ${btnVariant[variant]}`}
     >
       {children}

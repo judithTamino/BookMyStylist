@@ -4,10 +4,11 @@ import MainLayout from '../../layout/MainLayout';
 import type { IUser } from '../../interface/user.interface';
 import { Formik, Form } from 'formik';
 import { userSchema } from '../../schemas/user.schema';
-import Input from '../../components/UI/Input/Input';
 import { Link, useNavigate } from 'react-router-dom';
 import { register } from '../../services/auth.service';
 import { successMsg, errorMsg } from '../../services/toastify.service';
+import FormikInput from '../../components/UI/Input/Formik/FormikInput';
+import { signupFields } from '../../assets/assets';
 
 const initialValues: IUser = {
   name: '',
@@ -15,23 +16,6 @@ const initialValues: IUser = {
   password: '',
   phone: '',
 };
-
-const fields = [
-  { label: 'Name', name: 'name', type: 'text', placeholder: 'john doe' },
-  {
-    label: 'Email',
-    name: 'email',
-    type: 'text',
-    placeholder: 'john@example.com',
-  },
-  { label: 'Phone', name: 'phone', type: 'text', placeholder: '053 526 5696' },
-  {
-    label: 'Password',
-    name: 'password',
-    type: 'password',
-    placeholder: '@Johndoe',
-  },
-];
 
 const Register: FunctionComponent = () => {
   const navigate = useNavigate();
@@ -65,9 +49,9 @@ const Register: FunctionComponent = () => {
           >
             {({ dirty, isValid }) => (
               <Form>
-                <div className='grid grid-cols-1 md:grid-cols-2 gap-4'>
-                  {fields.map((field, index) => (
-                    <Input key={index} {...field} />
+                <div className='grid grid-cols-1 lg:grid-cols-2 gap-4'>
+                  {signupFields.map((field, index) => (
+                    <FormikInput key={index} {...field} />
                   ))}
                 </div>
 

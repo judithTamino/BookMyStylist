@@ -1,6 +1,7 @@
 import type { JwtPayload } from "jwt-decode";
 
 export interface IToken extends JwtPayload {
+  _id: string;
   isAdmin: boolean;
 }
 

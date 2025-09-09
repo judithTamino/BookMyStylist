@@ -10,16 +10,20 @@ interface IAuth {
   token: string | null;
   login: (token: string) => void;
   logout: () => void;
+  loading: boolean;
 }
 
 const AuthContext = createContext<IAuth | undefined>(undefined);
 
 export const AuthProvider = ({ children }: { children: ReactNode }) => {
   const [token, setToken] = useState<string | null>(null);
+  const [loading, setLoading] = useState<boolean>(true);
 
   useEffect(() => {
     const savedToken = sessionStorage.getItem('token');
     if (savedToken) setToken(savedToken);
+
+    setLoading(false);
   }, []);
 
   const login = (userToken: string) => {
@@ -32,7 +36,7 @@ export const AuthProvider = ({ children }: { children: ReactNode }) => {
     setToken(null);
   };
 
-  const value: IAuth = { token, login, logout };
+  const value: IAuth = { token, login, logout, loading };
 
   return <AuthContext.Provider value={value}>{children}</AuthContext.Provider>;
 };

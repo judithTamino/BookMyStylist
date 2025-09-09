@@ -19,7 +19,7 @@ const Dropdown: FunctionComponent<DropdownProps> = ({categories, selectedCategor
       <button
         type='button'
         onClick={() => setIsOpen(!isOpen)}
-        className='input-box text-left bg-transparent outline-none text-slate-900 border-none capitalize'
+        className='text-left outline-none capitalize px-3 bg-slate-50 dark:bg-slate-900 transition rounded border border-slate-300 dark:border-slate-600 text-base py-2 mt-4'
       >
         <span>{selectedCategory}</span>
         <svg
