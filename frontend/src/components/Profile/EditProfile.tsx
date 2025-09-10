@@ -1,14 +1,14 @@
 import { useState, type FunctionComponent } from 'react';
 import { Formik, Form } from 'formik';
-import type { IUser } from '../../../interface/user.interface';
-import { editUserSchema } from '../../../schemas/user.schema';
-import { editFields } from '../../../assets/assets';
-import FormikInput from '../../../components/UI/Input/Formik/FormikInput';
-import Button from '../../../components/UI/Button/Button';
-import { updateUserProfile } from '../../../services/user.service';
-import { errorMsg, successMsg } from '../../../services/toastify.service';
-import { useAuth } from '../../../context/auth.context';
-import decodeToken from '../../../services/token.service';
+import type { IUser } from '../../interface/user.interface';
+import { editUserSchema } from '../../schemas/user.schema';
+import { editFields } from '../../assets/assets';
+import FormikInput from '../UI/Input/Formik/FormikInput';
+import Button from '../UI/Button/Button';
+import { updateUserProfile } from '../../services/user.service';
+import { errorMsg, successMsg } from '../../services/toastify.service';
+import { useAuth } from '../../context/auth.context';
+import decodeToken from '../../services/token.service';
 import { useNavigate } from 'react-router-dom';
 
 interface EditProfileProps {
@@ -16,7 +16,10 @@ interface EditProfileProps {
   onUpdate: (user: IUser) => void;
 }
 
-const EditProfile: FunctionComponent<EditProfileProps> = ({ user, onUpdate }) => {
+const EditProfile: FunctionComponent<EditProfileProps> = ({
+  user,
+  onUpdate,
+}) => {
   const initialValues = {
     name: user.name,
     email: user.email,
@@ -34,7 +37,7 @@ const EditProfile: FunctionComponent<EditProfileProps> = ({ user, onUpdate }) =>
     updateUserProfile(decode._id, token as string, values)
       .then((res) => {
         successMsg(res.data.msg);
-        onUpdate(res.data.data)
+        onUpdate(res.data.data);
       })
       .catch((error) => errorMsg(error.response.data.msg));
   };

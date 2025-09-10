@@ -3,6 +3,7 @@ import { useState, type FunctionComponent } from 'react';
 import type { IService } from '../../interface/service.interface';
 import ServiceDescriptionPopup from './ServiceDescriptionPopup';
 import Button from '../UI/Button/Button';
+import { useNavigate } from 'react-router-dom';
 
 interface ServiceCardProps {
   service: IService;
@@ -10,6 +11,7 @@ interface ServiceCardProps {
 
 const ServiceCard: FunctionComponent<ServiceCardProps> = ({ service }) => {
   const [showPopup, setShowPopup] = useState<boolean>(false);
+  const navigate = useNavigate();
 
   return (
     <div
@@ -49,7 +51,7 @@ const ServiceCard: FunctionComponent<ServiceCardProps> = ({ service }) => {
       </div>
 
       <div className='absolute right-0 bottom-0'>
-        <Button size='sm'>Book Now</Button>
+        <Button size='sm' onClick={() => navigate(`/book-appointment/${service._id}`)}>Book Now</Button>
       </div>
     </div>
   );

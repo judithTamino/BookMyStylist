@@ -1,17 +1,22 @@
-import type { FunctionComponent } from "react";
+import { useEffect, type FunctionComponent } from 'react';
+import MainLayout from '../../layout/MainLayout';
+import { useParams } from 'react-router-dom';
 
-interface BookAppointmentProps {
-  
-}
- 
+interface BookAppointmentProps {}
+
 const BookAppointment: FunctionComponent<BookAppointmentProps> = () => {
-  return (<>
-  Book Appointment
-    * ServiceDetails Component
-    * Date Component 
-    * TimeSlotes Component
-    * Btn Component
-  </>);
-}
- 
+  const { serviceId } = useParams();
+
+  useEffect(() => {
+    // fetch service info
+    
+  }, [])
+
+  return (
+    <MainLayout>
+      <div className=''></div>
+    </MainLayout>
+  );
+};
+
 export default BookAppointment;

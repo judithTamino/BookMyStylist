@@ -15,3 +15,10 @@ export const updateUserProfile = (userId: string, token: string, user: IUser) =>
   axios.put(`${API}/${userId}`, user, {
     headers: { Authorization: `Bearer ${token}` },
   });
+
+// Delete User
+export const deleteUser = (userId: string, token: string) => {
+  return axios.delete(`${API}/${userId}`, {
+    headers: { Authorization: `Bearer ${token}` },
+  });
+};

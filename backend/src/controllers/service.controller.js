@@ -22,7 +22,7 @@ export const getAllServices = asyncHandler(async (req, res) => {
 
 // @des    Get service details
 // @route  GET api/services/:id
-// @access private - admin
+// @access public
 export const getServiceDetail = asyncHandler(async (req, res) => {
     // check if service exsits
   const service = await Service.findById(req.params.id);

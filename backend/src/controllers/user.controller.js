@@ -66,8 +66,6 @@ export const updateUserProfile = asyncHandler(async (req, res) => {
   if(req.body.password && req.body.password.trim() !== "")
     user.password = req.body.password; 
 
-  console.log(user);
-
   const updatedUser = await user.save();
   const {password, ...userWithoutPassword} = updatedUser.toObject();
 
@@ -87,6 +85,8 @@ export const deleteUser = asyncHandler(async (req, res) => {
     error.statusCode = 403;
     throw error;
   }
+
+  await User.findByIdAndDelete(id);
 
   res.status(200).json({ success: true, msg: "User deleted successfully" });
 });
