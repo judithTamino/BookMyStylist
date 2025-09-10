@@ -4,7 +4,7 @@ import Appointment from "../models/Appointment.model.js";
 import Service from "../models/Service.model.js";
 
 import { appointmentValidation } from "../services/validation.service.js";
-import { calculateEndTime, convertToMinutes, isTimeSoltBetweenWorkingHoures } from "../helpers/appointment.helper.js";
+import { calculateEndTime, convertToMinutes, getWorkingDay, isTimeSoltBetweenWorkingHoures } from "../helpers/appointment.helper.js";
 import { generateTimeSlots } from "../utils/timeSlots.utils.js";
 import { sendEmail } from "../utils/sendEmail.util.js";
 
@@ -15,7 +15,7 @@ import { sendEmail } from "../utils/sendEmail.util.js";
 export const bookAppointment = asyncHandler(async (req, res) => {
   const userInfo = req.user;
   const serviceId = req.params.id;
-  const { date, startTime, notes } = req.body;
+  let { date, startTime, notes } = req.body;
 
   // validate request body
   const errorMsg = appointmentValidation(req.body);
@@ -63,12 +63,13 @@ export const bookAppointment = asyncHandler(async (req, res) => {
   const today = new Date();
   const bookAppointmentInAdvance = new Date(today.setDate(today.getDate() + 14));
 
-  if(new Date(date) > bookAppointmentInAdvance) {
-     const error = new Error("Appointments must be booked at least 2 weeks in advance.");
+  if (new Date(date) > bookAppointmentInAdvance) {
+    const error = new Error("Appointments must be booked at least 2 weeks in advance.");
     error.statusCode = 400;
     throw error;
   }
 
+  date = new Date(date).setUTCHours(0,0,0,0);
   const appointment = await Appointment.create({
     user: userInfo._id,
     service: serviceId,
@@ -91,7 +92,7 @@ export const bookAppointment = asyncHandler(async (req, res) => {
 export const getAppointments = asyncHandler(async (req, res) => {
   const userInfo = req.user;
   const { status } = req.query;
-  
+
   let filterByStatus = {};
   let appointments;
 
@@ -197,8 +198,9 @@ export const getAppointmentDetails = asyncHandler(async (req, res) => {
 // @route  GET api/appointments/:date/available
 // @access private
 export const getAvailableTimeSlots = asyncHandler(async (req, res) => {
-  const date = new Date(req.params.date);
+  const date = new Date(req.params.date).setUTCHours(0,0,0,0);
   const { serviceId } = req.query;
+  const workingDay = await getWorkingDay(date);
 
   if (!serviceId) {
     const error = new Error("Service ID is required");
@@ -209,7 +211,7 @@ export const getAvailableTimeSlots = asyncHandler(async (req, res) => {
   // get all appointments for selected date
   const appointments = await Appointment.find({
     date,
-    status: { $in: ["pending", "confirmed"] }
+    status: { $in: ["confirmed"] }
   });
 
   // get selected service
@@ -227,15 +229,14 @@ export const getAvailableTimeSlots = asyncHandler(async (req, res) => {
   const availableSlots = allSlots.filter(solt => {
     // checked if time slot is available for the service duration
     const endTime = calculateEndTime(service.duration, solt);
-    if (endTime > allSlots[allSlots.length - 1]) return false;
+
+    if (endTime > workingDay.endTime) {
+      return false;
+    };
 
     // check if slot is already booked
     const isBooked = appointments.some(appointment => {
-      return (
-        (solt >= appointment.startTime && solt < appointment.endTime) ||
-        (endTime > appointment.startTime && endTime <= appointment.endTime) ||
-        (solt <= appointment.startTime && endTime >= appointment.endTime)
-      );
+      return solt < appointment.endTime && endTime > appointment.startTime
     });
     return !isBooked;
   });

@@ -6,6 +6,7 @@ export const convertToMinutes = time => {
 };
 
 export const getWorkingDay = async (date) => {
+  date = new Date(date);
   // get the admin
   const admin = await User.findOne({ isAdmin: true }).lean();
 
@@ -34,7 +35,7 @@ export const calculateEndTime = (serviceDuration, startTime) => {
 // check if appointment is between working hours
 export const isTimeSoltBetweenWorkingHoures = async (startTime, endTime, date) => {
   const workingDay = await getWorkingDay(date);
-  if(!workingDay) return false;
+  if (!workingDay) return false;
 
   const start = convertToMinutes(startTime);
   const end = convertToMinutes(endTime);
