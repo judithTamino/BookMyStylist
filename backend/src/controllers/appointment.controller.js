@@ -15,7 +15,7 @@ import { sendEmail } from "../utils/sendEmail.util.js";
 export const bookAppointment = asyncHandler(async (req, res) => {
   const userInfo = req.user;
   const serviceId = req.params.id;
-  let { date, startTime, notes } = req.body;
+  let { date, startTime } = req.body;
 
   // validate request body
   const errorMsg = appointmentValidation(req.body);
@@ -75,8 +75,7 @@ export const bookAppointment = asyncHandler(async (req, res) => {
     service: serviceId,
     date,
     startTime,
-    endTime,
-    notes
+    endTime
   });
 
   await sendEmail(appointment, userInfo.name, service.name, service.price, userInfo.email);
@@ -219,11 +218,11 @@ export const getAvailableTimeSlots = asyncHandler(async (req, res) => {
 
   // generate all possible time slots
   const allSlots = await generateTimeSlots(date);
-  if (allSlots.length === 0) {
-    const error = new Error("No time slots available in this date");
-    error.statusCode = 400;
-    throw error;
-  }
+  // if (allSlots.length === 0) {
+  //   const error = new Error("No time slots available in this date");
+  //   error.statusCode = 400;
+  //   throw error;
+  // }
 
   // generate time slots and filter out booked ones
   const availableSlots = allSlots.filter(solt => {

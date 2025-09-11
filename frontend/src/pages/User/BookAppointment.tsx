@@ -13,8 +13,6 @@ const BookAppointment: FunctionComponent<BookAppointmentProps> = () => {
   const { id } = useParams();
   const [service, setService] = useState<IService>();
   const [dates, setDates] = useState<Date[]>([]);
-  const [timeSlots, setTimeslots] = useState<string[]>([]);
- 
 
   useEffect(() => {
     // fetch service info
@@ -27,7 +25,7 @@ const BookAppointment: FunctionComponent<BookAppointmentProps> = () => {
     const today: Date = new Date();
     const dateSlots: Date[] = [];
 
-    for (let i = 0; i <= 7; i++) {
+    for (let i = 1; i <= 8; i++) {
       const currentDate = new Date(today);
       currentDate.setDate(today.getDate() + i);
 

@@ -1,11 +1,10 @@
-import type { FunctionComponent } from "react";
+import type { FunctionComponent } from 'react';
+import MainLayout from '../../layout/MainLayout';
 
-interface AppointmentsProps {
-  
-}
- 
+interface AppointmentsProps {}
+
 const Appointments: FunctionComponent<AppointmentsProps> = () => {
-  return (<>Appointments</>);
-}
- 
+  return <MainLayout>Appointments</MainLayout>;
+};
+
 export default Appointments;

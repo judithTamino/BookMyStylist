@@ -8,9 +8,7 @@ export async function sendEmail (appointment, userName, serviceName, servicePric
     user: userName,
     date: new Date(appointment.date).toLocaleDateString(dateOptione),
     startTime: appointment.startTime,
-    endTime: appointment.endTime,
     service: serviceName,
-    notes: appointment.notes ?? "no notes",
     price: servicePrice,
     type: type
   }

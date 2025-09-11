@@ -16,10 +16,5 @@ export const appointmentSchema = Joi.object({
       "string.base": "Appointment start time must be string",
       "string.pattern.base": "Appointment start time must be in HH:MM format",
       "string.empty": "Appointment start time is required",
-    }),
-  notes: Joi.string().max(500)
-    .messages({
-      "string.base": "Appointment notes must be string",
-      "string.max": "Appointment notes must be less than 500 characters",
     })
 });

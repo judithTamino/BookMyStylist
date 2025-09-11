@@ -1,8 +1,8 @@
 import { useState, type FunctionComponent } from 'react';
 
-import type { IService } from '../../interface/service.interface';
-import ServiceDescriptionPopup from './ServiceDescriptionPopup';
-import Button from '../UI/Button/Button';
+import type { IService } from '../../../interface/service.interface';
+import ServiceDescriptionPopup from '../ServiceDescriptionPopup';
+import Button from '../../UI/Button/Button';
 import { useNavigate } from 'react-router-dom';
 
 interface ServiceCardProps {

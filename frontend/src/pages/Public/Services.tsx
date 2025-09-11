@@ -1,11 +1,11 @@
-import { useEffect, useMemo, useState, type FunctionComponent } from 'react';
+import { useEffect, useMemo, useState } from 'react';
 
 import MainLayout from '../../layout/MainLayout';
 import Search from '../../components/UI/Input/Search';
 
 import { getActiveServices } from '../../services/services.service';
 import type { IService } from '../../interface/service.interface';
-import ServiceCard from '../../components/Booking/ServiceCard';
+import ServiceCard from '../../components/Booking/Card/ServiceCard';
 import Dropdown from '../../components/UI/Input/Dropdown';
 import { errorMsg } from '../../services/toastify.service';
 
