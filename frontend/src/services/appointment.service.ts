@@ -20,3 +20,18 @@ export const bookAppointment = (
     headers: { Authorization: `Bearer ${token}` },
   });
 };
+
+// Get Appointments
+export const getAppointments = (status: string, token: string) => {
+  return axios.get(`${API}`, {
+    headers: { Authorization: `Bearer ${token}` },
+    params: { status: status },
+  });
+};
+
+//Cancel Appointment
+export const cancelAppointment = (id: string, token: string) => {
+  return axios.patch(`${API}/${id}/cancel`, {
+    headers: { Authorization: `Bearer ${token}` },
+  });
+};
