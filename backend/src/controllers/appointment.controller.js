@@ -7,6 +7,7 @@ import { appointmentValidation } from "../services/validation.service.js";
 import { calculateEndTime, convertToMinutes, getWorkingDay, isTimeSoltBetweenWorkingHoures } from "../helpers/appointment.helper.js";
 import { generateTimeSlots } from "../utils/timeSlots.utils.js";
 import { sendEmail } from "../utils/sendEmail.util.js";
+import { application } from "express";
 
 
 // @des    Book new appointment
@@ -108,21 +109,16 @@ export const getAppointments = asyncHandler(async (req, res) => {
       .sort({ date: -1, startTime: -1 });
 
   // if appointment is in the past, status is completed
-  appointments = appointments.map(appointment => {
-    const currentDate = new Date();
-    const appointmentDate = new Date(appointment.date);
+  const currentDate = new Date();
+  const hour = currentDate.getHours().toString();
+  const minute = currentDate.getMinutes().toString(); 
+  const currentTime = `${hour.padStart(2, "0")}:${minute.padStart(2, "0")}`;
 
-    if (appointmentDate.toDateString() <= currentDate.toDateString() && appointment.status === "confirmed") {
-      const currentTime = currentDate.getHours() * 60 + currentDate.getMinutes();
-      const startTimeInMinutes = convertToMinutes(appointment.startTime);
-
-      if (startTimeInMinutes < currentTime) {
-        appointment.status = "completed";
-        appointment.save();
-      }
-    }
-    return appointment;
-  });
+  await Appointment.updateMany({
+    date: {$lte: currentDate},
+    status: "confirmed",
+    startTime: {$lte: currentTime}
+  }, {$set: {status: "completed"}});
 
   // count all appointments
   const allAppointments = await Appointment.countDocuments(
@@ -249,6 +245,8 @@ export const getAvailableTimeSlots = asyncHandler(async (req, res) => {
 export const cancelAppointment = asyncHandler(async (req, res) => {
   const appointmentId = req.params.id;
   const userInfo = req.user;
+
+  console.log(userInfo);
 
   // check if appointment exsits
   const appointment = await Appointment.findById(appointmentId);

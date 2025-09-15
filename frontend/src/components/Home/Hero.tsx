@@ -31,8 +31,8 @@ const Hero: FunctionComponent = () => {
               <i className='ri-arrow-right-s-line' />
             </Button>
 
-            <Button variant='secondary' onClick={() => navigate('/login')}>
-              Login
+            <Button variant='secondary' onClick={() => navigate('/register')}>
+              Signup
             </Button>
           </div>
         </div>

@@ -26,7 +26,7 @@ const Appointments: FunctionComponent<AppointmentsProps> = () => {
   const [tabs, setTabs] = useState<ITab[]>([]);
   const [filterStatus, setFilterStatus] = useState<string>('all');
 
-  const getAllAppointments = (status: string) => {
+  const getAllAppointments = (status: string = '') => {
     if (status === 'all') status = '';
 
     getAppointments(status, token as string)
@@ -45,7 +45,7 @@ const Appointments: FunctionComponent<AppointmentsProps> = () => {
           {
             label: 'Canceled',
             count: statusSummary.canceled || 0,
-            status: 'canceled',
+            status: 'cancelled',
           },
           {
             label: 'History',
@@ -61,7 +61,10 @@ const Appointments: FunctionComponent<AppointmentsProps> = () => {
 
   const handleCanceleAppointment = (appointmentId: string) => {
     cancelAppointment(appointmentId, token as string)
-      .then((res) => successMsg(res.data.msg))
+      .then((res) => {
+        successMsg(res.data.msg);
+        getAllAppointments();
+      })
       .catch((error) => errorMsg(error.response.data.msg));
   };
 

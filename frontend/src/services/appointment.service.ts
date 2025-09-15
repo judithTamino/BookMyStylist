@@ -31,7 +31,8 @@ export const getAppointments = (status: string, token: string) => {
 
 //Cancel Appointment
 export const cancelAppointment = (id: string, token: string) => {
-  return axios.patch(`${API}/${id}/cancel`, {
+  console.log(token);
+  return axios.patch(`${API}/${id}/cancel`,{} , {
     headers: { Authorization: `Bearer ${token}` },
   });
 };

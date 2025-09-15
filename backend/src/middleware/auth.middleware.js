@@ -6,6 +6,8 @@ import { JWT_SECRET } from "../config/env.js";
 export const protect = asyncHandler(async (req, _res, next) => {
   let token = req.headers.authorization;
 
+  console.log(token);
+
   if (token && token.startsWith("Bearer"))
     token = token.split(" ")[1];
 
