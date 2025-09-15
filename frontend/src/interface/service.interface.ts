@@ -6,4 +6,5 @@ export interface  IService {
   price: number;
   active: boolean;
   category: string;
+  likes?: string[];
 }

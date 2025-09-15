@@ -43,7 +43,7 @@ const Appointments: FunctionComponent<AppointmentsProps> = () => {
             status: 'confirmed',
           },
           {
-            label: 'Canceled',
+            label: 'Cancelled',
             count: statusSummary.canceled || 0,
             status: 'cancelled',
           },

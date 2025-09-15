@@ -13,6 +13,7 @@ import { successMsg, errorMsg } from '../../services/toastify.service';
 import { useAuth } from '../../context/auth.context';
 import FormikInput from '../../components/UI/Input/Formik/FormikInput';
 import { loginFields } from '../../assets/assets';
+import Button from '../../components/UI/Button/Button';
 
 const initialValues = {
   email: '',
@@ -26,13 +27,12 @@ const Login: FunctionComponent = () => {
   const handleLogin = (values: ILogin) => {
     loginUser(values)
       .then((res) => {
-        const msg:string = res.data.msg;
-        const token : string = res.data.data;
-       
+        const msg: string = res.data.msg;
+        const token: string = res.data.data;
+
         successMsg(msg);
         login(token);
         navigate('/');
-
       })
       .catch((error) => {
         errorMsg(error.response.data.msg);
@@ -61,14 +61,11 @@ const Login: FunctionComponent = () => {
                   ))}
                 </div>
 
-                <button
-                  type='submit'
-                  disabled={!dirty || !isValid}
-                  className='btn text-slate-100 bg-rose-600 hover:bg-rose-700 dark:hover:bg-rose-500 btn-disabled mt-4 w-full'
-                >
-                  Login
-                </button>
+                <div className="mt-8">
+                  <Button type='submit' disabled={!dirty || !isValid}>Login</Button>
+                </div>
 
+                
                 <p className='text-[13px] text-slate-900 dark:text-slate-100 mt-4'>
                   Don`t have an account?{'  '}
                   <Link

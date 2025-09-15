@@ -9,6 +9,7 @@ import { register } from '../../services/auth.service';
 import { successMsg, errorMsg } from '../../services/toastify.service';
 import FormikInput from '../../components/UI/Input/Formik/FormikInput';
 import { signupFields } from '../../assets/assets';
+import Button from '../../components/UI/Button/Button';
 
 const initialValues: IUser = {
   name: '',
@@ -54,14 +55,12 @@ const Register: FunctionComponent = () => {
                     <FormikInput key={index} {...field} />
                   ))}
                 </div>
-
-                <button
-                  type='submit'
-                  disabled={!dirty || !isValid}
-                  className='btn text-slate-100 bg-rose-600 hover:bg-rose-700 dark:hover:bg-rose-500 btn-disabled mt-4 w-full'
-                >
-                  Signup
-                </button>
+                
+                <div className='mt-8'>
+                  <Button type='submit' disabled={!dirty || !isValid}>
+                    Signup
+                  </Button>
+                </div>
 
                 <p className='text-[13px] text-slate-900 dark:text-slate-100 mt-4'>
                   Already have an account?{' '}

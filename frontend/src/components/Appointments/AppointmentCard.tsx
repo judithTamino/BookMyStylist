@@ -7,6 +7,18 @@ interface AppointmentCardProps {
   cancel: (id: string) => void;
 }
 
+const isCancelable = (appointment: IUserAppointment): boolean => {
+  const appointmentDate = new Date(appointment.date);
+  const currentDate = new Date();
+  const cancellationDate = new Date(
+    appointmentDate.getTime() - 48 * 60 * 60 * 1000
+  );
+
+  if (currentDate.getTime() >= cancellationDate.getTime()) return false;
+
+  return true;
+};
+
 const AppointmentCard: FunctionComponent<AppointmentCardProps> = ({
   appointment,
   cancel,
@@ -19,7 +31,7 @@ const AppointmentCard: FunctionComponent<AppointmentCardProps> = ({
   });
 
   return (
-    <div className='border border-slate-200 dark:border-slate-800 rounded-lg p-8 py-7 mx-2 sm:mx-0 bg-slate-50 dark:bg-slate-900 text-slate-700 dark:text-slate-400 mt-4 grid grid-cols-[2fr_1fr] sm:flex gap-4'>
+    <div className='border border-slate-200 dark:border-slate-800 rounded-lg p-8 py-7 mx-2 sm:mx-0 bg-slate-50 dark:bg-slate-900 text-slate-700 dark:text-slate-400 mt-4 flex flex-col gap-4'>
       <div className='flex-1 text-xs'>
         <h3 className='text-base text-slate-900 dark:text-slate-100 font-semibold capitalize'>
           {appointment.service.name}
@@ -58,14 +70,16 @@ const AppointmentCard: FunctionComponent<AppointmentCardProps> = ({
 
       {appointment.status === 'confirmed' ? (
         <div>
-          <Button size='sm' onClick={() => cancel(appointment._id)}>
-            Cancel
-          </Button>
-          <p className='text-xs mt-2'>
-            {' '}
-            * Appointments cannot be cancelled less than 48 hours before the
-            scheduled date
-          </p>
+          {isCancelable(appointment) ? (
+            <Button size='sm' onClick={() => cancel(appointment._id)}>
+              Cancel
+            </Button>
+          ) : (
+            <p className='text-xs p-4 mb-4 font-semibold'>
+              Appointments cant ba canceled within 48 hours of the scheduled time.
+              <br />If you need urgent assistance, please contact us directly 053 569 6159.
+            </p>
+          )}
         </div>
       ) : null}
     </div>
