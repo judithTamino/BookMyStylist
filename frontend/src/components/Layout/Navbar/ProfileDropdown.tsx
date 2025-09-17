@@ -33,7 +33,7 @@ const ProfileDropdown: FunctionComponent<ProfileDropdownProps> = ({
     <div
       className={`absolute top-0 right-0 mt-14 text-base font-medium text-slate-700 z-20 ${isProfileOpen}`}
     >
-      <div className='min-w-48 bg-slate-50 dark:bg-slate-900 rounded-2xl flex flex-col gap-4 p-4'>
+      <div className='min-w-48 bg-slate-50 dark:bg-slate-900 rounded-2xl flex flex-col gap-4 p-4 z-50'>
         {navLinks.map(({ name, path }) => (
           <NavLink
             to={path}

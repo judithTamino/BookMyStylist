@@ -1,4 +1,4 @@
-import { lazy, Suspense, useMemo, type FunctionComponent } from 'react';
+import { lazy, Suspense, type FunctionComponent } from 'react';
 import { Routes, Route } from 'react-router-dom';
 import PrivateRoute from './PrivateRoute';
 
@@ -18,6 +18,12 @@ const BookAppointment = lazy(() => import('../pages/User/BookAppointment'));
 const AdminDashboard = lazy(() => import('../pages/Admin/AdminDashboard'));
 const ManageServices = lazy(() => import('../pages/Admin/ManageServices'));
 const ManageUsers = lazy(() => import('../pages/Admin/ManageUsers'));
+const ManageAppointments = lazy(
+  () => import('../pages/Admin/ManageAppointments')
+);
+const ManageWorkingHours = lazy(
+  () => import('../pages/Admin/ManageWorkingHours')
+);
 
 const AppRoute: FunctionComponent<AppRouteProps> = () => {
   return (
@@ -38,7 +44,9 @@ const AppRoute: FunctionComponent<AppRouteProps> = () => {
         // ADMIN ROUTES
         <Route element={<PrivateRoute roles={['admin']} />}>
           <Route path='/admin/dashboard' element={<AdminDashboard />} />
+          <Route path='/admin/appointments' element={<ManageAppointments />} />
           <Route path='/admin/services' element={<ManageServices />} />
+          <Route path='/admin/working-hours' element={<ManageWorkingHours />} />
           <Route path='/admin/users' element={<ManageUsers />} />
         </Route>
       </Routes>

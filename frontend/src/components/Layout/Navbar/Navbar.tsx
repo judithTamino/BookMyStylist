@@ -12,8 +12,12 @@ import { isAdmin } from '../../../utils/auth.utils';
 import Button from '../../UI/Button/Button';
 
 const LoggedUser: FC<ILoggedUserProps> = ({ toggleProfile, openProfile }) => (
-  <div className='flex items-center justify-center gap-2 group relative cursor-pointer w-8 h-8 rounded-full bg-rose-600/10 dark:bg-rose-600/50'>
-    <i onClick={toggleProfile} className='ri-user-smile-line text-rose-600' />
+  <div
+    onClick={toggleProfile}
+    className='flex items-center justify-center group relative cursor-pointer w-10 h-8 rounded-full bg-rose-600/10 dark:bg-rose-600/50 text-rose-600'
+  >
+    <i className='ri-user-smile-line ' />
+    <i className='ri-arrow-down-s-line' />
     <ProfileDropdown open={openProfile} toggleProfile={toggleProfile} />
   </div>
 );
@@ -70,10 +74,7 @@ const Navbar = () => {
             </>
           ) : (
             <div className='flex'>
-              <Button
-                size='sm'
-                onClick={() => navigate('/login')}
-              >
+              <Button size='sm' onClick={() => navigate('/login')}>
                 <i className='ri-login-box-line' />
                 Login
               </Button>

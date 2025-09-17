@@ -14,17 +14,21 @@ import type {
 import { useNavigate } from 'react-router-dom';
 import AppointmentCard from '../../components/Appointments/AppointmentCard';
 import Button from '../../components/UI/Button/Button';
+import EmptyState from '../../components/UI/EmptyState/EmptyState';
+import Loader from '../../components/UI/Loader/Loader';
 
 interface AppointmentsProps {}
 
 const Appointments: FunctionComponent<AppointmentsProps> = () => {
   const { token } = useAuth();
+  const navigate = useNavigate();
 
   const [allAppointments, setAllAppointments] = useState<IUserAppointment[]>(
     []
   );
   const [tabs, setTabs] = useState<ITab[]>([]);
   const [filterStatus, setFilterStatus] = useState<string>('all');
+  const [loading, setLoading] = useState<boolean>(true);
 
   const getAllAppointments = (status: string = '') => {
     if (status === 'all') status = '';
@@ -70,6 +74,7 @@ const Appointments: FunctionComponent<AppointmentsProps> = () => {
 
   useEffect(() => {
     getAllAppointments(filterStatus);
+    setLoading(false);
   }, [filterStatus]);
 
   return (
@@ -90,25 +95,31 @@ const Appointments: FunctionComponent<AppointmentsProps> = () => {
         </div>
 
         <div className='mt-4'>
-          {allAppointments.length === 0 ? (
-            <div className='flex flex-col items-start gap-6'>
-              <span>
-                You don`t have any appointments yet.
-                <br />
-                Book one now and let us take care of you
-              </span>
-              <Button size='sm'>Book Now</Button>
-            </div>
-          ) : (
+          {allAppointments.length > 0 ? (
             <div className='grid md:grid-cols-2 gap-4'>
               {allAppointments.map((appointment) => (
                 <AppointmentCard
                   key={appointment._id}
                   appointment={appointment}
-                  cancel = {handleCanceleAppointment}
+                  cancel={handleCanceleAppointment}
                 />
               ))}
             </div>
+          ) : (
+            <>
+              {loading ? (
+                <div className='flex justify-center'>
+                  <Loader loading={loading} />
+                </div>
+              ) : (
+                <EmptyState
+                  icon='ri-calendar-line'
+                  title='No appointments'
+                  message='You don`t have any appointments yet. Book one now and let us take care of you'
+                  action={<Button size='sm' onClick={() => navigate('/services')}>Book Now</Button>}
+                />
+              )}
+            </>
           )}
         </div>
       </section>
