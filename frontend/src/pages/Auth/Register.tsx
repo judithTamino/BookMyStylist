@@ -52,7 +52,7 @@ const Register: FunctionComponent = () => {
               <Form>
                 <div className='grid grid-cols-1 lg:grid-cols-2 gap-4'>
                   {signupFields.map((field, index) => (
-                    <FormikInput key={index} {...field} />
+                    <FormikInput key={index} helperTxt={field.requiredField ? `${field.label} is required` : ''} {...field}  />
                   ))}
                 </div>
                 

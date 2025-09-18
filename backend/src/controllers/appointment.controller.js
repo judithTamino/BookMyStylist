@@ -2,13 +2,12 @@ import asyncHandler from "express-async-handler";
 
 import Appointment from "../models/Appointment.model.js";
 import Service from "../models/Service.model.js";
+import User from "../models/User.model.js";
 
 import { appointmentValidation } from "../services/validation.service.js";
 import { calculateEndTime, convertToMinutes, getWorkingDay, isTimeSoltBetweenWorkingHoures } from "../helpers/appointment.helper.js";
 import { generateTimeSlots } from "../utils/timeSlots.utils.js";
 import { sendEmail } from "../utils/sendEmail.util.js";
-import { application } from "express";
-
 
 // @des    Book new appointment
 // @route  POST api/appointments/:id
@@ -70,7 +69,7 @@ export const bookAppointment = asyncHandler(async (req, res) => {
     throw error;
   }
 
-  date = new Date(date).setUTCHours(0,0,0,0);
+  date = new Date(date).setUTCHours(0, 0, 0, 0);
   const appointment = await Appointment.create({
     user: userInfo._id,
     service: serviceId,
@@ -111,14 +110,14 @@ export const getAppointments = asyncHandler(async (req, res) => {
   // if appointment is in the past, status is completed
   const currentDate = new Date();
   const hour = currentDate.getHours().toString();
-  const minute = currentDate.getMinutes().toString(); 
+  const minute = currentDate.getMinutes().toString();
   const currentTime = `${hour.padStart(2, "0")}:${minute.padStart(2, "0")}`;
 
   await Appointment.updateMany({
-    date: {$lte: currentDate},
+    date: { $lte: currentDate },
     status: "confirmed",
-    startTime: {$lte: currentTime}
-  }, {$set: {status: "completed"}});
+    startTime: { $lte: currentTime }
+  }, { $set: { status: "completed" } });
 
   // count all appointments
   const allAppointments = await Appointment.countDocuments(
@@ -193,7 +192,7 @@ export const getAppointmentDetails = asyncHandler(async (req, res) => {
 // @route  GET api/appointments/:date/available
 // @access private
 export const getAvailableTimeSlots = asyncHandler(async (req, res) => {
-  const date = new Date(req.params.date).setUTCHours(0,0,0,0);
+  const date = new Date(req.params.date).setUTCHours(0, 0, 0, 0);
   const { serviceId } = req.query;
   const workingDay = await getWorkingDay(date);
 
@@ -214,11 +213,6 @@ export const getAvailableTimeSlots = asyncHandler(async (req, res) => {
 
   // generate all possible time slots
   const allSlots = await generateTimeSlots(date);
-  // if (allSlots.length === 0) {
-  //   const error = new Error("No time slots available in this date");
-  //   error.statusCode = 400;
-  //   throw error;
-  // }
 
   // generate time slots and filter out booked ones
   const availableSlots = allSlots.filter(solt => {
@@ -285,4 +279,79 @@ export const cancelAppointment = asyncHandler(async (req, res) => {
   res.status(200).json({ success: true, msg: "appointment cancelled successfully" })
 
   // remove appointment from admin google calendar
+});
+
+// @des    Admin Dashboard Data 
+// @route  GET api/appointments/dashboard
+// @access private - admin
+export const getAdminDashboardData = asyncHandler(async (req, res) => {
+  const today = new Date();
+  const firstDay = new Date(today.getFullYear(), today.getMonth(), 1);
+  const lastDay = new Date(today.getFullYear(), today.getMonth() + 1, 0);
+  let revenue = 0;
+
+  const users = await User.countDocuments({ isAdmin: false });
+
+  const totalAppointments = await Appointment.countDocuments({ date: { $gte: firstDay, $lte: lastDay } });
+  const todayAppointments = await Appointment.countDocuments({ date: today });
+  const totalCompletedAppointments = await Appointment.countDocuments({
+    status: "completed",
+    date: { $gte: firstDay, $lte: lastDay }
+  });
+  const totalConfirmedAppointments = await Appointment.countDocuments({
+    status: "confirmed",
+    date: { $gte: firstDay, $lte: lastDay }
+  });
+  const totalCancelledAppointments = await Appointment.countDocuments({
+    status: "cancelled",
+    date: { $gte: firstDay, $lte: lastDay }
+  });
+
+  // calculate services price of this month appointments
+  const completedAppointments = await Appointment.find({
+    status: 'completed',
+    date: { $gte: firstDay, $lte: lastDay }
+  });
+
+  for (const appointment of completedAppointments) {
+    const service = await Service.findById(appointment.service);
+    revenue += service.price;
+  }
+
+  // const appointmentsStatus = ["completed", "cancelled", "confirmed"];
+  // const appointmentDistributionRaw = await Appointment.aggregate([{
+  //   $match: {
+  //     date: { $gte: firstDay, $lte: lastDay }
+  //   }
+  // }, {
+  //   $group: { _id: "$status", count: { $sum: 1 } }
+  // }]);
+
+  // const appointmentDistribution = appointmentsStatus.reduce((acc, status) => {
+  //   const formatedKey = status.replace(/\s+/g, ""); // Remove space
+  //   acc[formatedKey] = appointmentDistributionRaw.find(item => item._id === status)?.count || 0;
+
+  //   return acc;
+  // }, {});
+
+  // appointmentDistribution["All"] = totalAppointments;
+
+  // Fetch recent 10 appointments
+  const recentAppointments = await Appointment.find({status: "confirmed"}).sort({ createdAt: -1 }).limit(5).populate("user", "name email")
+    .populate("service", "name");
+
+  res.status(200).json({
+    success: true,
+    statistics: {
+      totalAppointments,
+      totalConfirmedAppointments,
+      totalCancelledAppointments,
+      totalCompletedAppointments
+    },
+    todayAppointments,
+    // chart: { appointmentDistribution },
+    users,
+    revenue,
+    recentAppointments
+  })
 });

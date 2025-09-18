@@ -53,19 +53,33 @@ export const loginFields = [
 ];
 
 export const signupFields = [
-  { label: 'Name', name: 'name', type: 'text', placeholder: 'john doe' },
+  { 
+    label: 'Name', 
+    name: 'name', 
+    type: 'text', 
+    placeholder: 'john doe',
+    requiredField: true, 
+  },
   {
     label: 'Email',
     name: 'email',
     type: 'text',
     placeholder: 'john@example.com',
+    requiredField: true, 
   },
-  { label: 'Phone', name: 'phone', type: 'text', placeholder: '053 526 5696' },
+  { 
+    label: 'Phone', 
+    name: 'phone', 
+    type: 'text', 
+    placeholder: '053 526 5696',
+    requiredField: false, 
+  },
   {
     label: 'Password',
     name: 'password',
     type: 'password',
     placeholder: '@Johndoe',
+    requiredField: true, 
   },
 ];
 
