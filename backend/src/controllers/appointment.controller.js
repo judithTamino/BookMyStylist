@@ -286,6 +286,8 @@ export const cancelAppointment = asyncHandler(async (req, res) => {
 // @access private - admin
 export const getAdminDashboardData = asyncHandler(async (req, res) => {
   const today = new Date();
+  today.setUTCHours(0, 0, 0, 0);
+
   const firstDay = new Date(today.getFullYear(), today.getMonth(), 1);
   const lastDay = new Date(today.getFullYear(), today.getMonth() + 1, 0);
   let revenue = 0;
@@ -293,7 +295,10 @@ export const getAdminDashboardData = asyncHandler(async (req, res) => {
   const users = await User.countDocuments({ isAdmin: false });
 
   const totalAppointments = await Appointment.countDocuments({ date: { $gte: firstDay, $lte: lastDay } });
-  const todayAppointments = await Appointment.countDocuments({ date: today });
+  const todayAppointments = await Appointment.countDocuments({ 
+    date: today,
+    status: 'confirmed' 
+  });
   const totalCompletedAppointments = await Appointment.countDocuments({
     status: "completed",
     date: { $gte: firstDay, $lte: lastDay }
@@ -337,7 +342,7 @@ export const getAdminDashboardData = asyncHandler(async (req, res) => {
   // appointmentDistribution["All"] = totalAppointments;
 
   // Fetch recent 10 appointments
-  const recentAppointments = await Appointment.find({status: "confirmed"}).sort({ createdAt: -1 }).limit(5).populate("user", "name email")
+  const recentAppointments = await Appointment.find().sort({ createdAt: -1 }).limit(5).populate("user", "name email")
     .populate("service", "name");
 
   res.status(200).json({

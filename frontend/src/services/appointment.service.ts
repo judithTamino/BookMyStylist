@@ -31,8 +31,18 @@ export const getAppointments = (status: string, token: string) => {
 
 //Cancel Appointment
 export const cancelAppointment = (id: string, token: string) => {
-  console.log(token);
-  return axios.patch(`${API}/${id}/cancel`,{} , {
+  return axios.patch(
+    `${API}/${id}/cancel`,
+    {},
+    {
+      headers: { Authorization: `Bearer ${token}` },
+    }
+  );
+};
+
+// Get Admin Dashboard Data
+export const GetAdminDashboard = (token: string) => {
+  return axios.get(`${API}/dashboard`, {
     headers: { Authorization: `Bearer ${token}` },
   });
 };

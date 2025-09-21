@@ -13,13 +13,38 @@ export interface IUserAppointment {
     price: number;
   };
   date: Date;
-  startTime:string;
-  endTime:string;
-  status:string;
+  startTime: string;
+  endTime: string;
+  status: string;
+}
+
+export interface IAdminAppointment {
+  _id: string;
+  user: {
+    _id: string;
+    name: string;
+    email: string;
+  };
+  service: {
+    _id: string;
+    name: string;
+    duration?: number;
+    price?: number;
+  };
+  date: Date;
+  startTime: string;
+  endTime: string;
+  status: string;
 }
 
 export interface ITab {
   label: string;
   count: number;
   status: string;
+}
+
+export interface IStatistics {
+  label: string;
+  value: number;
+  color: string;
 }
