@@ -13,7 +13,7 @@ export const links = [
 export const adminLinks = [
   { name: 'Dashboard', path: '/admin/dashboard', icon: 'ri-home-line' },
   { name: 'Appointments', path: '/admin/appointments', icon: 'ri-calendar-line' },
-  { name: 'Services', path: '/admin/services', icon: 'ri-clipboard-line' },
+  { name: 'Services', path: '/admin/services', icon: 'ri-scissors-line' },
   { name: 'Working Hours', path: '/admin/working-hours', icon: 'ri-time-line' },
   { name: 'Users', path: '/admin/users', icon: 'ri-group-line' },
 ];

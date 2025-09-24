@@ -32,5 +32,5 @@
 }
 
 .card {
-  @apply bg-slate-50 dark:bg-slate-900 p-6 rounded shadow-md shadow-slate-100 dark:shadow-slate-800 border border-slate-200/20 dark:border-slate-800/20
+  @apply bg-slate-50 dark:bg-slate-900 p-6 rounded border border-slate-200 dark:border-slate-800
 }

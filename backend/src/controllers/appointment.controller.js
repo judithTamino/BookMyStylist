@@ -294,22 +294,9 @@ export const getAdminDashboardData = asyncHandler(async (req, res) => {
 
   const users = await User.countDocuments({ isAdmin: false });
 
-  const totalAppointments = await Appointment.countDocuments({ date: { $gte: firstDay, $lte: lastDay } });
-  const todayAppointments = await Appointment.countDocuments({ 
+  const todayAppointments = await Appointment.countDocuments({
     date: today,
-    status: 'confirmed' 
-  });
-  const totalCompletedAppointments = await Appointment.countDocuments({
-    status: "completed",
-    date: { $gte: firstDay, $lte: lastDay }
-  });
-  const totalConfirmedAppointments = await Appointment.countDocuments({
-    status: "confirmed",
-    date: { $gte: firstDay, $lte: lastDay }
-  });
-  const totalCancelledAppointments = await Appointment.countDocuments({
-    status: "cancelled",
-    date: { $gte: firstDay, $lte: lastDay }
+    status: 'confirmed'
   });
 
   // calculate services price of this month appointments
@@ -323,40 +310,18 @@ export const getAdminDashboardData = asyncHandler(async (req, res) => {
     revenue += service.price;
   }
 
-  // const appointmentsStatus = ["completed", "cancelled", "confirmed"];
-  // const appointmentDistributionRaw = await Appointment.aggregate([{
-  //   $match: {
-  //     date: { $gte: firstDay, $lte: lastDay }
-  //   }
-  // }, {
-  //   $group: { _id: "$status", count: { $sum: 1 } }
-  // }]);
-
-  // const appointmentDistribution = appointmentsStatus.reduce((acc, status) => {
-  //   const formatedKey = status.replace(/\s+/g, ""); // Remove space
-  //   acc[formatedKey] = appointmentDistributionRaw.find(item => item._id === status)?.count || 0;
-
-  //   return acc;
-  // }, {});
-
-  // appointmentDistribution["All"] = totalAppointments;
-
-  // Fetch recent 10 appointments
+  // Fetch recent 5 appointments
   const recentAppointments = await Appointment.find().sort({ createdAt: -1 }).limit(5).populate("user", "name email")
     .populate("service", "name");
 
+  const totalServices = await Service.countDocuments({ active: true });
+
   res.status(200).json({
     success: true,
-    statistics: {
-      totalAppointments,
-      totalConfirmedAppointments,
-      totalCancelledAppointments,
-      totalCompletedAppointments
-    },
     todayAppointments,
-    // chart: { appointmentDistribution },
     users,
     revenue,
+    totalServices,
     recentAppointments
   })
 });

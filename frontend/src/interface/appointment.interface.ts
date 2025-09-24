@@ -43,8 +43,17 @@ export interface ITab {
   status: string;
 }
 
-export interface IStatistics {
+interface IStatistics {
   label: string;
   value: number;
   color: string;
+}
+
+export interface IAdminDashboard {
+  success: boolean;
+  todayAppointments: number;
+  users:number;
+  revenue: number;
+  totalServices: number;
+  recentAppointments: IAdminAppointment[];
 }

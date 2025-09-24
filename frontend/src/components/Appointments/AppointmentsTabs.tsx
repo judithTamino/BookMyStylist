@@ -28,7 +28,7 @@ const AppointmentsTabs: FunctionComponent<AppointmentsTabsProps> = (props) => {
         className={`text-xs ml-2 px-2 py-1 rounded-full ${
           FilterStatus === tab.status
             ? 'bg-rose-600 text-white'
-            : 'bg-slate-50 text-slate-700 dark:text-slate-400'
+            : 'bg-slate-50 dark:bg-slate-900 text-slate-700 dark:text-slate-400'
         }`}
       >
         {tab.count}

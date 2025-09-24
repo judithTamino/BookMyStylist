@@ -1,6 +1,7 @@
 import type { FunctionComponent, ReactNode } from 'react';
+import { adminLinks } from '../assets/assets';
 import AdminNavbar from '../components/Layout/Navbar/AdminNavbar';
-import SideMenu from '../components/Layout/Navbar/SideMenu';
+import Sidebar from '../components/Layout/Navbar/Sidebar';
 
 interface AdminLayoutProps {
   children: ReactNode;
@@ -14,11 +15,8 @@ const AdminLayout: FunctionComponent<AdminLayoutProps> = (props) => {
       <AdminNavbar />
 
       <div className='flex'>
-        <div className='md:w-64 w-16 text-base pt-4 flex flex-col transition-all duration-300'>
-          <SideMenu />
-        </div>
-
-        <div className='grow mx-4 md:mx-5'>{children}</div>
+        <Sidebar />
+        <div className='grow mx-4 md:mx-5 p-4'>{children}</div>
       </div>
     </>
   );

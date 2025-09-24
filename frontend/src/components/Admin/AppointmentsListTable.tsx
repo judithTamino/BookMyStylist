@@ -2,13 +2,13 @@ import type { FunctionComponent } from 'react';
 import type { IAdminAppointment } from '../../interface/appointment.interface';
 
 interface AppointmentsListTableProps {
-  recentAppointments: IAdminAppointment[];
+  appointments: IAdminAppointment[];
 }
 
 const AppointmentsListTable: FunctionComponent<AppointmentsListTableProps> = (
   props
 ) => {
-  const { recentAppointments } = props;
+  const { appointments } = props;
 
   const convertDate = (appointmentDate: Date): string => {
     const date = new Date(appointmentDate);
@@ -35,57 +35,45 @@ const AppointmentsListTable: FunctionComponent<AppointmentsListTableProps> = (
         return 'bg-slate-200 text-slate-700 border border-slate-300 dark: bg-slate-800 dark:text-slate-400 dark:border-slate-900';
     }
   };
-  return (
-    <div className='overflow-x-auto p-0 rounded-lg mt-3'>
-      <table className='text-left'>
-        <thead>
-          <tr className='py-3 text-slate-700 dark:text-slate-400 font-medium text-sm'>
-            <th className='py-3 px-4 text-slate-900 dark:text-slate-100 font-medium text-sm'>
-              Service
-            </th>
-            <th className='py-3 px-4 text-slate-900 dark:text-slate-100 font-medium text-sm'>
-              Date & Time
-            </th>
-            <th className='py-3 px-4 text-slate-900 dark:text-slate-100 font-medium text-sm'>
-              Status
-            </th>
-            <th className='py-3 px-4 text-slate-900 dark:text-slate-100 font-medium text-sm'>
-              Client
-            </th>
-            <th className='py-3 px-4 text-slate-700 dark:text-slate-100 font-medium text-sm hidden md:table-cell'>
-              Contact Info
-            </th>
-          </tr>
-        </thead>
 
-        <tbody>
-          {recentAppointments.map((appointment) => (
-            <tr
-              key={appointment._id}
-              className='border-t border-slate-200 dark:border-slate-800'
+  return (
+    <>
+      {appointments.map((appointment) => (
+        <div
+          key={appointment._id}
+          className='border-b border-slate-200 dark:border-slate-800 py-3 text-sm text-slate-700 dark:text-slate-400'
+        >
+          <div className='flex items-center justify-between gap-2'>
+            <span className='text-slate-900 dark:text-slate-100 font-semibold'>
+              {appointment.user? appointment.user.name : "Deleted User"}
+            </span>
+
+            <span
+              className={`px-1 py-0.5 text-xs rounded inline-block ${getStatusBadgeColor(
+                appointment.status
+              )}`}
             >
-              <td className='my-3 mx-4 text-slate-700 dark:text-slate-400 text-xs line-clamp-1 overflow-hidden'>
-                {appointment.service.name}
-              </td>
-              <td className='my-3 mx-4 text-slate-700 dark:text-slate-400 text-xs overflow-hidden'>
-                {convertDate(appointment.date)} {appointment.startTime}
-              </td>
-              <td className='py-4 px-4'>
-                <span
-                  className={`px-2 py-1 text-xs rounded inline-block ${getStatusBadgeColor(
-                    appointment.status
-                  )}`}
-                >
-                  {appointment.status}
-                </span>
-              </td>
-              <td className=''>{appointment.user.name}</td>
-              <td className=''>{appointment.user.email}</td>
-            </tr>
-          ))}
-        </tbody>
-      </table>
-    </div>
+              {appointment.status}
+            </span>
+          </div>
+
+          <p className='mt-4'>{appointment.service.name}</p>
+
+          <div className='flex flex-col md:flex-row md:gap-4 mt-2'>
+            <span className='flex gap-2 mb-1'>
+              <i className='ri-calendar-line text-rose-600' />
+              <span>{convertDate(appointment.date)} | </span>
+              <span>{appointment.startTime}</span>
+            </span>
+
+            <span className='flex gap-2'>
+              <i className='ri-mail-line text-rose-600' />
+              <span>{appointment.user ? appointment.user.email : "Deleted User"}</span>
+            </span>
+          </div>
+        </div>
+      ))}
+    </>
   );
 };
 
