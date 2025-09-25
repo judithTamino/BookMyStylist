@@ -102,6 +102,7 @@ export const getAppointments = asyncHandler(async (req, res) => {
     appointments = await Appointment.find(filterByStatus)
       .populate("user", "name email")
       .populate("service", "name duration price")
+      .sort({ date: -1, startTime: -1 });
   } else
     appointments = await Appointment.find({ ...filterByStatus, user: userInfo._id })
       .populate("service", "name duration price")
@@ -239,8 +240,6 @@ export const getAvailableTimeSlots = asyncHandler(async (req, res) => {
 export const cancelAppointment = asyncHandler(async (req, res) => {
   const appointmentId = req.params.id;
   const userInfo = req.user;
-
-  console.log(userInfo);
 
   // check if appointment exsits
   const appointment = await Appointment.findById(appointmentId);

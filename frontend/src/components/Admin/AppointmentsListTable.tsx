@@ -26,11 +26,11 @@ const AppointmentsListTable: FunctionComponent<AppointmentsListTableProps> = (
   const getStatusBadgeColor = (status: string) => {
     switch (status) {
       case 'confirmed':
-        return 'bg-pink-600/10 text-pink-600 border border-pink-600/20';
+        return 'bg-emerald-600/10 text-emerald-600 border border-emerald-600/20';
       case 'cancelled':
-        return 'bg-fuchsia-600/10 text-fuchsia-600 border border-fuchsia-600/20';
+        return 'bg-amber-500/10 text-amber-500 border border-amber-500/20';
       case 'completed':
-        return 'bg-purple-600/10 text-purple-600 border border-purple-600/20';
+        return 'bg-rose-600/10 text-rose-600 border border-rose-600/20';
       default:
         return 'bg-slate-200 text-slate-700 border border-slate-300 dark: bg-slate-800 dark:text-slate-400 dark:border-slate-900';
     }

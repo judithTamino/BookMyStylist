@@ -8,7 +8,9 @@ import { getAppointments } from '../../services/appointment.service';
 import { errorMsg } from '../../services/toastify.service';
 import AppointmentsTabs from '../../components/Appointments/AppointmentsTabs';
 import { useAuth } from '../../context/auth.context';
-import AppointmentsListTable from '../../components/Admin/AppointmentsListTable';
+import Loader from '../../components/UI/Loader/Loader';
+import EmptyState from '../../components/UI/EmptyState/EmptyState';
+import AppointmentTabel from '../../components/Admin/AppointmentTable';
 
 interface ManageAppointmentsProps {}
 
@@ -16,9 +18,11 @@ const ManageAppointments: FunctionComponent<ManageAppointmentsProps> = () => {
   const [appointments, setAppointments] = useState<IAdminAppointment[]>([]);
   const [tabs, setTabs] = useState<ITab[]>([]);
   const [filterStatus, setFilterStatus] = useState<string>('all');
+
   const [loading, setLoading] = useState<boolean>(true);
 
   const { token } = useAuth();
+
 
   const getAllAppointments = (status: string = '') => {
     if (status === 'all') status = '';
@@ -57,16 +61,16 @@ const ManageAppointments: FunctionComponent<ManageAppointmentsProps> = () => {
     setLoading(false);
   }, [filterStatus]);
 
-  console.log(appointments)
-
-
-
   return (
     <AdminLayout>
-      <section className='py-2 md:py-4'>
-        <div className='flex flex-col md:flex-row justify-between md:items-center'>
-          <h2 className='text-2xl mb-4'>My Appointments</h2>
-          <div className='grid grid-cols-1 gap-2'>
+      <>
+        <div className='card'>
+          <h2 className='text-lg md:text-2xl mb-4'>
+            <i className='ri-calendar-line text-rose-600 mr-2' />
+            <span className=''>My Appointments</span>
+          </h2>
+
+          <div className='grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-2 justify-items-center'>
             {tabs.map((tab, index) => (
               <AppointmentsTabs
                 key={index}
@@ -78,10 +82,24 @@ const ManageAppointments: FunctionComponent<ManageAppointmentsProps> = () => {
           </div>
         </div>
 
-        <div className='mt-4'>
-          <AppointmentsListTable appointments={appointments} />
+        <div className='relative card my-6 pb-20'>
+          {appointments.length > 0 ? (
+            <AppointmentTabel appointments={appointments} />
+          ) : (
+            <>
+              {loading ? (
+                <Loader loading={loading} />
+              ) : (
+                <EmptyState
+                  icon='ri-calendar-line'
+                  title='No Appointments'
+                  message='You don`t have any appointments yet'
+                />
+              )}
+            </>
+          )}
         </div>
-      </section>
+      </>
     </AdminLayout>
   );
 };

@@ -1,22 +1,17 @@
 import { useEffect, useState, type FunctionComponent } from 'react';
 import AdminLayout from '../../layout/AdminLayout';
 import { useAuth } from '../../context/auth.context';
-import { useNavigate } from 'react-router-dom';
 import { GetAdminDashboard } from '../../services/appointment.service';
 import { errorMsg } from '../../services/toastify.service';
-import type { IUser } from '../../interface/user.interface';
-import decodeToken from '../../services/token.service';
-import { getUserProfile } from '../../services/user.service';
 import InfoCard from '../../components/Admin/Card/InfoCard';
 import type { IAdminDashboard } from '../../interface/appointment.interface';
-import Button from '../../components/UI/Button/Button';
-import AppointmentsListTable from '../../components/Admin/AppointmentsListTable';
+import RecentAppointments from '../../components/Admin/RecentAppointments';
 
 interface AdminDashboardProps {}
 
 const AdminDashboard: FunctionComponent<AdminDashboardProps> = () => {
   const { token } = useAuth();
- 
+
   const [dashboardData, setDashboardData] = useState<IAdminDashboard | null>(
     null
   );
@@ -37,7 +32,7 @@ const AdminDashboard: FunctionComponent<AdminDashboardProps> = () => {
     <AdminLayout>
       {dashboardData && (
         <>
-          <div className='grid grid-cols-2 xl:grid-cols-3 gap-2'>
+          <div className='grid grid-cols-1 md:grid-cols-2 xl:grid-cols-4 gap-2'>
             <InfoCard
               value={`${dashboardData.todayAppointments}`}
               label='Appointments Today'
@@ -45,7 +40,7 @@ const AdminDashboard: FunctionComponent<AdminDashboardProps> = () => {
             />
 
             <InfoCard
-              value={`₪${dashboardData.revenue}`}
+              value={`₪ ${dashboardData.revenue}`}
               label='Revenue This Month'
               icon={<i className='ri-cash-line' />}
             />
@@ -63,15 +58,9 @@ const AdminDashboard: FunctionComponent<AdminDashboardProps> = () => {
             />
           </div>
 
-          <div className='card mt-8'>
-            <h5 className='text-sm md:text-lg mb-4'>
-              <i className='ri-calendar-line mr-2 text-rose-600' />
-              <span>Recent Appointments</span>
-            </h5>
-            <AppointmentsListTable
-              appointments={dashboardData.recentAppointments || []}
-            />
-          </div>
+          <RecentAppointments
+            recentAppointments={dashboardData.recentAppointments}
+          />
         </>
       )}
     </AdminLayout>

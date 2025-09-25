@@ -52,8 +52,15 @@ interface IStatistics {
 export interface IAdminDashboard {
   success: boolean;
   todayAppointments: number;
-  users:number;
+  users: number;
   revenue: number;
   totalServices: number;
   recentAppointments: IAdminAppointment[];
+}
+
+export interface IAppointmentEvent {
+  title: string;
+  start: Date;
+  end: Date;
+  status: string;
 }

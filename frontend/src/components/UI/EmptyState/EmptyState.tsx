@@ -1,5 +1,4 @@
 import type { FunctionComponent, ReactNode } from 'react';
-import Button from '../Button/Button';
 
 interface EmptyStateProps {
   icon?: string;
