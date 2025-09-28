@@ -15,7 +15,9 @@ const AdminLayout: FunctionComponent<AdminLayoutProps> = (props) => {
       <AdminNavbar />
 
       <div className='flex'>
-        <Sidebar />
+        <div className='max-[1080px]:hidden'>
+          <Sidebar />
+        </div>
         <div className='grow mx-4 md:mx-5 p-4'>{children}</div>
       </div>
     </>

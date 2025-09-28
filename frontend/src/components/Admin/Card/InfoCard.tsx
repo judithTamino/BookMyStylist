@@ -11,17 +11,15 @@ const InfoCard: FunctionComponent<InfoCardProps> = (props) => {
 
   return (
     <div className='card'>
-      <div className='flex flex-col gap-4 text-xs lg:text-base'>
-        <div className='bg-rose-600/20 rounded text-rose-600 px-2 py-1 flex items-center justify-between'>
-          <span className='text-2xl mr-2'>{icon}</span>
-          <span className='font-medium text-lg bg-rose-600 text-white px-2 py-1 rounded'>
-            {value}
-          </span>
+      <div className='grid grid-cols-[1fr_4fr] gap-4'>
+        <div className='bg-rose-600/30 text-rose-600 h-full w-full flex items-center justify-center text-2xl rounded-sm'>
+          {icon}
         </div>
 
-        <span className='text-lg text-slate-700 dark:text-slate-400 text-center'>
-          {label}
-        </span>
+        <div className='flex flex-col'>
+          <span className='text-xl font-semibold'>{value}</span>
+          <span className='text-slate-700 dark:text-slate-400'>{label}</span>
+        </div>
       </div>
     </div>
   );

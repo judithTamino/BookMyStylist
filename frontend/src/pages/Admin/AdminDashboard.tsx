@@ -24,6 +24,7 @@ const AdminDashboard: FunctionComponent<AdminDashboardProps> = () => {
       .catch((error) => errorMsg(error.response.data.msg));
   };
 
+
   useEffect(() => {
     getAdminDashboardData();
   }, []);
@@ -32,7 +33,7 @@ const AdminDashboard: FunctionComponent<AdminDashboardProps> = () => {
     <AdminLayout>
       {dashboardData && (
         <>
-          <div className='grid grid-cols-1 md:grid-cols-2 xl:grid-cols-4 gap-2'>
+          <div className='grid grid-cols-1 md:grid-cols-2 xl:grid-cols-3 gap-2'>
             <InfoCard
               value={`${dashboardData.todayAppointments}`}
               label='Appointments Today'

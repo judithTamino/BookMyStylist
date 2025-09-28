@@ -10,6 +10,8 @@ import AppointmentsTabs from '../../components/Appointments/AppointmentsTabs';
 import { useAuth } from '../../context/auth.context';
 import Loader from '../../components/UI/Loader/Loader';
 import EmptyState from '../../components/UI/EmptyState/EmptyState';
+import AppointmentCard from '../../components/Appointments/AppointmentCard';
+import { statusArray } from '../../utils/appointments.utils';
 import AppointmentTabel from '../../components/Admin/AppointmentTable';
 
 interface ManageAppointmentsProps {}
@@ -18,40 +20,18 @@ const ManageAppointments: FunctionComponent<ManageAppointmentsProps> = () => {
   const [appointments, setAppointments] = useState<IAdminAppointment[]>([]);
   const [tabs, setTabs] = useState<ITab[]>([]);
   const [filterStatus, setFilterStatus] = useState<string>('all');
-
   const [loading, setLoading] = useState<boolean>(true);
 
   const { token } = useAuth();
 
-
   const getAllAppointments = (status: string = '') => {
     if (status === 'all') status = '';
-
     getAppointments(status, token as string)
       .then((res) => {
         setAppointments(res.data.data.appointments);
 
         const statusSummary = res.data?.data.statusSummary || {};
-        const statusArray = [
-          { label: 'All', count: statusSummary.all || 0, status: 'all' },
-          {
-            label: 'Upcoming',
-            count: statusSummary.confirmed || 0,
-            status: 'confirmed',
-          },
-          {
-            label: 'Cancelled',
-            count: statusSummary.canceled || 0,
-            status: 'cancelled',
-          },
-          {
-            label: 'History',
-            count: statusSummary.completed || 0,
-            status: 'completed',
-          },
-        ];
-
-        setTabs(statusArray);
+        setTabs(statusArray(statusSummary));
       })
       .catch((error) => errorMsg(error.response.data.msg));
   };

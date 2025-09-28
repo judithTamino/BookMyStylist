@@ -16,6 +16,7 @@ import AppointmentCard from '../../components/Appointments/AppointmentCard';
 import Button from '../../components/UI/Button/Button';
 import EmptyState from '../../components/UI/EmptyState/EmptyState';
 import Loader from '../../components/UI/Loader/Loader';
+import { statusArray } from '../../utils/appointments.utils';
 
 interface AppointmentsProps {}
 
@@ -37,28 +38,8 @@ const Appointments: FunctionComponent<AppointmentsProps> = () => {
       .then((res) => {
         setAllAppointments(res.data.data.appointments);
 
-        // map statusSummary data with fixed labels
         const statusSummary = res.data?.data.statusSummary || {};
-        const statusArray = [
-          { label: 'All', count: statusSummary.all || 0, status: 'all' },
-          {
-            label: 'Upcoming',
-            count: statusSummary.confirmed || 0,
-            status: 'confirmed',
-          },
-          {
-            label: 'Cancelled',
-            count: statusSummary.canceled || 0,
-            status: 'cancelled',
-          },
-          {
-            label: 'History',
-            count: statusSummary.completed || 0,
-            status: 'completed',
-          },
-        ];
-
-        setTabs(statusArray);
+        setTabs(statusArray(statusSummary));
       })
       .catch((error) => errorMsg(error.response.data.msg));
   };

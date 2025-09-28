@@ -13,7 +13,7 @@ const AppointmentsTabs: FunctionComponent<AppointmentsTabsProps> = (props) => {
   return (
     <div
       onClick={() => setFilterStatus(tab.status)}
-      className='flex gap-1 text-base cursor-pointer'
+      className='flex gap-1 text-sm cursor-pointer'
     >
       <span
         className={`${
