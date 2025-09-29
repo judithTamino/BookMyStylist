@@ -2,10 +2,15 @@ import axios from 'axios';
 
 const API: string = `${import.meta.env.VITE_URL}/services`;
 
-// get all active services
+//Get All Services
+export const getAllServices = (token: string) =>
+  axios.get(`${API}/all`, {
+    headers: { Authorization: `Bearer ${token}` },
+  });
+
 export const getActiveServices = () => axios.get(API);
 
-// Get service details
+// Get Active Services
 export const getServiceDetails = (serviceId: string) => {
   return axios.get(`${API}/${serviceId}`);
 };

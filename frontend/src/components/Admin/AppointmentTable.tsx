@@ -5,14 +5,14 @@ import AppointmentCard from '../Appointments/AppointmentCard';
 
 interface AppointmentTabelProps {
   appointments: IAdminAppointment[];
+  cancelAppointment: (id:string, status:string) => void;
 }
 
 const AppointmentTabel: FunctionComponent<AppointmentTabelProps> = (props) => {
-  const { appointments } = props;
+  const { appointments, cancelAppointment } = props;
 
   const [currentPage, setCurrentPage] = useState<number>(1);
   const [appointmentsPerPage] = useState<number>(4);
-  const [openModal, setOpenModal] = useState<boolean>(false);
 
   const lastAppointmentIndex = currentPage * appointmentsPerPage;
   const firstAppointmentIndex = lastAppointmentIndex - appointmentsPerPage;
@@ -26,12 +26,14 @@ const AppointmentTabel: FunctionComponent<AppointmentTabelProps> = (props) => {
     window.scrollTo(0, 0);
   };
 
-  const handleCancelAppointment = (id: string) => {};
-
   return (
     <div className='grid grid-cols-1 xl:grid-cols-2 gap-4 xl:gap-2'>
       {currentAppointments.map((appointment) => (
-        <AppointmentCard appointment={appointment} cancel={handleCancelAppointment} />
+        <AppointmentCard
+        key={appointment._id}
+          appointment={appointment}
+          cancel={cancelAppointment}
+        />
       ))}
 
       <div className='absolute bottom-0 w-full p-4'>

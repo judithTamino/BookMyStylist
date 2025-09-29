@@ -14,7 +14,7 @@ import decodeToken from '../../services/token.service';
 
 interface AppointmentCardProps {
   appointment: IUserAppointment | IAdminAppointment;
-  cancel: (id: string) => void;
+  cancel: (id: string, status: string) => void;
 }
 
 const AppointmentCard: FunctionComponent<AppointmentCardProps> = (props) => {
@@ -77,7 +77,7 @@ const AppointmentCard: FunctionComponent<AppointmentCardProps> = (props) => {
         {appointment.status === 'confirmed' ? (
           <div>
             {canCancelAppointment(appointment.date) ? (
-              <Button size='sm' onClick={() => cancel(appointment._id)}>
+              <Button size='sm' onClick={() => cancel(appointment._id, appointment.status)}>
                 Cancel
               </Button>
             ) : (

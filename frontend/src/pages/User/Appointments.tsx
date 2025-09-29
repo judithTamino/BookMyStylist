@@ -44,11 +44,11 @@ const Appointments: FunctionComponent<AppointmentsProps> = () => {
       .catch((error) => errorMsg(error.response.data.msg));
   };
 
-  const handleCanceleAppointment = (appointmentId: string) => {
+  const handleCanceleAppointment = (appointmentId: string, status:string) => {
     cancelAppointment(appointmentId, token as string)
       .then((res) => {
         successMsg(res.data.msg);
-        getAllAppointments();
+        getAllAppointments(status);
       })
       .catch((error) => errorMsg(error.response.data.msg));
   };

@@ -4,13 +4,12 @@ import type {
   IAdminAppointment,
   ITab,
 } from '../../interface/appointment.interface';
-import { getAppointments } from '../../services/appointment.service';
-import { errorMsg } from '../../services/toastify.service';
+import { cancelAppointment, getAppointments } from '../../services/appointment.service';
+import { errorMsg, successMsg } from '../../services/toastify.service';
 import AppointmentsTabs from '../../components/Appointments/AppointmentsTabs';
 import { useAuth } from '../../context/auth.context';
 import Loader from '../../components/UI/Loader/Loader';
 import EmptyState from '../../components/UI/EmptyState/EmptyState';
-import AppointmentCard from '../../components/Appointments/AppointmentCard';
 import { statusArray } from '../../utils/appointments.utils';
 import AppointmentTabel from '../../components/Admin/AppointmentTable';
 
@@ -32,6 +31,15 @@ const ManageAppointments: FunctionComponent<ManageAppointmentsProps> = () => {
 
         const statusSummary = res.data?.data.statusSummary || {};
         setTabs(statusArray(statusSummary));
+      })
+      .catch((error) => errorMsg(error.response.data.msg));
+  };
+
+  const handleCancelAppointment = (id: string, status:string) => {
+    cancelAppointment(id, token as string)
+      .then((res) => {
+        successMsg(res.data.msg);
+        getAllAppointments(status);
       })
       .catch((error) => errorMsg(error.response.data.msg));
   };
@@ -64,7 +72,7 @@ const ManageAppointments: FunctionComponent<ManageAppointmentsProps> = () => {
 
         <div className='relative card my-6 pb-20'>
           {appointments.length > 0 ? (
-            <AppointmentTabel appointments={appointments} />
+             <AppointmentTabel appointments={appointments} cancelAppointment={handleCancelAppointment} />
           ) : (
             <>
               {loading ? (
