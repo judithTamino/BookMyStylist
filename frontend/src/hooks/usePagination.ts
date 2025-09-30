@@ -12,9 +12,9 @@ export function usePagination<T>({data, itemsPerPage = 4} : IPagination<T>) {
   const firstIndex = lastIndex - itemsPerPage;
 
   const currentData = data.slice(firstIndex, lastIndex);
-
-  const onPageChange = (data: {selcted: number}) => {
-    setCurrentPage(data.selcted + 1);
+ 
+  const onPageChange = (data: {selected: number}) => {
+    setCurrentPage(data.selected + 1);
     window.scrollTo({ top: 0, behavior: 'smooth' });
   };
 

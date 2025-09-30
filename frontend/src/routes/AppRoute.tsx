@@ -17,6 +17,7 @@ const BookAppointment = lazy(() => import('../pages/User/BookAppointment'));
 
 const AdminDashboard = lazy(() => import('../pages/Admin/AdminDashboard'));
 const ManageServices = lazy(() => import('../pages/Admin/ManageServices'));
+const AddService = lazy(() => import('../components/Admin/AddService'));
 const ManageUsers = lazy(() => import('../pages/Admin/ManageUsers'));
 const ManageAppointments = lazy(
   () => import('../pages/Admin/ManageAppointments')
@@ -46,6 +47,7 @@ const AppRoute: FunctionComponent<AppRouteProps> = () => {
           <Route path='/admin/dashboard' element={<AdminDashboard />} />
           <Route path='/admin/appointments' element={<ManageAppointments />} />
           <Route path='/admin/services' element={<ManageServices />} />
+          <Route path='/admin/add-service' element={<AddService />} />
           <Route path='/admin/working-hours' element={<ManageWorkingHours />} />
           <Route path='/admin/users' element={<ManageUsers />} />
         </Route>

@@ -18,7 +18,7 @@ const AdminLayout: FunctionComponent<AdminLayoutProps> = (props) => {
         <div className='max-[1080px]:hidden'>
           <Sidebar />
         </div>
-        <div className='grow mx-4 md:mx-5 p-4'>{children}</div>
+        <div className='grow  md:mx-5 py-4'>{children}</div>
       </div>
     </>
   );

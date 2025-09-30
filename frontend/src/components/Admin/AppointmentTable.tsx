@@ -38,8 +38,8 @@ const AppointmentTabel: FunctionComponent<AppointmentTabelProps> = (props) => {
 
       <div className='absolute bottom-0 w-full p-4'>
         <Pagination
-          totalAppointments={appointments.length}
-          appointmentsPerPage={appointmentsPerPage}
+          totalItems={appointments.length}
+          itemsPerPage={appointmentsPerPage}
           handlePageChange={handlePageChange}
         />
       </div>
