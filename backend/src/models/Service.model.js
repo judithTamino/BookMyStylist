@@ -7,7 +7,7 @@ const serviceSchema = new mongoose.Schema({
   price: { type: Number, required: true },
   active: { type: Boolean, default: true },
   likes: [String],
-  category: { type: String, enum: ["haircuts & styling", "hair coloring", "hair treatments", "texture service", "extensions & add-ons, bridal & events"], required: true }
+  category: { type: String, enum: ["haircuts & styling", "hair coloring", "hair treatments", "texture service", "extensions & add-ons", "bridal & events"], required: true }
 }, { timestamps: true });
 
 const Service = mongoose.model("Service", serviceSchema);

@@ -2,13 +2,25 @@ import { useState, type FunctionComponent } from 'react';
 import type { IService } from '../../../interface/service.interface';
 import { usePagination } from '../../../hooks/usePagination';
 import Pagination from '../../UI/Pagination/Pagination';
+import { useAuth } from '../../../context/auth.context';
+import Modal from '../../UI/Modal/Modal';
+import { deleteService } from '../../../services/services.service';
+import { errorMsg, successMsg } from '../../../services/toastify.service';
+import EditService from '../EditService';
 
 interface ServicesTableProps {
   services: IService[];
+  getServices: () => void;
 }
 
 const ServicesTable: FunctionComponent<ServicesTableProps> = (props) => {
-  const { services } = props;
+  const { services, getServices } = props;
+
+  const [openModal, setOpenModal] = useState<boolean>(false);
+  const [openEditService, setOpenEditService] = useState<boolean>(false);
+  const [serviceId, setServiceId] = useState<string>('');
+  const [selectedService, setSelectedService] = useState<IService>();
+  const { token } = useAuth();
 
   const {
     currentData: currenServices,
@@ -21,6 +33,16 @@ const ServicesTable: FunctionComponent<ServicesTableProps> = (props) => {
     active
       ? 'bg-emerald-600/20 text-emerald-600 border border-emerald-600/30'
       : 'bg-rose-600/20 text-rose-600 border border-rose-600/30';
+
+  const handleDeleteService = () => {
+    deleteService(token as string, serviceId)
+      .then((res) => {
+        successMsg(res.data.msg);
+        setOpenModal(false);
+        getServices();
+      })
+      .catch((error) => errorMsg(error.response.data.msg));
+  };
 
   return (
     <div className='overflow-x-auto p-0'>
@@ -39,7 +61,7 @@ const ServicesTable: FunctionComponent<ServicesTableProps> = (props) => {
         <tbody className='divide-y divide-slate-200 dark:divide-slate-800'>
           {currenServices.map((service) => (
             <tr key={service._id}>
-              <td className='table-col line-clamp-2 sm:line-clamp-1 overflow-hidden'>
+              <td className='table-col line-clamp-2 sm:line-clamp-1 overflow-hidden text-left'>
                 {service.name}
               </td>
               <td className='table-col text-nowrap hidden lg:table-cell'>
@@ -60,6 +82,23 @@ const ServicesTable: FunctionComponent<ServicesTableProps> = (props) => {
                   {service.active ? 'active' : 'Inactive'}
                 </span>
               </td>
+
+              <td className='table-col'>
+                <i
+                  onClick={() => {
+                    setOpenModal(true);
+                    setServiceId(service._id as string);
+                  }}
+                  className='ri-delete-bin-line mr-8 text-lg text-red-500 cursor-pointer'
+                />
+                <i
+                  className='ri-edit-box-line text-lg text-slate-700 dark:text-slate-400 cursor-pointer'
+                  onClick={() => {
+                    setOpenEditService(true);
+                    setSelectedService(service);
+                  }}
+                />
+              </td>
             </tr>
           ))}
         </tbody>
@@ -72,6 +111,23 @@ const ServicesTable: FunctionComponent<ServicesTableProps> = (props) => {
           handlePageChange={onPageChange}
         />
       </div>
+
+      <Modal
+        open={openModal}
+        variant='danger'
+        icon={<i className='ri-delete-bin-line text-red-500' />}
+        title='Are you sure?'
+        contect={` Do you really want to continue? This action cannot be undone.`}
+        cancelBtn={() => setOpenModal(false)}
+        primaryBtn={() => handleDeleteService()}
+      />
+
+      <EditService
+        open={openEditService}
+        close={() => setOpenEditService(false)}
+        service={selectedService}
+        onEdit={getServices}
+      />
     </div>
   );
 };

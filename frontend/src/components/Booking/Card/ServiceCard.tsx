@@ -1,4 +1,4 @@
-import { useEffect, useState, type FunctionComponent } from 'react';
+import { useState, type FunctionComponent } from 'react';
 
 import type { IService } from '../../../interface/service.interface';
 import ServiceDescriptionPopup from '../ServiceDescriptionPopup';

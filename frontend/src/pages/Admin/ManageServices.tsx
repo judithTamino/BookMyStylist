@@ -7,16 +7,16 @@ import { errorMsg } from '../../services/toastify.service';
 import ServicesTable from '../../components/Admin/Table/ServicesTable';
 import Search from '../../components/UI/Input/Search';
 import Button from '../../components/UI/Button/Button';
-import { useNavigate } from 'react-router-dom';
+import AddService from '../../components/Admin/AddService';
 
 interface ManageServicesProps {}
 
 const ManageServices: FunctionComponent<ManageServicesProps> = () => {
   const [services, setServices] = useState<IService[]>([]);
   const [search, setSearch] = useState<string>('');
+  const [openAddService, setOpenAddService] = useState<boolean>(false);
 
   const { token } = useAuth();
-  const navigate = useNavigate();
 
   const filterServices = useMemo(() => {
     return services.filter((service) => {
@@ -28,15 +28,19 @@ const ManageServices: FunctionComponent<ManageServicesProps> = () => {
     });
   }, [services, search]);
 
-  useEffect(() => {
+  const handleGetAllServices = () => {
     getAllServices(token as string)
       .then((res) => setServices(res.data.data))
       .catch((error) => errorMsg(error.response.data.msg));
+  };
+
+  useEffect(() => {
+    handleGetAllServices();
   }, []);
 
   return (
     <AdminLayout>
-      <section className=''>
+      <section className='relative'>
         <div className='card flex justify-between'>
           <div>
             <h2 className='text-2xl md:text-4xl font-bold mb-2'>
@@ -48,10 +52,10 @@ const ManageServices: FunctionComponent<ManageServicesProps> = () => {
           </div>
 
           <div className='self-start'>
-            <Button size='sm' onClick={() => navigate('/admin/add-service')}>
+            <Button size='sm' onClick={() => setOpenAddService(true)}>
               <i className='ri-add-line' />
-              <span className="hidden sm:block">Add New Service</span>
-              </Button>
+              <span className='hidden sm:block'>Add New Service</span>
+            </Button>
           </div>
         </div>
 
@@ -70,8 +74,17 @@ const ManageServices: FunctionComponent<ManageServicesProps> = () => {
               </div>
             </div>
           </div>
-          <ServicesTable services={filterServices} />
+          <ServicesTable
+            services={filterServices}
+            getServices={() => handleGetAllServices()}
+          />
         </div>
+
+        <AddService
+          open={openAddService}
+          setOpen={setOpenAddService}
+          onAddService={() => handleGetAllServices()}
+        />
       </section>
     </AdminLayout>
   );

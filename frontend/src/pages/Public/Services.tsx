@@ -66,8 +66,8 @@ const Services = () => {
           <Search setSearch={setSearch} />
           <Dropdown
             categories={categories}
-            selectedCategory={selectedCategory}
-            onSelectCategory={setSelectedCategory}
+            value={selectedCategory}
+            onChange={setSelectedCategory}
           />
         </section>
 
