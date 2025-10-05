@@ -1,7 +1,8 @@
 import asyncHandler from "express-async-handler";
 import User from "../models/User.model.js";
-import { updateUserValidation, userValidation, workingHouresValidation } from "../services/validation.service.js";
+import { updateUserValidation, workingHouresValidation } from "../services/validation.service.js";
 import { validStartTime } from "../helpers/user.helper.js";
+
 
 
 // @des    Get all users
@@ -63,11 +64,11 @@ export const updateUserProfile = asyncHandler(async (req, res) => {
   user.email = req.body.email || user.email;
   user.phone = req.body.phone || user.phone;
 
-  if(req.body.password && req.body.password.trim() !== "")
-    user.password = req.body.password; 
+  if (req.body.password && req.body.password.trim() !== "")
+    user.password = req.body.password;
 
   const updatedUser = await user.save();
-  const {password, ...userWithoutPassword} = updatedUser.toObject();
+  const { password, ...userWithoutPassword } = updatedUser.toObject();
 
   res.status(201).json({ success: true, data: userWithoutPassword, msg: "User details updated successfully" });
 });
@@ -94,50 +95,7 @@ export const deleteUser = asyncHandler(async (req, res) => {
 // @des    Insert working hours
 // @route  POST api/users/working-hours
 // @access private - admin
-export const insertWorkingHours = asyncHandler(async (req, res) => {
-  const userInfo = req.user;
-  const { workingHours } = req.body;
-  const user = await User.findById(userInfo._id);
-
-  if (!Array.isArray(workingHours) || workingHours.length === 0) {
-    const error = new Error("workingHours must be a non-empty array");
-    error.statusCode = 400;
-    throw error;
-  }
-
-  // Validation
-  workingHours.forEach(dayEntry => {
-    const errorMsg = workingHouresValidation(dayEntry);
-    if (errorMsg) {
-      const error = new Error(errorMsg);
-      error.statusCode = 400;
-      throw error;
-    }
-
-    // check if start time is before end time
-    if (!validStartTime(dayEntry)) {
-      const error = new Error(`For ${dayEntry.day}, start time must be before end time`);
-      error.statusCode = 400;
-      throw error;
-    }
-
-    if (!user.workingHoures.find((d) => d.day === dayEntry.day)) {
-      user.workingHoures.push(dayEntry);
-    }
-  });
-
-  await user.save();
-  res.status(201).json({
-    success: true,
-    data: user.workingHoures,
-    msg: "Working hours inserted successfully"
-  });
-});
-
-// @des    Update working hours
-// @route  PUT api/users/working-hours
-// @access private - admin
-export const updateWorkingHours = asyncHandler(async (req, res) => {
+export const workingHoures = asyncHandler(async (req, res) => {
   const userInfo = req.user;
   const { workingHours } = req.body;
 
@@ -147,8 +105,16 @@ export const updateWorkingHours = asyncHandler(async (req, res) => {
     throw error;
   }
 
-  for (const dayEntry of workingHours) {
-    const errorMsg = workingHouresValidation(dayEntry);
+  const user = await User.findById(userInfo._id);
+  if (!user) {
+    const error = new Error("User not found");
+    error.statusCode = 404;
+    throw error;
+  }
+
+  // Loop through the incoming workingHours and validate each day
+  for (const day of workingHours) {
+    const errorMsg = workingHouresValidation(day);
     if (errorMsg) {
       const error = new Error(errorMsg);
       error.statusCode = 400;
@@ -156,27 +122,28 @@ export const updateWorkingHours = asyncHandler(async (req, res) => {
     }
 
     // check if start time is before end time
-    if (!validStartTime(dayEntry)) {
-      const error = new Error(`For ${dayEntry.day}, start time must be before end time`);
+    if (!validStartTime(day) && !day.dayOff) {
+      const error = new Error(`For ${day.day}, start time must be before end time`);
       error.statusCode = 400;
       throw error;
     }
-  }
 
-  // update the updated working hours
-  const user = await User.findById(userInfo._id);
-  for (let i = 0; i < user.workingHoures.length; i++) {
-    for (let j = 0; j < workingHours.length; j++) {
-      if (user.workingHoures[i].day === workingHours[j].day)
-        user.workingHoures[i] = workingHours[j];
-    }
+    // Check if the day already exists -> update it, else insert
+    const existingDayIndex = user.workingHoures.findIndex(d => d.day === day.day);
+
+    if (existingDayIndex !== -1)
+      user.workingHoures[existingDayIndex] = day; // update working hours
+    else
+      user.workingHoures.push(day); // insert working hours
   }
 
   await user.save();
   res.status(201).json({
     success: true,
     data: user.workingHoures,
-    msg: "Working hours updated successfully"
+    msg: "Working hours saved successfully"
   });
 });
+
+
 

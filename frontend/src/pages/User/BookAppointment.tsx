@@ -25,7 +25,7 @@ const BookAppointment: FunctionComponent<BookAppointmentProps> = () => {
     const today: Date = new Date();
     const dateSlots: Date[] = [];
 
-    for (let i = 1; i <= 8; i++) {
+    for (let i = 1; i <= 14; i++) {
       const currentDate = new Date(today);
       currentDate.setDate(today.getDate() + i);
 

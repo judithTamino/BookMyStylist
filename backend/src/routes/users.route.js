@@ -1,13 +1,12 @@
 import { Router } from "express";
 
 import {protect, admin} from "../middleware/auth.middleware.js";
-import { deleteUser, getAllUsers, getUserProfile, insertWorkingHours, updateUserProfile, updateWorkingHours } from "../controllers/user.controller.js";
+import { deleteUser, getAllUsers, getUserProfile, updateUserProfile, workingHoures } from "../controllers/user.controller.js";
 
 const userRouter = Router();
 
 userRouter.get("/", protect, admin, getAllUsers);
-userRouter.post("/working-hours", protect, admin, insertWorkingHours);
-userRouter.put("/working-hours", protect, admin, updateWorkingHours);
+userRouter.put("/working-hours", protect, admin, workingHoures);
 
 userRouter.get("/:id", protect, getUserProfile);
 userRouter.put("/:id", protect, updateUserProfile);

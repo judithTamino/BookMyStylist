@@ -25,8 +25,6 @@ const ServiceInfo: FunctionComponent<ServiceInfoProps> = ({service}) => {
           <span>₪{service.price}</span>
         </p>
       </div>
-
-      {/* <p className='mt-4 text-lg capitalize'>{service.description}</p> */}
     </div>
   );
 };

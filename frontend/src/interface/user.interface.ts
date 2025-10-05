@@ -5,5 +5,12 @@ export interface IUser {
   phone?: string;
   password: string;
   isAdmin?: boolean;
-  workingHours?: string[];
+  workingHours?: IWorkingHours[];
 }
+
+export interface IWorkingHours {
+  day: string;
+  startTime: string;
+  endTime: string;
+  dayOff?: boolean;
+} 

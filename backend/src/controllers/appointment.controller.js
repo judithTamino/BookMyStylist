@@ -197,20 +197,28 @@ export const getAvailableTimeSlots = asyncHandler(async (req, res) => {
   const { serviceId } = req.query;
   const workingDay = await getWorkingDay(date);
 
+  // check if date is admin day of
+  
+
   if (!serviceId) {
     const error = new Error("Service ID is required");
     error.statusCode = 400;
     throw error;
   }
 
+  // check if service exsits
+   const service = await Service.findById(serviceId);
+   if(!service) {
+    const error = new Error('Service not found');
+    error.statusCode = 404;
+    throw error;
+   }
+
   // get all appointments for selected date
   const appointments = await Appointment.find({
     date,
     status: { $in: ["confirmed"] }
   });
-
-  // get selected service
-  const service = await Service.findById(serviceId);
 
   // generate all possible time slots
   const allSlots = await generateTimeSlots(date);

@@ -84,4 +84,8 @@ export const workingHoursSchema = Joi.object({
       "string.pattern.base": "Working end time must be in HH:MM format",
       "string.empty": "Working end time is required"
     }),
+  dayOff: Joi.boolean().allow("")
+    .messages({
+      "boolean.base": "Day off must be boolean"
+    }),
 });

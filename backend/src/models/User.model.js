@@ -8,7 +8,8 @@ const workingHoursSchema = new mongoose.Schema({
     required: true
   },
   startTime: { type: String, required: true },
-  endTime: { type: String, required: true }, 
+  endTime: { type: String, required: true },
+  dayOff: { type: Boolean, default: false }
 }, { _id: false });
 
 const userSchema = new mongoose.Schema({

@@ -94,7 +94,7 @@ const TimeSlotPicker: FunctionComponent<TimeSlotPickerProps> = (props) => {
         </div>
       )}
       <div className='mt-8'>
-        <Button onClick={() => handleBookAppointment()}>
+        <Button onClick={() => handleBookAppointment()} disabled={timeSlots.length === 0}>
           Book Appointment
         </Button>
       </div>

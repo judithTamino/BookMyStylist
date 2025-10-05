@@ -58,7 +58,7 @@ const EditService: FunctionComponent<EditServiceProps> = (props) => {
         <div className=' flex items-center justify-between mb-8'>
           <h2 className='flex items-center gap-2 text-xl'>
             <i className='ri-scissors-2-line text-rose-600' />
-            <span className=''>Edit Service</span>
+            <span>Edit Service</span>
           </h2>
 
           <i

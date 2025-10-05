@@ -1,5 +1,4 @@
 import { getWorkingDay } from "../helpers/appointment.helper.js";
-import User from "../models/User.model.js";
 
 // generate time slots based on admin working hours
 export const generateTimeSlots = async (appointmentDate) => {
@@ -9,7 +8,7 @@ export const generateTimeSlots = async (appointmentDate) => {
   
   // find working hours for that day
   const workingDay = await getWorkingDay(appointmentDate);
-  if (!workingDay) return [];
+  if (!workingDay || workingDay.dayOff) return [];
 
   // check if the appointment date is today
   if (appointmentDate.toDateString() === currentDate.toDateString()) return [];

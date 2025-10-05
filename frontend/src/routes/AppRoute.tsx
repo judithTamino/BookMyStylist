@@ -47,7 +47,6 @@ const AppRoute: FunctionComponent<AppRouteProps> = () => {
           <Route path='/admin/dashboard' element={<AdminDashboard />} />
           <Route path='/admin/appointments' element={<ManageAppointments />} />
           <Route path='/admin/services' element={<ManageServices />} />
-          <Route path='/admin/add-service' element={<AddService />} />
           <Route path='/admin/working-hours' element={<ManageWorkingHours />} />
           <Route path='/admin/users' element={<ManageUsers />} />
         </Route>
