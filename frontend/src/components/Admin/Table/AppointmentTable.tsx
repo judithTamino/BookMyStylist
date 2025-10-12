@@ -1,7 +1,7 @@
 import { useState, type FunctionComponent } from 'react';
 import type { IAdminAppointment } from '../../interface/appointment.interface';
-import Pagination from '../UI/Pagination/Pagination';
-import AppointmentCard from '../Appointments/AppointmentCard';
+import Pagination from '../../UI/Pagination/Pagination';
+import AppointmentCard from '../../Appointments/AppointmentCard';
 
 interface AppointmentTabelProps {
   appointments: IAdminAppointment[];

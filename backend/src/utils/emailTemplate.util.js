@@ -50,7 +50,12 @@ export const generateEmailTemplate = ({ user, date, startTime, service, price, t
                             <td style="font-size: 16px; border: 1px solid #E2E8F0; border-radius: 5px; padding: 2px 8px; width:100%;">
                 <span>🕒</span> <span>${startTime}</span>
               </td>
-             
+              </tr>
+
+              <tr>
+                                              <td style="font-size: 16px; border: 1px solid #E2E8F0; border-radius: 5px; padding: 2px 8px; width:100%;">
+                <span>💲</span> <span>₪${price}</span>
+              </td>
               </tr>
           </table>
 

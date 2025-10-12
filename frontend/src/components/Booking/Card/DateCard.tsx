@@ -1,4 +1,5 @@
 import type { FunctionComponent } from 'react';
+import { data } from 'react-router-dom';
 
 interface DateCardProps {
   date: Date;
@@ -6,6 +7,8 @@ interface DateCardProps {
   dateIndex: number;
   handelPickedDate: (index: number) => void;
 }
+
+console.log(data);
 
 const DateCard: FunctionComponent<DateCardProps> = (props) => {
   const { date, index, dateIndex, handelPickedDate } = props;

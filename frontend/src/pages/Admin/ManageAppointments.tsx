@@ -4,14 +4,17 @@ import type {
   IAdminAppointment,
   ITab,
 } from '../../interface/appointment.interface';
-import { cancelAppointment, getAppointments } from '../../services/appointment.service';
+import {
+  cancelAppointment,
+  getAppointments,
+} from '../../services/appointment.service';
 import { errorMsg, successMsg } from '../../services/toastify.service';
 import AppointmentsTabs from '../../components/Appointments/AppointmentsTabs';
 import { useAuth } from '../../context/auth.context';
 import Loader from '../../components/UI/Loader/Loader';
 import EmptyState from '../../components/UI/EmptyState/EmptyState';
 import { statusArray } from '../../utils/appointments.utils';
-import AppointmentTabel from '../../components/Admin/AppointmentTable';
+import AppointmentTabel from '../../components/Admin/Table/AppointmentTable';
 
 interface ManageAppointmentsProps {}
 
@@ -35,7 +38,7 @@ const ManageAppointments: FunctionComponent<ManageAppointmentsProps> = () => {
       .catch((error) => errorMsg(error.response.data.msg));
   };
 
-  const handleCancelAppointment = (id: string, status:string) => {
+  const handleCancelAppointment = (id: string, status: string) => {
     cancelAppointment(id, token as string)
       .then((res) => {
         successMsg(res.data.msg);
@@ -52,13 +55,15 @@ const ManageAppointments: FunctionComponent<ManageAppointmentsProps> = () => {
   return (
     <AdminLayout>
       <>
-        <div className='card'>
-          <h2 className='text-lg md:text-2xl mb-4'>
-            <i className='ri-calendar-line text-rose-600 mr-2' />
-            <span className=''>My Appointments</span>
-          </h2>
+        <div className='card mt-5'>
+          <h2 className='admin-title'>My Appointments</h2>
+          <p className='admin-subtitle'>
+            View, confirm, and manage all client bookings
+          </p>
+        </div>
 
-          <div className='grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-2 justify-items-center'>
+        <div className='card my-4 md:my-6'>
+          <div className='grid grid-cols-2 md:grid-cols-4 gap-2 justify-items-center'>
             {tabs.map((tab, index) => (
               <AppointmentsTabs
                 key={index}
@@ -69,11 +74,15 @@ const ManageAppointments: FunctionComponent<ManageAppointmentsProps> = () => {
             ))}
           </div>
         </div>
-
+       
         <div className='relative card my-6 pb-20'>
           {appointments.length > 0 ? (
-             <AppointmentTabel appointments={appointments} cancelAppointment={handleCancelAppointment} />
+               <AppointmentTabel
+               appointments={appointments}
+               cancelAppointment={handleCancelAppointment}
+             />
           ) : (
+        
             <>
               {loading ? (
                 <Loader loading={loading} />

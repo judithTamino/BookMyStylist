@@ -1,26 +1,21 @@
-import type { FunctionComponent, ReactNode } from 'react';
+import type { FunctionComponent} from 'react';
 
 interface InfoCardProps {
-  icon?: ReactNode;
   label: string;
-  value: string;
+  value: number | string;
+  color: string;
 }
 
 const InfoCard: FunctionComponent<InfoCardProps> = (props) => {
-  const { icon, label, value } = props;
+  const { label, value, color } = props;
 
   return (
-    <div className='card'>
-      <div className='grid grid-cols-[1fr_4fr] gap-4'>
-        <div className='bg-rose-600/30 text-rose-600 h-full w-full flex items-center justify-center text-2xl rounded-sm'>
-          {icon}
-        </div>
+    <div className='flex items-center gap-3'>
+      <div className={`w-2 h-3 md:h-5 ${color} rounded-full`} />
 
-        <div className='flex flex-col'>
-          <span className='text-xl font-semibold'>{value}</span>
-          <span className='text-slate-700 dark:text-slate-400'>{label}</span>
-        </div>
-      </div>
+      <p className='text-xs md:text-sm text-slate-700 dark:text-slate-400'>
+        <span className='text-sm md:text-[15px] text-black dark:text-white font-semibold'>{value}</span> {label}
+      </p>
     </div>
   );
 };

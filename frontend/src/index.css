@@ -35,23 +35,30 @@
     @apply text-2xl md:text-4xl font-bold mb-4 font-playfair;
   }
 
+  .admin-title {
+    @apply text-2xl md:text-3xl;
+  }
+
+  .admin-subtitle { @apply text-sm md:text-base text-slate-700 dark:text-slate-400 mt-1.5 }
+
   .card {
-    @apply bg-slate-50 dark:bg-slate-900 px-2 py-4 rounded border border-slate-200 dark:border-slate-800;
+    @apply bg-slate-50 dark:bg-slate-900 shadow-md shadow-slate-100 dark:shadow-slate-900 px-4 py-6 rounded border border-slate-200 dark:border-slate-800;
   }
 
-  .pagination-btn {
-    @apply text-rose-600 text-2xl font-semibold
-  }
 
-  .table-head {
-    @apply px-6 py-3 text-start text-xs font-medium uppercase
-  }
+.pagination-btn {
+  @apply text-rose-600 text-2xl font-semibold
+}
 
-  .table-row {
-    @apply flex flex-col mb-4 md:table-row
-  }
+.table-head {
+  @apply px-6 py-3 text-start text-xs font-medium uppercase
+}
 
-  .table-col {
-    @apply my-3 mx-4 text-sm font-medium capitalize text-center
-  }
+.table-row {
+  @apply flex flex-col mb-4 md:table-row
+}
+
+.table-col {
+  @apply my-3 mx-4 text-sm font-medium capitalize text-center
+}
 }

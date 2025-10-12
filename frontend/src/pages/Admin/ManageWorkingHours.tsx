@@ -3,13 +3,17 @@ import AdminLayout from '../../layout/AdminLayout';
 import Button from '../../components/UI/Button/Button';
 import { Form, Formik } from 'formik';
 import { useAuth } from '../../context/auth.context';
-import type { IUser, IWorkingHours } from '../../interface/user.interface';
-import { getUserProfile } from '../../services/user.service';
+import type { IWorkingHours } from '../../interface/user.interface';
+import {
+  getUserProfile,
+  insertAndUpdateWorkingHours,
+} from '../../services/user.service';
 import decodeToken from '../../services/token.service';
-import { errorMsg } from '../../services/toastify.service';
+import { errorMsg, successMsg } from '../../services/toastify.service';
 import { workingHoursSchema } from '../../schemas/user.schema';
 import FormikInput from '../../components/UI/Input/Formik/FormikInput';
 import FormikToggleSwitch from '../../components/UI/Input/Formik/FormikToggleSwitch';
+import { useNavigate } from 'react-router-dom';
 
 interface ManageWorkingHoursProps {}
 
@@ -17,19 +21,22 @@ const days = ['Sunday', 'Monday', 'Tuesday', 'Wednesday', 'Thursday', 'Friday'];
 
 const ManageWorkingHours: FunctionComponent<ManageWorkingHoursProps> = () => {
   const { token } = useAuth();
+  const navigate = useNavigate();
 
   const [workingHours, setWorkingHours] = useState<IWorkingHours[]>([]);
 
-  const handleWorkingHours = async (values: {
+  const handleWorkingHours = (values: {
     workingHours: IWorkingHours[];
   }) => {
-    console.log('Submitting values:', values);
-    // simulate async save
-    await new Promise((resolve) => setTimeout(resolve, 500));
+    insertAndUpdateWorkingHours(token as string, { workingHours: values.workingHours })
+      .then((res) => {
+        successMsg(res.data.msg);
+        navigate('/admin/dashboard');
+      })
+      .catch((error) => errorMsg(error.response.data.msg));
   };
 
-  useEffect(() => {
-    // get admin details
+  const getWorkingHours = () => {
     const adminId = token ? decodeToken(token)._id : undefined;
 
     getUserProfile(adminId as string, token as string)
@@ -55,6 +62,10 @@ const ManageWorkingHours: FunctionComponent<ManageWorkingHoursProps> = () => {
         setWorkingHours(merge);
       })
       .catch((error) => errorMsg(error.response.data.msg));
+  };
+
+  useEffect(() => {
+    getWorkingHours();
   }, [token]);
 
   return (
@@ -76,15 +87,14 @@ const ManageWorkingHours: FunctionComponent<ManageWorkingHoursProps> = () => {
           </h3>
 
           {workingHours.length !== 0 && (
-            <Formik<{ workingHours: IWorkingHours[] }>
+            <Formik
               initialValues={{ workingHours }}
-              enableReinitialize
               validationSchema={workingHoursSchema}
               onSubmit={handleWorkingHours}
             >
-              {({ isSubmitting, values }) => (
+              {({ isSubmitting }) => (
                 <Form className='flex flex-col'>
-                  {values.workingHours.map((dayEntry, index) => (
+                  {workingHours.map((dayEntry, index) => (
                     <div
                       key={index}
                       className='grid items-center grid-cols-1 md:grid-cols-[_1fr_2fr_2fr] gap-2 md:gap-8 py-6 px-4 [&:not(:last-child)]:border-b border-slate-200 dark:border-slate-800'
@@ -112,7 +122,7 @@ const ManageWorkingHours: FunctionComponent<ManageWorkingHoursProps> = () => {
                   ))}
 
                   <div className='mt-6'>
-                    <Button type='submit' disabled={isSubmitting} size='sm'>
+                    <Button type='submit' disabled={isSubmitting}>
                       {isSubmitting ? 'Saving...' : 'Save Working Hours'}
                     </Button>
                   </div>

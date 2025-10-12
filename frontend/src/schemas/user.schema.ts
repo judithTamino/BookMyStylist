@@ -52,17 +52,28 @@ export const editUserSchema = Yup.object({
 });
 
 export const workingHoursSchema = Yup.object({
-  day: Yup.string()
-    .required('Day is required.')
-    .oneOf(['Monday', 'Tuesday', 'Wednesday', 'Thursday', 'Friday', 'Sunday']),
+  workingHours: Yup.array().of(
+    Yup.object({
+      day: Yup.string()
+        .required('Day is required.')
+        .oneOf([
+          'Monday',
+          'Tuesday',
+          'Wednesday',
+          'Thursday',
+          'Friday',
+          'Sunday',
+        ]),
 
-  startTime: Yup.string()
-    .required('Strat time is required.')
-    .matches(timeRegex, 'Start time must be in HH:MM format'),
+      startTime: Yup.string()
+        .required('Strat time is required.')
+        .matches(timeRegex, 'Start time must be in HH:MM format'),
 
-  endTime: Yup.string()
-    .required('End time is required.')
-    .matches(timeRegex, 'End time must be in HH:MM format'),
-    
-  dayOff: Yup.boolean(),
+      endTime: Yup.string()
+        .required('End time is required.')
+        .matches(timeRegex, 'End time must be in HH:MM format'),
+
+      dayOff: Yup.boolean(),
+    })
+  ),
 });

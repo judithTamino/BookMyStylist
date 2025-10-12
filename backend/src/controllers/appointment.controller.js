@@ -198,7 +198,7 @@ export const getAvailableTimeSlots = asyncHandler(async (req, res) => {
   const workingDay = await getWorkingDay(date);
 
   // check if date is admin day of
-  
+
 
   if (!serviceId) {
     const error = new Error("Service ID is required");
@@ -207,12 +207,12 @@ export const getAvailableTimeSlots = asyncHandler(async (req, res) => {
   }
 
   // check if service exsits
-   const service = await Service.findById(serviceId);
-   if(!service) {
+  const service = await Service.findById(serviceId);
+  if (!service) {
     const error = new Error('Service not found');
     error.statusCode = 404;
     throw error;
-   }
+  }
 
   // get all appointments for selected date
   const appointments = await Appointment.find({
@@ -301,9 +301,19 @@ export const getAdminDashboardData = asyncHandler(async (req, res) => {
 
   const users = await User.countDocuments({ isAdmin: false });
 
+  const hour = today.getHours().toString();
+  const minute = today.getMinutes().toString();
+  const todayTime = `${hour.padStart(2, "0")}:${minute.padStart(2, "0")}`;
+
+  await Appointment.updateMany({
+    date: { $lte: today },
+    status: "confirmed",
+    startTime: { $lte: todayTime }
+  }, { $set: { status: "completed" } });
+
   const todayAppointments = await Appointment.countDocuments({
     date: today,
-    status: 'confirmed'
+    status: {$in: ["confirmed", "completed"]}
   });
 
   // calculate services price of this month appointments

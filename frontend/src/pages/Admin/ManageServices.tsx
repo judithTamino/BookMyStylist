@@ -43,10 +43,10 @@ const ManageServices: FunctionComponent<ManageServicesProps> = () => {
       <section className='relative'>
         <div className='card flex justify-between'>
           <div>
-            <h2 className='text-2xl md:text-4xl font-bold mb-2'>
+            <h2 className='admin-title'>
               Manage Services
             </h2>
-            <p className='text-sm md:text-base text-slate-700 dark:text-slate-400'>
+            <p className='admin-subtitle'>
               Add, edit and delete your salon`s service offerings
             </p>
           </div>

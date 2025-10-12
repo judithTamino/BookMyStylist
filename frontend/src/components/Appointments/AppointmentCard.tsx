@@ -12,6 +12,7 @@ import { format } from 'date-fns';
 import { useAuth } from '../../context/auth.context';
 import decodeToken from '../../services/token.service';
 
+
 interface AppointmentCardProps {
   appointment: IUserAppointment | IAdminAppointment;
   cancel: (id: string, status: string) => void;
@@ -44,13 +45,19 @@ const AppointmentCard: FunctionComponent<AppointmentCardProps> = (props) => {
           <div>
             <span className='text-xs block'>Service</span>
             <span className='text-slate-900 dark:text-slate-100 truncate block w-35'>
-              {appointment.service.name}
+              {appointment.service
+                ? <div className="flex flex-col">
+                  <span>{appointment.service.name}</span>
+                  <span>{appointment.service.duration} minuts</span>
+                  <span>₪{appointment.service.price}</span>
+                </div>
+                : 'Deleted Service'}
             </span>
           </div>
         </div>
 
         <span
-          className={`px-1 py-0.5 text-xs rounded mt-4 sm:mt-0 place-self-start ${getStatusBadgeColor(
+          className={`px-1 py-0.5 text-xs rounded mt-4 sm:mt-0 justify-self-end place-self-start ${getStatusBadgeColor(
             appointment.status
           )}`}
         >
@@ -70,14 +77,25 @@ const AppointmentCard: FunctionComponent<AppointmentCardProps> = (props) => {
           <div className=''>
             <span className='text-xs block'>For</span>
             <span className='text-slate-900 dark:text-slate-100'>
-              {appointment.user ? appointment.user.name : 'Deleted User'}
+              {appointment.user ? (
+                <>
+                  {appointment.user.name}
+                  <br />
+                  {appointment.user.email}
+                </>
+              ) : (
+                'Deleted User'
+              )}
             </span>
           </div>
         )}
         {appointment.status === 'confirmed' ? (
           <div>
             {canCancelAppointment(appointment.date) ? (
-              <Button size='sm' onClick={() => cancel(appointment._id, appointment.status)}>
+              <Button
+                size='sm'
+                onClick={() => cancel(appointment._id, appointment.status)}
+              >
                 Cancel
               </Button>
             ) : (

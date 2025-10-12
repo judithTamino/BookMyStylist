@@ -3,16 +3,6 @@ import User from "../models/User.model.js";
 import { updateUserValidation, workingHouresValidation } from "../services/validation.service.js";
 import { validStartTime } from "../helpers/user.helper.js";
 
-
-
-// @des    Get all users
-// @route  GET api/users/
-// @access private - admin
-export const getAllUsers = asyncHandler(async (_req, res) => {
-  const users = await User.find({ isAdmin: false }).select("-password");
-  res.status(200).json({ success: true, data: users });
-});
-
 // @des    Get user profile
 // @route  GET api/users/:id
 // @access private
@@ -95,12 +85,12 @@ export const deleteUser = asyncHandler(async (req, res) => {
 // @des    Insert working hours
 // @route  POST api/users/working-hours
 // @access private - admin
-export const workingHoures = asyncHandler(async (req, res) => {
+export const insertAndUpdateWorkingHours = asyncHandler(async (req, res) => {
   const userInfo = req.user;
   const { workingHours } = req.body;
 
-  if (!Array.isArray(workingHours) || workingHours.length === 0) {
-    const error = new Error("workingHours must be a non-empty array");
+  if (workingHours.length === 0) {
+    const error = new Error("Working hours must be a non-empty array");
     error.statusCode = 400;
     throw error;
   }
