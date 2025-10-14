@@ -4,7 +4,6 @@ import Hero from '../../components/Home/Hero';
 import About from '../../components/Home/About';
 import OurServices from '../../components/Home/OurServices';
 import BookingSteps from '../../components/Home/BookingSteps';
-import Cta from '../../components/Home/Cta';
 
 const Home: FunctionComponent = () => {
   return (
@@ -13,7 +12,6 @@ const Home: FunctionComponent = () => {
       <About />
       <OurServices />
       <BookingSteps />
-      {/* <Cta /> */}
     </MainLayout>
   );
 };

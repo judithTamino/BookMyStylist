@@ -28,7 +28,7 @@ const OurServices = () => {
         <img
           className='w-full md:max-w-md max-h-[700px] rounded-2xl'
           src='/services.jpg'
-          alt='home page image'
+          alt='client image'
         />
       </div>
     </section>

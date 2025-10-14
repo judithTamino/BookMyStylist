@@ -11,7 +11,7 @@ const Hero: FunctionComponent = () => {
         <img
           className='w-full lg:max-w-md max-h-[700px] rounded-2xl'
           src='/hero.jpg'
-          alt='home page image'
+          alt='client image'
         />
 
         <div className='flex flex-col justify-center items-center bg-rose-50 w-full rounded-2xl p-6 lg:p-10 xl:p-16 text-center'>
