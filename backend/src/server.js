@@ -1,7 +1,8 @@
 import express from "express";
 
 import connectDB from "./config/db.js";
-import errorHandler from "./middleware/error.middleware.js";
+
+import { errorHandler } from "./middleware/error.middleware.js";
 import cors from "./middleware/cors.middleware.js";
 import logger from './middleware/logger.middleware.js';
 

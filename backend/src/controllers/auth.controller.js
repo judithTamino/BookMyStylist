@@ -1,4 +1,7 @@
 import asyncHandler from "express-async-handler";
+import * as authService from '../services/auth.service.js';
+
+
 import jwt from "jsonwebtoken";
 import User from "../models/User.model.js";
 import { loginValidation, userValidation } from "../services/validation.service.js";
