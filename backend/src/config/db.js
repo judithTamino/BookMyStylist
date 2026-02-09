@@ -1,12 +1,16 @@
 import mongoose from "mongoose";
-import { MONGODB_LOCAL_URI } from "./env.js";
+import chalk from "chalk";
+import { MONGODB_LOCAL_URI, MONGODB_ATLAS_URI, ENV } from "./env.js";
 
 const connectDB = async () => {
   try {
-    await mongoose.connect(`${MONGODB_LOCAL_URI}/BookMyStylist`);
-    console.log("MongoDB connected successfully");
+    if (ENV === "development")
+      await mongoose.connect(`${MONGODB_LOCAL_URI}/BookMyStylist`);
+    if (ENV === "production")
+      await mongoose.connect(`${MONGODB_ATLAS_URI}/BookMyStylist`);
+    console.log(chalk.bgGreenBright(`DB connected successfully on ${ENV} mode`));
   } catch (error) {
-    console.log("MongoDB connection error: ", error);
+    console.log(chalk.bgRedBright("DB connection error: ", error.message));
     process.exit(1);
   }
 };

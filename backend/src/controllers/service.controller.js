@@ -2,6 +2,7 @@ import asyncHandler from "express-async-handler";
 import Service from "../models/Service.model.js";
 import { serviceValidation } from "../services/validation.service.js";
 import Appointment from "../models/Appointment.model.js";
+import { CustomError } from "../errors/CustomError.js";
 
 
 // @des    Get all active services
@@ -9,7 +10,7 @@ import Appointment from "../models/Appointment.model.js";
 // @access public
 export const getActiveServices = asyncHandler(async (req, res) => {
   const services = await Service.find({ active: true });
-  res.status(200).json({ success: true, data: services });
+   res.status(200).json({ success: true, data: services });
 });
 
 // @des    Get all services
@@ -26,11 +27,8 @@ export const getAllServices = asyncHandler(async (req, res) => {
 export const getServiceDetail = asyncHandler(async (req, res) => {
     // check if service exsits
   const service = await Service.findById(req.params.id);
-  if (!service) {
-    const error = new Error("Service not found");
-    error.statusCode = 404;
-    throw error;
-  }
+  if(!service)
+    throw new CustomError("Service not found", 404);
 
   res.status(200).json({ success: true, data: service });
 });
