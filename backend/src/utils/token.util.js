@@ -2,7 +2,7 @@ import jwt from "jsonwebtoken";
 import { JWT_SECRET, ENV } from "../config/env.js";
 
 export const generateToken = user => {
-  jwt.sign({ _id: user._id, isAdmin: user.isAdmin }, JWT_SECRET, { expiresIn: "7d" })
+ return jwt.sign({ _id: user._id, isAdmin: user.isAdmin }, JWT_SECRET, { expiresIn: "7d" })
 };
 
 export const setAuthCookie = (res, token) => {
